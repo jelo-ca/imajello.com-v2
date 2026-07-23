@@ -240,3 +240,26 @@
   font: 400 9px 'Silkscreen', monospace;
   color: #6d6a72;
 }
+
+@media (max-width: 768px) {
+  .grid {
+    grid-template-columns: 1fr;
+    gap: 22px;
+  }
+
+  .linkGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .statusGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .headerLeft {
+    flex-wrap: wrap;
+  }
+
+  .formCard {
+    height: auto;
+  }
+}
