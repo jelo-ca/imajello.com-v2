@@ -1,0 +1,195 @@
+/* Ported from design_handoff_portfolio_game_hud/design/Imajello Site v4b - Game HUD.dc.html
+   lines 350-458 (Battle Log / projects dialog, misleadingly commented "Quest Log" in the
+   source but confirmed by data-screen-label="Battle Log Dialog" at line 350 and the visible
+   "Battle Log" header text at line 352). `dialogIn` and `blink` keyframes are defined once in
+   styles/global.css and reused here. */
+
+.dialog {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 80;
+  width: min(1020px, 94vw);
+  max-height: 86vh;
+  overflow: auto;
+  background: #6d6a72;
+  color: #2b2b30;
+  border: 4px solid #2b2b30;
+  box-shadow: 10px 10px 0 rgba(20, 20, 23, .6);
+  animation: dialogIn .22s steps(5) both;
+}
+
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  background: #6d6a72;
+  border-bottom: 3px solid #2b2b30;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 12px 20px;
+}
+
+.headerLeft {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.badge {
+  font: 400 9px 'Silkscreen', monospace;
+  color: #f5d9dc;
+}
+
+.title {
+  font: 400 18px 'Archivo Black', sans-serif;
+  text-transform: uppercase;
+}
+
+.sub {
+  font: 400 9px 'Silkscreen', monospace;
+  color: #2b2b30;
+}
+
+.closeBtn {
+  font: 400 10px 'Silkscreen', monospace;
+  background: none;
+  border: 2px solid #2b2b30;
+  color: #2b2b30;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+.closeBtn:hover {
+  background: #2b2b30;
+  color: #f5d9dc;
+}
+
+.body {
+  padding: 28px 24px 36px;
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+.card {
+  background: #f5d9dc;
+  border: 3px solid #2b2b30;
+  display: flex;
+  gap: 0;
+  flex-wrap: wrap;
+  position: relative;
+}
+
+.repoLink {
+  position: absolute;
+  bottom: -3px;
+  right: -3px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font: 400 10px 'Silkscreen', monospace;
+  background: #2b2b30;
+  color: #ee9aa3;
+  border: 3px solid #2b2b30;
+  padding: 8px 14px;
+  text-decoration: none;
+  z-index: 2;
+}
+.repoLink:hover {
+  background: #ee9aa3;
+  color: #2b2b30;
+}
+
+.shotWrap {
+  width: 260px;
+  min-height: 180px;
+  flex: none;
+  border-right: 3px solid #2b2b30;
+  position: relative;
+}
+
+.rankBadge {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  font: 400 12px 'Silkscreen', monospace;
+  background: #2b2b30;
+  color: #ee9aa3;
+  padding: 4px 10px;
+}
+
+.info {
+  flex: 1;
+  min-width: 300px;
+  padding: 20px 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.infoTop {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.projTitle {
+  margin: 0;
+  font: 400 18px 'Archivo Black', sans-serif;
+  text-transform: uppercase;
+}
+
+.statusComplete {
+  font: 400 10px 'Silkscreen', monospace;
+  background: #2b2b30;
+  color: #f5d9dc;
+  padding: 4px 10px;
+}
+
+.statusProgress {
+  font: 400 10px 'Silkscreen', monospace;
+  background: #ee9aa3;
+  color: #2b2b30;
+  padding: 4px 10px;
+  animation: blink 1.6s step-end infinite;
+}
+
+.meta {
+  font: 400 10px 'Silkscreen', monospace;
+  color: #6d6a72;
+}
+
+.bullets {
+  margin: 0;
+  padding-left: 18px;
+  font-size: 13.5px;
+  line-height: 1.65;
+  color: #3a3a40;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.lootRow {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.lootLabel {
+  font: 400 9px 'Silkscreen', monospace;
+  color: #2b2b30;
+}
+
+.lootChip {
+  font: 400 10px 'Silkscreen', monospace;
+  border: 2px solid #2b2b30;
+  padding: 2px 9px;
+}
