@@ -1,0 +1,78 @@
+/* Ported from design_handoff_portfolio_game_hud/design/Imajello Site v4b - Game HUD.dc.html
+   lines 295-315 (vertical hotbar shown while a panel is open, scrim, cursor follower).
+   `.hotbar`, `.scrim`, `.cursorRing` are ported exactly per the task brief. `.hotbarBtn`,
+   `.hotbarNum`, `.cursorHost`, `.cursor` are the supporting classes needed by DialogHost.tsx,
+   ported from the same reference block's inline styles (the per-button background is driven
+   by inline style in the component, matching the reference's per-item {{ vXBg }} bindings). */
+
+.hotbar {
+  position: fixed;
+  right: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 85;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  align-items: stretch;
+}
+
+.hotbarBtn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  padding: 5px 7px;
+  width: 100%;
+  box-sizing: border-box;
+  border: none;
+  color: rgba(245, 217, 220, .65);
+  cursor: pointer;
+  font: 400 12px 'Silkscreen', monospace;
+  transition: transform .12s ease;
+}
+.hotbarBtn:hover {
+  color: #f5d9dc;
+  background: rgba(245, 217, 220, .14);
+  transform: scale(1.08);
+}
+
+.hotbarNum {
+  font-size: 8px;
+}
+
+.scrim {
+  position: fixed;
+  inset: 0;
+  z-index: 70;
+  background: rgba(43, 43, 48, .72);
+  animation: scrimIn .2s ease both;
+  cursor: pointer;
+}
+
+.cursorHost {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 200;
+  left: -2px;
+  top: -2px;
+}
+
+.cursor {
+  position: absolute;
+  left: 0;
+  top: 0;
+  will-change: transform;
+  opacity: 0;
+}
+
+.cursorRing {
+  width: 22px;
+  height: 22px;
+  margin: -11px 0 0 -11px;
+  border: 3px solid #c25f74;
+  box-sizing: border-box;
+  animation: cursorSpin 3s steps(8) infinite;
+}
