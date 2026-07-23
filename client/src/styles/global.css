@@ -1,0 +1,219 @@
+body {
+  margin: 0;
+  background: #f5d9dc;
+  color: #2b2b30;
+  font-family: 'Archivo', system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  overflow: hidden;
+}
+
+.proj-shot-wrap .coming-soon {
+  display: none;
+}
+
+.proj-shot-wrap .sc-host-x:has(image-slot:not([data-filled])) ~ .coming-soon {
+  display: flex;
+}
+
+a {
+  color: #ee9aa3;
+  text-decoration-thickness: 1.5px;
+  text-underline-offset: 3px;
+}
+
+a:hover {
+  color: #2b2b30;
+}
+
+@keyframes toastIn {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -120%);
+  }
+  12% {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+  88% {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -120%);
+  }
+}
+
+@keyframes blink {
+  0%, 49% {
+    opacity: 1;
+  }
+  50%, 100% {
+    opacity: 0;
+  }
+}
+
+@keyframes charInR {
+  from {
+    opacity: 0;
+    transform: translateX(70px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes charInL {
+  from {
+    opacity: 0;
+    transform: translateX(-70px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes charOutR {
+  from {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateX(70px);
+  }
+}
+
+@keyframes charOutL {
+  from {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateX(-70px);
+  }
+}
+
+@keyframes dialogIn {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.92);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+
+@keyframes scrimIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes trailFall {
+  0% {
+    opacity: 0.95;
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -50%) translateY(18px) rotate(135deg) scale(0.35);
+  }
+}
+
+@keyframes dropdownIn {
+  from {
+    opacity: 0;
+    transform: translateY(-6px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes cursorSpin {
+  from {
+    transform: rotate(45deg);
+  }
+  to {
+    transform: rotate(405deg);
+  }
+}
+
+@media (max-height: 640px) {
+  [data-hero-bio] {
+    display: none !important;
+  }
+}
+
+@media (max-height: 520px) {
+  [data-hero-dots] {
+    display: none !important;
+  }
+}
+
+@keyframes konamiStarUp {
+  0% {
+    opacity: 0;
+    transform: translateY(0) scale(0.5) rotate(0deg);
+  }
+  15% {
+    opacity: 1;
+  }
+  70% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-70vh) scale(1.1) rotate(90deg);
+  }
+}
+
+@keyframes konamiStarDown {
+  0% {
+    opacity: 0;
+    transform: translateY(-70vh) scale(0.5) rotate(0deg);
+  }
+  15% {
+    opacity: 1;
+  }
+  70% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(0) scale(1.1) rotate(-90deg);
+  }
+}
+
+@keyframes chatboxIn {
+  from {
+    opacity: 0;
+    transform: translate(40px, -50%) scale(0.94);
+  }
+  to {
+    opacity: 1;
+    transform: translate(0, -50%) scale(1);
+  }
+}
+
+@keyframes familiarBob {
+  0%, 100% {
+    transform: translate(-50%, 0) rotate(-4deg);
+  }
+  50% {
+    transform: translate(-50%, -8px) rotate(4deg);
+  }
+}
+
+::selection {
+  background: #ee9aa3;
+  color: #2b2b30;
+}

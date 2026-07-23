@@ -1,0 +1,18 @@
+:root {
+  --ink: #2b2b30;
+  --ink-dark: #232327;
+  --ink-darker: #1c1c20;
+  --cream: #f5d9dc;
+  --cream2: #f4efe6;
+  --pink: #ee9aa3;
+  --rose: #c25f74;
+  --grey: #6d6a72;
+  --grey-light: #a8a5ac;
+  --border-dark: #4a4a52;
+  --yellow: #ffd43b;
+  --uci-blue: #0064a4;
+  --uci-gold: #ffd200;
+  --font-pixel: 'Silkscreen', monospace;
+  --font-display: 'Archivo Black', sans-serif;
+  --font-body: 'Archivo', system-ui, sans-serif;
+}
