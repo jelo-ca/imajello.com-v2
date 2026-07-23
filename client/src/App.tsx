@@ -16,7 +16,7 @@ const SECTION_KEYS: Record<string, 'journey' | 'quests' | 'experience' | 'hobbie
 
 export default function App() {
   const { state, dispatch } = useGameState();
-  const { tick, fanfare } = useSfx();
+  const { tick, chime, fanfare } = useSfx();
   const toggleFamiliar = useFamiliarToggle();
   const [konamiTrigger, setKonamiTrigger] = useState(0);
   const lastSfxRef = useRef<Element | null>(null);
@@ -62,9 +62,24 @@ export default function App() {
 
   useEffect(() => {
     if (!state.toast) return;
+    chime();
     const timer = setTimeout(() => dispatch({ type: 'SET_TOAST', text: null }), 3200);
     return () => clearTimeout(timer);
-  }, [state.toast, dispatch]);
+  }, [state.toast, dispatch, chime]);
+
+  // Reference `openSection` (lines 1029-1040): once a live OPEN_SECTION dispatch brings
+  // visited.length to exactly 4 (any 4 of the 5 sections), a second toast + fanfare
+  // fires 3400ms later. `levelUpTrigger` only increments from that live reducer branch
+  // (never from HYDRATE_PERSISTED), so reloading with 4+ sections already visited from
+  // localStorage does not re-fire this.
+  useEffect(() => {
+    if (state.levelUpTrigger === 0) return;
+    const timer = setTimeout(() => {
+      dispatch({ type: 'SET_TOAST', text: 'LEVEL UP — all chapters explored' });
+      fanfare();
+    }, 3400);
+    return () => clearTimeout(timer);
+  }, [state.levelUpTrigger, dispatch, fanfare]);
 
   return (
     <div className={styles.app}>

@@ -30,6 +30,11 @@ export interface State {
   msgBody: string;
   navHover: SectionKey | null;
   familiarHover: boolean;
+  // Ephemeral, session-only counter — incremented exactly once by OPEN_SECTION when
+  // a live dispatch (never HYDRATE_PERSISTED) first brings visited.length to 4, so
+  // App.tsx can schedule the delayed "LEVEL UP" toast/fanfare without misfiring on
+  // page reloads where visited is already length >=4 from localStorage.
+  levelUpTrigger: number;
 }
 
 export type Action =

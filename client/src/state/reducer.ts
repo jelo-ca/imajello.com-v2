@@ -30,6 +30,7 @@ export const initialState: State = {
   msgBody: '',
   navHover: null,
   familiarHover: false,
+  levelUpTrigger: 0,
 };
 
 function unlockDiscovery(state: State, key: string): State {
@@ -51,6 +52,11 @@ export function reducer(state: State, action: Action): State {
       if (!alreadyVisited) {
         const { SECTIONS } = requireSections();
         next = { ...next, toast: SECTIONS[action.section] };
+        // Reference `openSection` (lines 1029-1040): visiting a 4th distinct section
+        // (any 4 of the 5 — the exact condition is visited.length === 4, not a fixed
+        // set) queues a delayed "LEVEL UP" toast + fanfare. The delayed dispatch/sound
+        // itself lives in App.tsx (reducers can't schedule timers); this just signals it.
+        if (visited.length === 4) next = { ...next, levelUpTrigger: next.levelUpTrigger + 1 };
       }
       const { SECTION_TO_DISCOVERY } = requireSections();
       const dKey = SECTION_TO_DISCOVERY[action.section];
