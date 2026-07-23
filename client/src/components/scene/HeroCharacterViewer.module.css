@@ -1,0 +1,187 @@
+/* Ported from design_handoff_portfolio_game_hud/design/Imajello Site v4b - Game HUD.dc.html
+   lines 62-145 (Template A / heroA — the only variant rendered by default). */
+
+.wrap {
+  /* No box of its own — its children are direct flex items of GameScene's
+     .heroWrap (reference line 63), matching the reference's flat structure. */
+  display: contents;
+}
+
+.eyebrow {
+  font: 400 11px 'Silkscreen', monospace;
+  letter-spacing: .12em;
+  color: #c25f74;
+}
+
+.name {
+  margin: 0;
+  font: 400 clamp(28px, min(5.4vw, 6vh), 68px)/0.95 'Archivo Black', sans-serif;
+  text-transform: uppercase;
+  letter-spacing: -.01em;
+  text-align: center;
+}
+
+.accent {
+  color: #c25f74;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.arrow {
+  font: 400 18px 'Silkscreen', monospace;
+  background: #2b2b30;
+  color: #f5d9dc;
+  border: none;
+  padding: 12px 16px;
+  cursor: pointer;
+}
+.arrow:hover {
+  background: #ee9aa3;
+  color: #2b2b30;
+}
+
+.portraitBox {
+  width: 210px;
+  height: 210px;
+  box-sizing: border-box;
+  position: relative;
+  background: #2b2b30;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  flex: none;
+  border: 3px solid #2b2b30;
+}
+
+.scanlines {
+  position: absolute;
+  inset: 10px;
+  background: repeating-linear-gradient(0deg, transparent 0 6px, rgba(244, 239, 230, .04) 6px 8px);
+}
+
+/* Base (outgoing) portrait image: absolutely positioned so it overlays the
+   incoming image during the crossfade instead of sitting in flex flow. */
+.portraitImg {
+  position: absolute;
+  bottom: 18px;
+  left: 50%;
+  transform: translateX(-50%);
+  height: 190px;
+  width: auto;
+  image-rendering: pixelated;
+  display: block;
+}
+
+/* Incoming (current) portrait image: back into normal flex flow, aligned
+   to the bottom of the box via the portraitBox's align-items:flex-end. */
+.portraitImgIn {
+  position: relative;
+  bottom: auto;
+  left: auto;
+  transform: none;
+  margin-bottom: 18px;
+}
+
+.glow {
+  position: absolute;
+  bottom: 8px;
+  left: 0;
+  right: 0;
+  height: 10px;
+  background: radial-gradient(ellipse 45% 100% at 50% 100%, rgba(238, 154, 163, .55), transparent 70%);
+}
+
+.statPanel {
+  flex: none;
+  width: 210px;
+  height: 210px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 10px;
+  background: rgba(43, 43, 48, .94);
+  border: 3px solid #2b2b30;
+  padding: 14px 16px;
+  color: #f5d9dc;
+}
+
+.statsHeader {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.statsLabel {
+  font: 400 10px 'Silkscreen', monospace;
+  color: #ee9aa3;
+}
+
+.statRow {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.statTop {
+  display: flex;
+  justify-content: space-between;
+  font: 400 9px 'Silkscreen', monospace;
+}
+
+.statMod {
+  color: #ee9aa3;
+}
+
+.statTrough {
+  height: 10px;
+  background: #1c1c20;
+  overflow: hidden;
+  position: relative;
+}
+
+.statFill {
+  height: 100%;
+  background: #ee9aa3;
+  transition: width .15s steps(4);
+}
+
+.statSegments {
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(90deg, transparent 0 16px, #2b2b30 16px 18px);
+}
+
+.nameClassBox {
+  text-align: center;
+  background: #2b2b30;
+  padding: 6px 18px;
+}
+
+.charName {
+  font: 400 12px 'Silkscreen', monospace;
+  color: #f5d9dc;
+}
+
+.charClass {
+  font: 400 8px 'Silkscreen', monospace;
+  color: #ee9aa3;
+  margin-top: 2px;
+}
+
+.bio {
+  margin: 0;
+  font-size: clamp(12px, 1.9vh, 14px);
+  line-height: 1.5;
+  color: #3a3a40;
+  max-width: 480px;
+  text-align: center;
+  text-wrap: pretty;
+}

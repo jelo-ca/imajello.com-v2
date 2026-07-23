@@ -1,0 +1,35 @@
+/* Ported from design_handoff_portfolio_game_hud/design/Imajello Site v4b - Game HUD.dc.html
+   lines 42 (.scene), 45 (.particles), 63 (.heroWrap base + transition; the runtime
+   transform value itself is applied inline by GameScene.tsx, mirroring line 1256's
+   heroTransform binding). */
+
+.scene {
+  position: relative;
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  background: repeating-linear-gradient(0deg, transparent 0 7px, rgba(43, 43, 48, .03) 7px 9px), #f5d9dc;
+}
+
+.particles {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.heroWrap {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(8px, 1.6vh, 16px);
+  padding: clamp(58px, 11vh, 90px) 24px 10px;
+  box-sizing: border-box;
+  min-height: 0;
+  position: relative;
+  z-index: 1;
+  transition: transform .4s cubic-bezier(.22, .8, .32, 1);
+}

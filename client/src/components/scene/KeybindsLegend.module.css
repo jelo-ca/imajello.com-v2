@@ -1,0 +1,45 @@
+/* Ported from design_handoff_portfolio_game_hud/design/Imajello Site v4b - Game HUD.dc.html
+   lines 48-60. Reference uses two slightly different key-chip paddings
+   (arrow/ESC keys: padding 3px 7px + min-width 16px; digit/F keys: padding
+   3px 8px, no min-width) — merged into one .key style here since the given
+   KeybindsLegend.tsx (Task 10 brief Step 2) applies a single className to
+   every key chip; the 1px padding delta is not visually significant. */
+
+.legend {
+  position: fixed;
+  left: 12%;
+  top: 300px;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+  color: rgba(43, 43, 48, .32);
+  pointer-events: none;
+  align-items: flex-start;
+  text-align: left;
+}
+
+.heading {
+  font: 400 8px 'Silkscreen', monospace;
+  letter-spacing: .1em;
+  color: rgba(43, 43, 48, .42);
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.key {
+  font: 400 10px 'Silkscreen', monospace;
+  border: 2px solid rgba(43, 43, 48, .32);
+  padding: 3px 7px;
+  min-width: 16px;
+  text-align: center;
+  box-sizing: border-box;
+}
+
+.label {
+  font: 400 9px 'Silkscreen', monospace;
+}
