@@ -1,0 +1,54 @@
+import { createContext, useContext, useEffect, useReducer, type ReactNode } from 'react';
+import { reducer, initialState } from './reducer';
+import type { State, Action } from './types';
+
+interface Ctx { state: State; dispatch: React.Dispatch<Action>; }
+
+const GameStateContext = createContext<Ctx | null>(null);
+
+const SOUND_KEY = 'imajello-sfx';
+const VISITED_KEY = 'imajello-visited';
+const DISCOVERIES_KEY = 'imajello-discoveries';
+
+export function GameStateProvider({ children }: { children: ReactNode }) {
+  const [state, dispatch] = useReducer(reducer, initialState);
+
+  useEffect(() => {
+    let sound = true;
+    let visited: State['visited'] = [];
+    let discoveries: State['discoveries'] = {};
+    try {
+      const storedSound = localStorage.getItem(SOUND_KEY);
+      if (storedSound !== null) sound = storedSound === 'on';
+      const storedVisited = localStorage.getItem(VISITED_KEY);
+      if (storedVisited) visited = JSON.parse(storedVisited);
+      const storedDiscoveries = localStorage.getItem(DISCOVERIES_KEY);
+      if (storedDiscoveries) discoveries = JSON.parse(storedDiscoveries);
+    } catch {
+      // localStorage unavailable (private browsing, etc.) - fall back to defaults
+    }
+    dispatch({ type: 'HYDRATE_PERSISTED', sound, visited, discoveries });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    if (state.sound === null) return;
+    try { localStorage.setItem(SOUND_KEY, state.sound ? 'on' : 'off'); } catch { /* ignore */ }
+  }, [state.sound]);
+
+  useEffect(() => {
+    try { localStorage.setItem(VISITED_KEY, JSON.stringify(state.visited)); } catch { /* ignore */ }
+  }, [state.visited]);
+
+  useEffect(() => {
+    try { localStorage.setItem(DISCOVERIES_KEY, JSON.stringify(state.discoveries)); } catch { /* ignore */ }
+  }, [state.discoveries]);
+
+  return <GameStateContext.Provider value={{ state, dispatch }}>{children}</GameStateContext.Provider>;
+}
+
+export function useGameState(): Ctx {
+  const ctx = useContext(GameStateContext);
+  if (!ctx) throw new Error('useGameState must be used within GameStateProvider');
+  return ctx;
+}
