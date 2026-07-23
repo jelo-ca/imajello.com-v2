@@ -80,7 +80,7 @@ export async function handleChat(req: Request, res: Response) {
       body: JSON.stringify({
         contents: [{ role: 'user', parts: [{ text: message.slice(0, 2000) }] }],
         systemInstruction: { parts: [{ text: SYSTEM_PROMPT }] },
-        generationConfig: { maxOutputTokens: 220 },
+        generationConfig: { maxOutputTokens: 220, thinkingConfig: { thinkingBudget: 0 } },
       }),
     });
 
