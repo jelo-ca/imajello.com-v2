@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useReducer, type ReactNode } from 'react';
+import { createContext, useContext, useEffect, useReducer, useRef, type ReactNode } from 'react';
 import { reducer, initialState } from './reducer';
 import type { State, Action } from './types';
 
@@ -12,6 +12,7 @@ const DISCOVERIES_KEY = 'imajello-discoveries';
 
 export function GameStateProvider({ children }: { children: ReactNode }) {
   const [state, dispatch] = useReducer(reducer, initialState);
+  const hydratedRef = useRef(false);
 
   useEffect(() => {
     let sound = true;
@@ -28,19 +29,23 @@ export function GameStateProvider({ children }: { children: ReactNode }) {
       // localStorage unavailable (private browsing, etc.) - fall back to defaults
     }
     dispatch({ type: 'HYDRATE_PERSISTED', sound, visited, discoveries });
+    hydratedRef.current = true;
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
+    if (!hydratedRef.current) return;
     if (state.sound === null) return;
     try { localStorage.setItem(SOUND_KEY, state.sound ? 'on' : 'off'); } catch { /* ignore */ }
   }, [state.sound]);
 
   useEffect(() => {
+    if (!hydratedRef.current) return;
     try { localStorage.setItem(VISITED_KEY, JSON.stringify(state.visited)); } catch { /* ignore */ }
   }, [state.visited]);
 
   useEffect(() => {
+    if (!hydratedRef.current) return;
     try { localStorage.setItem(DISCOVERIES_KEY, JSON.stringify(state.discoveries)); } catch { /* ignore */ }
   }, [state.discoveries]);
 
