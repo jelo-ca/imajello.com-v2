@@ -1,9 +1,8 @@
 /* Ported from design_handoff_portfolio_game_hud/design/Imajello Site v4b - Game HUD.dc.html
-   lines 48-60. Reference uses two slightly different key-chip paddings
-   (arrow/ESC keys: padding 3px 7px + min-width 16px; digit/F keys: padding
-   3px 8px, no min-width) — merged into one .key style here since the given
-   KeybindsLegend.tsx (Task 10 brief Step 2) applies a single className to
-   every key chip; the 1px padding delta is not visually significant. */
+   lines 48-60. Reference uses two slightly different key-chip paddings:
+   arrow keys (←/→) and ESC use padding:3px 7px (lines 51, 58); digit keys
+   (1-5) and F use padding:3px 8px (lines 52-57). Split into .keyNarrow and
+   .keyWide below so KeybindsLegend.tsx can apply the correct one per key. */
 
 .legend {
   position: fixed;
@@ -31,10 +30,19 @@
   gap: 10px;
 }
 
-.key {
+.keyNarrow {
   font: 400 10px 'Silkscreen', monospace;
   border: 2px solid rgba(43, 43, 48, .32);
   padding: 3px 7px;
+  min-width: 16px;
+  text-align: center;
+  box-sizing: border-box;
+}
+
+.keyWide {
+  font: 400 10px 'Silkscreen', monospace;
+  border: 2px solid rgba(43, 43, 48, .32);
+  padding: 3px 8px;
   min-width: 16px;
   text-align: center;
   box-sizing: border-box;

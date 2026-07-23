@@ -72,8 +72,8 @@
   bottom: 18px;
   left: 50%;
   transform: translateX(-50%);
-  height: 190px;
-  width: auto;
+  width: 62%;
+  height: auto;
   image-rendering: pixelated;
   display: block;
 }
