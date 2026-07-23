@@ -4,6 +4,7 @@ import { TopBar } from './TopBar';
 import { KeybindsLegend } from './KeybindsLegend';
 import { PlayerBar } from './PlayerBar';
 import { useParticles } from '../../hooks/useParticles';
+import { useFamiliarToggle } from '../../hooks/useFamiliarToggle';
 import { useGameState } from '../../state/GameStateContext';
 import styles from './GameScene.module.css';
 
@@ -13,6 +14,7 @@ export function GameScene() {
   const cursorHostRef = useRef<HTMLDivElement>(null);
   const cursorRef = useRef<HTMLDivElement>(null);
   useParticles(particleHostRef, cursorHostRef, cursorRef);
+  const toggleFamiliar = useFamiliarToggle();
 
   return (
     <div className={styles.scene}>
@@ -22,9 +24,7 @@ export function GameScene() {
         <HeroCharacterViewer />
       </div>
       <TopBar />
-      {/* PlayerBar's onSummonFamiliar is a no-op stub here; Task 16 wires it to the
-          real useFamiliarToggle() hook once that hook exists. */}
-      <PlayerBar onSummonFamiliar={() => {}} />
+      <PlayerBar onSummonFamiliar={toggleFamiliar} />
     </div>
   );
 }

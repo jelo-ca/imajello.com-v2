@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { useGameState } from './state/GameStateContext';
 import { useSfx } from './hooks/useSfx';
 import { useKonami } from './hooks/useKonami';
+import { useFamiliarToggle } from './hooks/useFamiliarToggle';
 import { GameScene } from './components/scene/GameScene';
 import { DialogHost } from './components/dialogs/DialogHost';
 import { FamiliarChat } from './components/familiar/FamiliarChat';
@@ -16,6 +17,7 @@ const SECTION_KEYS: Record<string, 'journey' | 'quests' | 'experience' | 'hobbie
 export default function App() {
   const { state, dispatch } = useGameState();
   const { tick, fanfare } = useSfx();
+  const toggleFamiliar = useFamiliarToggle();
   const [konamiTrigger, setKonamiTrigger] = useState(0);
   const lastSfxRef = useRef<Element | null>(null);
 
@@ -41,14 +43,12 @@ export default function App() {
       if (section) dispatch({ type: 'OPEN_SECTION', section });
       if (e.key === '6' || e.key.toLowerCase() === 'f') {
         e.preventDefault();
-        if (state.familiarOpen) dispatch({ type: 'CLOSE_FAMILIAR' });
-        // opening dispatches OPEN_FAMILIAR with a rolled emoji - handled in FamiliarChat's summon button;
-        // duplicate that roll here so the 'F' keybind behaves identically to clicking the summon button.
+        toggleFamiliar();
       }
     };
     window.addEventListener('keydown', onKeyDown);
     return () => window.removeEventListener('keydown', onKeyDown);
-  }, [state.discoveriesOpen, state.open, state.familiarOpen, dispatch, trackKonami]);
+  }, [state.discoveriesOpen, state.open, state.familiarOpen, dispatch, trackKonami, toggleFamiliar]);
 
   useEffect(() => {
     const onHover = (e: MouseEvent) => {

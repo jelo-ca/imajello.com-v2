@@ -1,0 +1,212 @@
+/* Ported from design_handoff_portfolio_game_hud/design/Imajello Site v4b - Game HUD.dc.html
+   lines 670-728 (Inventory dialog: grid view of hobby items, gallery/detail view with two
+   overlapping swappable photo cards). `dialogIn` keyframes are defined once in
+   styles/global.css and reused here, matching the other dialogs' convention. */
+
+.dialog {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 80;
+  width: min(880px, 94vw);
+  max-height: 86vh;
+  overflow: auto;
+  background: #c25f74;
+  color: #f5d9dc;
+  border: 4px solid #2b2b30;
+  box-shadow: 10px 10px 0 rgba(20, 20, 23, .6);
+  animation: dialogIn .22s steps(5) both;
+}
+
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  background: #c25f74;
+  border-bottom: 3px solid #2b2b30;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 12px 20px;
+}
+
+.headerLeft {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.badge {
+  font: 400 9px 'Silkscreen', monospace;
+  color: #2b2b30;
+}
+
+.title {
+  font: 400 18px 'Archivo Black', sans-serif;
+  text-transform: uppercase;
+}
+
+.sub {
+  font: 400 9px 'Silkscreen', monospace;
+  color: #2b2b30;
+}
+
+.closeBtn {
+  font: 400 10px 'Silkscreen', monospace;
+  background: none;
+  border: 2px solid #f5d9dc;
+  color: #f5d9dc;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+.closeBtn:hover {
+  background: #f5d9dc;
+  color: #2b2b30;
+}
+
+/* ---- Grid view ---- */
+
+.gridBody {
+  padding: 26px 24px 32px;
+}
+
+.hint {
+  margin: 0 0 16px;
+  font: 400 10px 'Silkscreen', monospace;
+  color: #2b2b30;
+  letter-spacing: .04em;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 6px;
+  max-width: 520px;
+}
+
+.slotFilled {
+  aspect-ratio: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 26px;
+  background: #f5d9dc;
+  border: 3px solid #2b2b30;
+  cursor: pointer;
+  position: relative;
+}
+.slotFilled:hover {
+  background: #fff;
+  transform: scale(1.06);
+}
+
+.slotTag {
+  position: absolute;
+  bottom: 2px;
+  right: 3px;
+  font: 400 6px 'Silkscreen', monospace;
+  color: #2b2b30;
+}
+
+.slotEmpty {
+  aspect-ratio: 1;
+  background: rgba(43, 43, 48, .25);
+  border: 2px dashed rgba(43, 43, 48, .35);
+}
+
+/* ---- Gallery view ---- */
+
+.galleryBody {
+  padding: 28px 26px 38px;
+}
+
+.backBtn {
+  font: 400 10px 'Silkscreen', monospace;
+  background: none;
+  border: 2px solid #2b2b30;
+  color: #2b2b30;
+  padding: 6px 12px;
+  cursor: pointer;
+  margin-bottom: 30px;
+}
+.backBtn:hover {
+  background: #2b2b30;
+  color: #f5d9dc;
+}
+
+.galleryGrid {
+  display: grid;
+  grid-template-columns: minmax(180px, 1fr) 1.2fr;
+  gap: 48px;
+  align-items: center;
+}
+
+.photoStage {
+  position: relative;
+  min-height: 360px;
+}
+
+.watermark {
+  position: absolute;
+  top: 6px;
+  left: 2px;
+  font: 400 120px/1 'Silkscreen', monospace;
+  color: rgba(43, 43, 48, .12);
+  z-index: 0;
+  user-select: none;
+}
+
+.photoA,
+.photoB {
+  position: absolute;
+  aspect-ratio: 4 / 5;
+  border: 4px solid #2b2b30;
+  box-shadow: 9px 9px 0 rgba(43, 43, 48, .4);
+  background: #f5d9dc;
+  cursor: pointer;
+  transition: top .38s cubic-bezier(.2, .8, .2, 1), width .38s cubic-bezier(.2, .8, .2, 1), transform .38s cubic-bezier(.2, .8, .2, 1);
+}
+
+.photoA {
+  left: 14px;
+}
+
+.photoB {
+  right: 0;
+}
+
+.metaRow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.metaIcon {
+  font-size: 20px;
+}
+
+.metaTag {
+  font: 400 9px 'Silkscreen', monospace;
+  color: #2b2b30;
+  letter-spacing: .06em;
+}
+
+.itemLabel {
+  margin: 0 0 18px;
+  font: 400 clamp(26px, 3vw, 36px)/1 'Archivo Black', sans-serif;
+  text-transform: uppercase;
+  color: #2b2b30;
+}
+
+.itemDesc {
+  margin: 0;
+  font-size: 15px;
+  line-height: 1.75;
+  color: #2b2b30;
+  text-wrap: pretty;
+  max-width: 420px;
+}
