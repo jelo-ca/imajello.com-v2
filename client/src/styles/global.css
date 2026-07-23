@@ -7,6 +7,16 @@ body {
   overflow: hidden;
 }
 
+@media (max-width: 768px) {
+  body {
+    overflow-y: auto;
+    overflow-x: hidden;
+    height: auto;
+    min-height: 100vh;
+    min-height: 100dvh;
+  }
+}
+
 .proj-shot-wrap .coming-soon {
   display: none;
 }

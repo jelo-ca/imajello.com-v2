@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { useGameState } from '../../state/GameStateContext';
 import { useSfx } from '../../hooks/useSfx';
 import { WorldMapDialog } from './WorldMapDialog';
@@ -20,6 +21,14 @@ export function DialogHost() {
   const { state, dispatch } = useGameState();
   const { tick } = useSfx();
   const anyOpen = !!state.open;
+
+  useEffect(() => {
+    if (!anyOpen) return;
+    const prevOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    return () => { document.body.style.overflow = prevOverflow; };
+  }, [anyOpen]);
+
   if (!anyOpen) return null;
 
   const close = () => { tick(); dispatch({ type: 'CLOSE_SECTION' }); };
