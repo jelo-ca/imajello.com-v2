@@ -193,3 +193,15 @@
   border: 2px solid #2b2b30;
   padding: 2px 9px;
 }
+
+@media (max-width: 768px) {
+  .shotWrap {
+    width: 100%;
+    border-right: none;
+    border-bottom: 3px solid #2b2b30;
+  }
+
+  .info {
+    min-width: 0;
+  }
+}
