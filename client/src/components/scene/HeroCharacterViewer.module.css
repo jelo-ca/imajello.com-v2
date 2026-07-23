@@ -185,3 +185,11 @@
   text-align: center;
   text-wrap: pretty;
 }
+
+@media (max-width: 768px) {
+  .portraitBox,
+  .statPanel {
+    width: clamp(140px, 40vw, 210px);
+    height: clamp(140px, 40vw, 210px);
+  }
+}
