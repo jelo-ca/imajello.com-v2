@@ -21,6 +21,10 @@
     overflow-y: auto;
     overflow-x: hidden;
   }
+
+  .heroWrap {
+    transform: none !important;
+  }
 }
 
 .particles {

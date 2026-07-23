@@ -148,5 +148,6 @@
     transform: translate(50%, 0);
     width: min(360px, 92vw);
     height: min(52vh, 420px);
+    z-index: 65;
   }
 }
