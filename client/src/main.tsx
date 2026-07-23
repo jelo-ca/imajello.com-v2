@@ -1,12 +1,14 @@
-import { StrictMode } from 'react'
-import { createRoot } from 'react-dom/client'
-import './styles/tokens.css'
-import './styles/global.css'
-import './index.css'
-import App from './App.tsx'
+import { StrictMode } from 'react';
+import { createRoot } from 'react-dom/client';
+import { GameStateProvider } from './state/GameStateContext';
+import App from './App';
+import './styles/tokens.css';
+import './styles/global.css';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <App />
+    <GameStateProvider>
+      <App />
+    </GameStateProvider>
   </StrictMode>,
-)
+);

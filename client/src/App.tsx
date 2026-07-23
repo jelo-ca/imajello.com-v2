@@ -1,122 +1,78 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import heroImg from './assets/hero.png'
-import './App.css'
+import { useEffect, useRef, useState } from 'react';
+import { useGameState } from './state/GameStateContext';
+import { useSfx } from './hooks/useSfx';
+import { useKonami } from './hooks/useKonami';
+import { GameScene } from './components/scene/GameScene';
+import { DialogHost } from './components/dialogs/DialogHost';
+import { FamiliarChat } from './components/familiar/FamiliarChat';
+import { Toast } from './components/shared/Toast';
+import { KonamiOverlay } from './components/shared/KonamiOverlay';
+import styles from './App.module.css';
 
-function App() {
-  const [count, setCount] = useState(0)
+const SECTION_KEYS: Record<string, 'journey' | 'quests' | 'experience' | 'hobbies' | 'contact'> = {
+  '1': 'journey', '2': 'quests', '3': 'experience', '4': 'hobbies', '5': 'contact',
+};
+
+export default function App() {
+  const { state, dispatch } = useGameState();
+  const { tick, fanfare } = useSfx();
+  const [konamiTrigger, setKonamiTrigger] = useState(0);
+  const lastSfxRef = useRef<Element | null>(null);
+
+  const trackKonami = useKonami(() => {
+    dispatch({ type: 'SET_KONAMI_UNLOCKED' });
+    fanfare();
+    setKonamiTrigger(t => t + 1);
+  });
+
+  useEffect(() => {
+    const onKeyDown = (e: KeyboardEvent) => {
+      const target = e.target as HTMLElement;
+      if (target && (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA' || target.isContentEditable)) return;
+      if (e.key === 'Escape' && state.discoveriesOpen) { dispatch({ type: 'TOGGLE_DISCOVERIES' }); return; }
+      if (e.key === 'Escape' && state.open) { dispatch({ type: 'CLOSE_SECTION' }); return; }
+      if (e.key === 'Escape' && state.familiarOpen) { dispatch({ type: 'CLOSE_FAMILIAR' }); return; }
+      trackKonami(e.key);
+      if (!state.open) {
+        if (e.key === 'ArrowLeft') { e.preventDefault(); dispatch({ type: 'PREV_CHAR' }); return; }
+        if (e.key === 'ArrowRight') { e.preventDefault(); dispatch({ type: 'NEXT_CHAR' }); return; }
+      }
+      const section = SECTION_KEYS[e.key];
+      if (section) dispatch({ type: 'OPEN_SECTION', section });
+      if (e.key === '6' || e.key.toLowerCase() === 'f') {
+        e.preventDefault();
+        if (state.familiarOpen) dispatch({ type: 'CLOSE_FAMILIAR' });
+        // opening dispatches OPEN_FAMILIAR with a rolled emoji - handled in FamiliarChat's summon button;
+        // duplicate that roll here so the 'F' keybind behaves identically to clicking the summon button.
+      }
+    };
+    window.addEventListener('keydown', onKeyDown);
+    return () => window.removeEventListener('keydown', onKeyDown);
+  }, [state.discoveriesOpen, state.open, state.familiarOpen, dispatch, trackKonami]);
+
+  useEffect(() => {
+    const onHover = (e: MouseEvent) => {
+      const t = (e.target as HTMLElement).closest?.('[data-sfx]');
+      if (t && t !== lastSfxRef.current) { lastSfxRef.current = t; tick(); }
+      if (!t) lastSfxRef.current = null;
+    };
+    document.addEventListener('mouseover', onHover);
+    return () => document.removeEventListener('mouseover', onHover);
+  }, [tick]);
+
+  useEffect(() => {
+    if (!state.toast) return;
+    const timer = setTimeout(() => dispatch({ type: 'SET_TOAST', text: null }), 3200);
+    return () => clearTimeout(timer);
+  }, [state.toast, dispatch]);
 
   return (
-    <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
-        </div>
-        <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.tsx</code> and save to test <code>HMR</code>
-          </p>
-        </div>
-        <button
-          type="button"
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
-        >
-          Count is {count}
-        </button>
-      </section>
-
-      <div className="ticks"></div>
-
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
-          </ul>
-        </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
-        </div>
-      </section>
-
-      <div className="ticks"></div>
-      <section id="spacer"></section>
-    </>
-  )
+    <div className={styles.app}>
+      <GameScene />
+      <DialogHost />
+      <FamiliarChat />
+      <Toast />
+      <KonamiOverlay trigger={konamiTrigger} />
+    </div>
+  );
 }
-
-export default App
