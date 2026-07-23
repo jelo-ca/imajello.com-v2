@@ -139,3 +139,14 @@
   font: 400 8px 'Silkscreen', monospace;
   color: #6d6a72;
 }
+
+@media (max-width: 768px) {
+  .wrap {
+    right: 50%;
+    top: auto;
+    bottom: 68px;
+    transform: translate(50%, 0);
+    width: min(360px, 92vw);
+    height: min(52vh, 420px);
+  }
+}
