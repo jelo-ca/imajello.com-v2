@@ -1,0 +1,155 @@
+/* Ported from design_handoff_portfolio_game_hud/design/Imajello Site v4b - Game HUD.dc.html
+   lines 318-343 (World Map dialog). The `.worldLabel` color-override for the current card
+   is expressed as a `.cardCurrent .worldLabel` descendant rule rather than a second class,
+   since the component (per the task brief) uses the same `styles.worldLabel` class for every
+   card — the reference itself sets that label to #2b2b30 (dark) on the pink current card
+   (line 338) vs #ee9aa3 (pink) on the dark default cards (lines 326, 332). `dialogIn` and
+   `blink` keyframes are defined once in styles/global.css and reused here. */
+
+.dialog {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 80;
+  width: min(1020px, 94vw);
+  max-height: 86vh;
+  overflow: auto;
+  background: #2b2b30;
+  color: #f5d9dc;
+  border: 4px solid #ee9aa3;
+  box-shadow: 10px 10px 0 rgba(20, 20, 23, .6);
+  animation: dialogIn .22s steps(5) both;
+}
+
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  background: #2b2b30;
+  border-bottom: 3px solid #ee9aa3;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 12px 20px;
+}
+
+.headerLeft {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.badge {
+  font: 400 9px 'Silkscreen', monospace;
+  color: #c25f74;
+}
+
+.title {
+  font: 400 18px 'Archivo Black', sans-serif;
+  text-transform: uppercase;
+}
+
+.sub {
+  font: 400 9px 'Silkscreen', monospace;
+  color: #ee9aa3;
+}
+
+.closeBtn {
+  font: 400 10px 'Silkscreen', monospace;
+  background: none;
+  border: 2px solid #f5d9dc;
+  color: #f5d9dc;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+.closeBtn:hover {
+  background: #f5d9dc;
+  color: #2b2b30;
+}
+
+.body {
+  padding: 28px 24px 36px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 2px;
+  background: #f5d9dc;
+  border: 2px solid #f5d9dc;
+}
+
+.card {
+  background: #2b2b30;
+  padding: 24px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.cardCurrent {
+  background: #ee9aa3;
+  padding: 24px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.cardTop {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.worldLabel {
+  font: 400 14px 'Silkscreen', monospace;
+  color: #ee9aa3;
+}
+.cardCurrent .worldLabel {
+  color: #2b2b30;
+}
+
+.statusCleared {
+  font: 400 9px 'Silkscreen', monospace;
+  color: #6d6a72;
+}
+
+.statusNow {
+  font: 400 9px 'Silkscreen', monospace;
+  color: #2b2b30;
+  animation: blink 1.2s step-end infinite;
+}
+
+.photoBox {
+  height: 280px;
+}
+
+.cardTitle {
+  font: 400 16px 'Archivo Black', sans-serif;
+  text-transform: uppercase;
+}
+
+.cardTitleCurrent {
+  font: 400 16px 'Archivo Black', sans-serif;
+  text-transform: uppercase;
+  color: #2b2b30;
+}
+
+.bodyText {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.6;
+  color: #a8a5ac;
+  text-wrap: pretty;
+}
+
+.bodyCurrent {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.6;
+  color: #2b2b30;
+  text-wrap: pretty;
+}
