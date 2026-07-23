@@ -64,25 +64,23 @@ export async function handleChat(req: Request, res: Response) {
     return;
   }
 
-  const apiKey = process.env.ANTHROPIC_API_KEY;
+  const apiKey = process.env.GEMINI_API_KEY;
   if (!apiKey) {
     res.status(500).json({ error: 'chat is not configured' });
     return;
   }
 
   try {
-    const response = await fetch('https://api.anthropic.com/v1/messages', {
+    const response = await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash:generateContent', {
       method: 'POST',
       headers: {
         'content-type': 'application/json',
-        'x-api-key': apiKey,
-        'anthropic-version': '2023-06-01',
+        'x-goog-api-key': apiKey,
       },
       body: JSON.stringify({
-        model: 'claude-sonnet-5',
-        max_tokens: 220,
-        system: SYSTEM_PROMPT,
-        messages: [{ role: 'user', content: message.slice(0, 2000) }],
+        contents: [{ role: 'user', parts: [{ text: message.slice(0, 2000) }] }],
+        systemInstruction: { parts: [{ text: SYSTEM_PROMPT }] },
+        generationConfig: { maxOutputTokens: 220 },
       }),
     });
 
@@ -91,8 +89,10 @@ export async function handleChat(req: Request, res: Response) {
       throw new Error(`upstream ${response.status}: ${detail.slice(0, 300)}`);
     }
 
-    const data = await response.json() as { content?: Array<{ type: string; text?: string }> };
-    const reply = data.content?.find(c => c.type === 'text')?.text?.trim();
+    const data = await response.json() as {
+      candidates?: Array<{ content?: { parts?: Array<{ text?: string }> } }>;
+    };
+    const reply = data.candidates?.[0]?.content?.parts?.find(p => p.text)?.text?.trim();
     if (!reply) throw new Error('empty reply from model');
 
     sessionCounts.set(sessionId, used + 1);
