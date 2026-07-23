@@ -1,0 +1,93 @@
+/* Ported from design_handoff_portfolio_game_hud/design/Imajello Site v4b - Game HUD.dc.html lines 209-244 */
+
+.wrap {
+  position: fixed;
+  top: 18px;
+  left: 18px;
+  z-index: 50;
+}
+
+.trigger {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font: 400 9px 'Silkscreen', monospace;
+  background: rgba(43, 43, 48, .94);
+  color: var(--cream);
+  border: 3px solid var(--pink);
+  padding: 8px 12px;
+  cursor: pointer;
+}
+.trigger:hover {
+  background: var(--pink);
+  color: var(--ink);
+}
+
+.panel {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  width: min(340px, calc(100vw - 40px));
+  max-width: calc(100vw - 40px);
+  box-sizing: border-box;
+  background: var(--ink);
+  color: var(--cream);
+  border: 3px solid var(--pink);
+  box-shadow: 6px 6px 0 rgba(20, 20, 23, .5);
+  animation: dropdownIn .16s ease both;
+  transform-origin: top left;
+}
+
+.intro {
+  padding: 12px 14px;
+  border-bottom: 2px solid #45454c;
+}
+.intro p {
+  margin: 0;
+  font-size: 11px;
+  line-height: 1.5;
+  color: var(--grey-light);
+  text-wrap: pretty;
+}
+
+.rows {
+  max-height: 190px;
+  overflow: auto;
+}
+
+.groupLabel {
+  font: 400 8px 'Silkscreen', monospace;
+  color: var(--grey);
+  letter-spacing: .1em;
+  padding: 8px 12px 4px;
+  background: var(--ink);
+}
+
+.groupList {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  background: #45454c;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--ink);
+  padding: 9px 12px;
+}
+
+.icon {
+  font-size: 13px;
+}
+
+.name {
+  font: 400 10px 'Silkscreen', monospace;
+  flex: 1;
+}
+
+.how {
+  font: 400 8px 'Silkscreen', monospace;
+  text-align: right;
+}

@@ -1,0 +1,25 @@
+.toast {
+  position: fixed;
+  top: 16px;
+  left: 50%;
+  transform: translate(-50%, 0);
+  z-index: 100;
+  background: var(--ink);
+  color: var(--cream);
+  border: 3px solid var(--pink);
+  padding: 12px 22px 12px 14px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  animation: toastIn 3.2s ease forwards;
+  clip-path: polygon(10px 0, calc(100% - 10px) 0, 100% 10px, 100% calc(100% - 10px), calc(100% - 10px) 100%, 10px 100%, 0 calc(100% - 10px), 0 10px);
+}
+.star {
+  width: 34px; height: 34px; flex: none;
+  display: flex; align-items: center; justify-content: center;
+  background: var(--pink); color: var(--ink);
+  font: 400 18px 'Silkscreen', monospace;
+  border-radius: 50%;
+}
+.text { font: 400 11px 'Silkscreen', monospace; }
+.label { font: 400 9px 'Silkscreen', monospace; color: var(--pink); }
