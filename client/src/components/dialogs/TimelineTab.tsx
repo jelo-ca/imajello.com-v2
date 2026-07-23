@@ -55,10 +55,11 @@ export function TimelineTab() {
             <div
               key={i}
               className={VARIANT_CLASS[bar.variant]}
-              style={{ top: bar.top, left: bar.left, width: bar.width, height: bar.height }}
+              style={{ top: bar.top, left: bar.left, width: bar.width, height: bar.height, padding: bar.padding }}
             >
-              <span className={styles.barLabel}>{bar.label}</span>
-              {bar.sublabel && <span className={styles.barSublabel}>{bar.sublabel}</span>}
+              {bar.tag && <span className={styles.barTag}>{bar.tag}</span>}
+              <span className={styles.barTitle} style={{ fontSize: bar.titleSize }}>{bar.title}</span>
+              {bar.org && <span className={styles.barOrg}>{bar.org}</span>}
             </div>
           ))}
         </div>

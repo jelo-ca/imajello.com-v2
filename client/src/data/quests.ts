@@ -2,9 +2,12 @@ export interface Job { dateRange: string; title: string; org: string; bullets: s
 export interface Achievement { icon: string; title: string; desc: string; }
 export interface EducationEntry { title: string; meta: string; }
 export interface TimelineBar {
-  label: string;
-  sublabel?: string;
+  tag?: string;
+  title: string;
+  titleSize: number;
+  org?: string;
   top: number; left: number; width: number; height: number;
+  padding: string;
   variant: 'education-pink' | 'education-uci' | 'main' | 'side';
 }
 
@@ -43,15 +46,15 @@ export const EDUCATION: EducationEntry[] = [
   { title: 'De Anza College — AS-T Computer Science', meta: 'GPA 3.74 · March 2026 · Cupertino, CA' },
 ];
 
-// Pixel positions ported verbatim from reference lines 614-651 (px values are exact, do not recompute).
+// Pixel positions, padding, and text roles ported verbatim from reference lines 614-651.
 export const TIMELINE_BARS: TimelineBar[] = [
-  { label: 'EDUCATION', sublabel: 'AS-T CS', top: 184, left: 14, width: 118, height: 532, variant: 'education-pink' },
-  { label: 'UC Irvine · Sept 2026 →', top: 44, left: 14, width: 118, height: 46, variant: 'education-uci' },
-  { label: 'MAIN', sublabel: 'SWE Intern · Unimode AI', top: 128, left: 138, width: 84, height: 224, variant: 'main' },
-  { label: 'Pfizer Extern', top: 184, left: 228, width: 74, height: 28, variant: 'main' },
-  { label: 'SIDE', sublabel: 'PlanPal', top: 227, left: 228, width: 74, height: 42, variant: 'side' },
-  { label: 'SIDE', sublabel: 'STEM Teacher · Young Gates', top: 184, left: 308, width: 88, height: 294, variant: 'side' },
-  { label: 'SIDE', sublabel: 'STEM TA', top: 184, left: 402, width: 88, height: 84, variant: 'side' },
-  { label: 'SIDE', sublabel: 'STEM Tutor', top: 142, left: 496, width: 88, height: 56, variant: 'side' },
-  { label: 'SIDE', sublabel: 'Asst. Restaurant Manager · Country Gourmet', top: 478, left: 308, width: 88, height: 448, variant: 'side' },
+  { tag: 'EDUCATION', title: 'AS-T CS', titleSize: 11, org: 'De Anza College', top: 184, left: 14, width: 118, height: 532, padding: '8px', variant: 'education-pink' },
+  { title: 'UC Irvine · Sept 2026 →', titleSize: 9, top: 44, left: 14, width: 118, height: 46, padding: '0 8px', variant: 'education-uci' },
+  { tag: 'MAIN', title: 'SWE Intern', titleSize: 10, org: 'Unimode AI', top: 128, left: 138, width: 84, height: 224, padding: '8px 6px', variant: 'main' },
+  { title: 'Pfizer Extern', titleSize: 9.5, top: 184, left: 228, width: 74, height: 28, padding: '2px 6px', variant: 'main' },
+  { tag: 'SIDE', title: 'PlanPal', titleSize: 9.5, top: 227, left: 228, width: 74, height: 42, padding: '4px 6px', variant: 'side' },
+  { tag: 'SIDE', title: 'STEM Teacher', titleSize: 11, org: 'Young Gates', top: 184, left: 308, width: 88, height: 294, padding: '8px', variant: 'side' },
+  { tag: 'SIDE', title: 'STEM TA', titleSize: 10.5, top: 184, left: 402, width: 88, height: 84, padding: '6px 8px', variant: 'side' },
+  { tag: 'SIDE', title: 'STEM Tutor', titleSize: 10, top: 142, left: 496, width: 88, height: 56, padding: '5px 8px', variant: 'side' },
+  { tag: 'SIDE', title: 'Asst. Restaurant Manager', titleSize: 11, org: 'Country Gourmet', top: 478, left: 308, width: 88, height: 448, padding: '8px', variant: 'side' },
 ];
