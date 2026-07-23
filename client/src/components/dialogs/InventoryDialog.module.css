@@ -210,3 +210,18 @@
   text-wrap: pretty;
   max-width: 420px;
 }
+
+@media (max-width: 768px) {
+  .grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  .galleryGrid {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+
+  .photoStage {
+    min-height: 260px;
+  }
+}
