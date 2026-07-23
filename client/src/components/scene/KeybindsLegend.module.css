@@ -51,3 +51,9 @@
 .label {
   font: 400 9px 'Silkscreen', monospace;
 }
+
+@media (max-width: 768px) {
+  .legend {
+    display: none;
+  }
+}

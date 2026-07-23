@@ -24,3 +24,15 @@
   background: #ee9aa3;
   color: #2b2b30;
 }
+
+@media (max-width: 768px) {
+  .systemButtons {
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    max-width: calc(100vw - 36px);
+  }
+
+  .chip {
+    padding: 6px 9px;
+  }
+}
