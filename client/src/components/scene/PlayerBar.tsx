@@ -71,8 +71,6 @@ export function PlayerBar({ onSummonFamiliar }: { onSummonFamiliar: () => void }
       </div>
 
       <div className={styles.familiarWrap}>
-        {/* onSummonFamiliar is a no-op stub passed from GameScene; Task 16 wires
-            it to the real useFamiliarToggle() hook once that hook exists. */}
         <button data-sfx className={styles.familiarBtn} onClick={onSummonFamiliar}>
           <span className={styles.familiarBadge}>F</span>
           <span className={styles.familiarIcon}>🔮</span>
