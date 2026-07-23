@@ -1,12 +1,16 @@
-import 'dotenv/config';
+import dotenv from 'dotenv';
 import express from 'express';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { handleChat } from './chat.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
+dotenv.config({ path: path.resolve(__dirname, '../.env') });
+
 const app = express();
 const PORT = process.env.PORT ? Number(process.env.PORT) : 3000;
+
+app.set('trust proxy', 1);
 
 app.use(express.json());
 app.post('/api/chat', handleChat);

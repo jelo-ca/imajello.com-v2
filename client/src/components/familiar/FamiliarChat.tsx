@@ -48,6 +48,7 @@ export function FamiliarChat() {
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error ?? 'request failed');
+      if (!data.reply || typeof data.reply !== 'string') throw new Error('malformed response from server');
       dispatch({ type: 'CHAT_SEND_SUCCESS', reply: data.reply });
     } catch (err) {
       const reason = err instanceof Error ? err.message : 'no credits remaining';
