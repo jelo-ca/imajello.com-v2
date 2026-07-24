@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { useGameState } from '../../state/GameStateContext';
 import { useSfx } from '../../hooks/useSfx';
 import styles from './ContactDialog.module.css';
@@ -5,6 +6,7 @@ import styles from './ContactDialog.module.css';
 export function ContactDialog({ onClose }: { onClose: () => void }) {
   const { state, dispatch } = useGameState();
   const { tick } = useSfx();
+  const [statusOpen, setStatusOpen] = useState(true);
 
   const setField = (field: 'msgName' | 'msgEmail' | 'msgBody', value: string) =>
     dispatch({ type: 'SET_MSG_FIELD', field, value });
@@ -41,11 +43,23 @@ export function ContactDialog({ onClose }: { onClose: () => void }) {
               <a href="/Anjoelo_Calderon_Resume.pdf" target="_blank" rel="noreferrer" className={styles.link}><span className={styles.arrow}>▸</span>RESUME</a>
             </div>
             <div className={styles.statusGrid}>
-              <span className={styles.statusHeading}>PLAYER STATUS</span>
-              <div className={styles.statusItem}><span>AVAILABILITY</span><span>NOW · FALL/SPRING/SUMMER</span></div>
-              <div className={styles.statusItem}><span>FOCUS</span><span>AI/ML · FULL-STACK</span></div>
-              <div className={styles.statusItem}><span>RESPONSE TIME</span><span>&lt; 24 HRS</span></div>
-              <div className={styles.statusItem}><span>LOCATION</span><span>OPEN TO RELOCATE</span></div>
+              <button
+                type="button"
+                data-sfx
+                className={styles.statusHeading}
+                onClick={() => setStatusOpen(o => !o)}
+                aria-expanded={statusOpen}
+              >
+                PLAYER STATUS <span className={styles.statusToggle}>{statusOpen ? '▾' : '▸'}</span>
+              </button>
+              {statusOpen && (
+                <>
+                  <div className={styles.statusItem}><span>AVAILABILITY</span><span>NOW · FALL/SPRING/SUMMER</span></div>
+                  <div className={styles.statusItem}><span>FOCUS</span><span>AI/ML · FULL-STACK</span></div>
+                  <div className={styles.statusItem}><span>RESPONSE TIME</span><span>&lt; 24 HRS</span></div>
+                  <div className={styles.statusItem}><span>LOCATION</span><span>OPEN TO RELOCATE</span></div>
+                </>
+              )}
             </div>
           </div>
           <div className={styles.formCard}>

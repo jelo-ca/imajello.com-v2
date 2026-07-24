@@ -143,6 +143,19 @@
   grid-column: 1 / -1;
   font: 400 9px 'Silkscreen', monospace;
   color: #ee9aa3;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+  text-align: left;
+  cursor: pointer;
+}
+
+.statusToggle {
+  font-size: 10px;
 }
 
 .statusItem {

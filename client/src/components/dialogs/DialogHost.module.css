@@ -76,3 +76,13 @@
   box-sizing: border-box;
   animation: cursorSpin 3s steps(8) infinite;
 }
+
+@media (max-width: 768px) {
+  /* Dialogs stretch to 94vw on mobile, leaving too little margin for this
+     right-edge sidebar — it was overlapping dialog content instead of
+     sitting beside it. Switching sections while a dialog is open on
+     mobile now goes through the dialog's own ✕ + the bottom tab bar. */
+  .hotbar {
+    display: none;
+  }
+}

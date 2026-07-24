@@ -84,6 +84,10 @@
   flex-wrap: wrap;
 }
 
+.tabSelect {
+  display: none;
+}
+
 .tab,
 .tabActive {
   font: 400 11px 'Silkscreen', monospace;
@@ -374,5 +378,20 @@
   .tabActive {
     font-size: 10px;
     padding: 9px 12px;
+  }
+
+  /* Compact dropdown replaces the 3-button tab row to cut clutter. */
+  .tabs {
+    display: none;
+  }
+
+  .tabSelect {
+    display: block;
+    width: 100%;
+    font: 400 11px 'Silkscreen', monospace;
+    background: #f5d9dc;
+    color: #2b2b30;
+    border: 3px solid #2b2b30;
+    padding: 11px 12px;
   }
 }

@@ -27,6 +27,20 @@ export function QuestLogDialog({ onClose }: { onClose: () => void }) {
           <button data-sfx className={tab === 'timeline' ? styles.tabActive : styles.tab} onClick={() => setTab('timeline')}>TIMELINE</button>
         </div>
 
+        {/* Mobile-only: the 3-button tab row above is replaced by this compact dropdown
+            below 768px (see .tabs/.tabSelect in QuestLogDialog.module.css) — same state,
+            no duplicate logic, just a narrower control on small screens. */}
+        <select
+          className={styles.tabSelect}
+          value={tab}
+          onChange={e => setTab(e.target.value as typeof tab)}
+          aria-label="Quest log section"
+        >
+          <option value="main">MAIN QUESTS</option>
+          <option value="side">SIDE QUESTS (+4)</option>
+          <option value="timeline">TIMELINE</option>
+        </select>
+
         {tab === 'main' && (
           <>
             <p className={styles.intro}>I find the edge cases more interesting than the happy path — reliable evaluation, honest failure modes, real constraints around latency and cost. That's the terrain I enjoy.</p>
