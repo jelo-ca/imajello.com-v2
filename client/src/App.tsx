@@ -8,6 +8,7 @@ import { DialogHost } from './components/dialogs/DialogHost';
 import { FamiliarChat } from './components/familiar/FamiliarChat';
 import { Toast } from './components/shared/Toast';
 import { KonamiOverlay } from './components/shared/KonamiOverlay';
+import { MobileNotice } from './components/shared/MobileNotice';
 import styles from './App.module.css';
 
 const SECTION_KEYS: Record<string, 'journey' | 'quests' | 'experience' | 'hobbies' | 'contact'> = {
@@ -83,6 +84,7 @@ export default function App() {
 
   return (
     <div className={styles.app}>
+      <MobileNotice />
       <GameScene />
       <DialogHost />
       <FamiliarChat />

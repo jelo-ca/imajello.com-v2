@@ -15,6 +15,27 @@ body {
     min-height: 100vh;
     min-height: 100dvh;
   }
+
+  /* Defensive reset: several components declare width/padding/border without
+     box-sizing, which under the default content-box model can push an
+     element wider than its declared width and force horizontal overflow.
+     Scoped to mobile only so desktop's existing box model is untouched. */
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+
+  /* Simplify the mobile experience: drop all CSS animations/transitions
+     (character crossfades, dialog/toast pop-ins, familiar bob, konami
+     stars, etc.) for a plainer, more stable feel and to avoid any
+     transient off-screen transform state during a transition. */
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+  }
 }
 
 .proj-shot-wrap .coming-soon {

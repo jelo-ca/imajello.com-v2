@@ -192,4 +192,10 @@
     width: clamp(140px, 40vw, 210px);
     height: clamp(140px, 40vw, 210px);
   }
+
+  /* Arrow buttons are replaced by a swipe gesture on .row (see
+     HeroCharacterViewer.tsx onTouchStart/onTouchEnd). */
+  .arrow {
+    display: none;
+  }
 }

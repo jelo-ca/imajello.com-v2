@@ -1,8 +1,13 @@
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
+import type { TouchEvent } from 'react';
 import { useGameState } from '../../state/GameStateContext';
 import { useSfx } from '../../hooks/useSfx';
 import { CHARS } from '../../data/chars';
 import styles from './HeroCharacterViewer.module.css';
+
+// Minimum horizontal drag distance (px) to count as a swipe, below which
+// a touch is treated as a tap/scroll rather than a character-change gesture.
+const SWIPE_THRESHOLD = 40;
 
 // Ported from design_handoff_portfolio_game_hud/design/Imajello Site v4b - Game HUD.dc.html
 // lines 62-145 ("Template A" — heroA, the only variant with hint-placeholder-val {{ true }},
@@ -29,13 +34,33 @@ export function HeroCharacterViewer() {
   const goPrev = () => { tick(); dispatch({ type: 'PREV_CHAR' }); };
   const goNext = () => { tick(); dispatch({ type: 'NEXT_CHAR' }); };
 
+  // Mobile replaces the ◀/▶ buttons with a swipe gesture on the portrait/stats row
+  // (buttons are hidden via CSS below 768px — see HeroCharacterViewer.module.css .arrow).
+  const touchStartRef = useRef<{ x: number; y: number } | null>(null);
+
+  const onTouchStart = (e: TouchEvent<HTMLDivElement>) => {
+    const t = e.touches[0];
+    touchStartRef.current = { x: t.clientX, y: t.clientY };
+  };
+
+  const onTouchEnd = (e: TouchEvent<HTMLDivElement>) => {
+    const start = touchStartRef.current;
+    touchStartRef.current = null;
+    if (!start) return;
+    const t = e.changedTouches[0];
+    const dx = t.clientX - start.x;
+    const dy = t.clientY - start.y;
+    if (Math.abs(dx) < SWIPE_THRESHOLD || Math.abs(dx) < Math.abs(dy)) return;
+    if (dx < 0) goNext(); else goPrev();
+  };
+
   return (
     <div className={styles.wrap}>
       <div className={styles.eyebrow}>SOFTWARE ENGINEER · AI/ML · FREMONT CA</div>
       <h1 className={styles.name}>Anjoelo Calder<span className={styles.accent}>o</span>n</h1>
 
       {/* reference lines 69-85: one flex row, arrows flanking portrait box + stat panel */}
-      <div className={styles.row}>
+      <div className={styles.row} onTouchStart={onTouchStart} onTouchEnd={onTouchEnd}>
         <button data-sfx className={styles.arrow} onClick={goPrev}>◀</button>
 
         <div className={styles.portraitBox}>

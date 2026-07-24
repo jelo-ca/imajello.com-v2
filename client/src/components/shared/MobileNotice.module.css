@@ -1,0 +1,41 @@
+.banner {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 500;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  background: var(--ink);
+  color: var(--cream);
+  border-bottom: 3px solid var(--pink);
+  padding: 10px 14px;
+  box-sizing: border-box;
+}
+
+.text {
+  font: 400 11px 'Silkscreen', monospace;
+  line-height: 1.5;
+}
+
+.closeBtn {
+  flex: none;
+  font: 400 12px 'Silkscreen', monospace;
+  background: none;
+  border: 2px solid var(--cream);
+  color: var(--cream);
+  padding: 4px 9px;
+  cursor: pointer;
+}
+.closeBtn:hover {
+  background: var(--cream);
+  color: var(--ink);
+}
+
+@media (min-width: 769px) {
+  .banner {
+    display: none;
+  }
+}

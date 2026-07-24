@@ -17,6 +17,7 @@ export function useParticles(
     const cursorHost = cursorHostRef.current;
     const cursor = cursorRef.current;
     if (!host) return;
+    if (window.matchMedia('(max-width: 768px)').matches) return;
 
     const parts: Particle[] = [];
     for (let i = 0; i < 30; i++) {
