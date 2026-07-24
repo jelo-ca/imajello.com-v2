@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { useGameState } from '../../state/GameStateContext';
 import { useSfx } from '../../hooks/useSfx';
 import { DiscoveryListPanel } from '../shared/DiscoveryListPanel';
@@ -6,6 +7,7 @@ import styles from './TopBar.module.css';
 export function TopBar() {
   const { state, dispatch } = useGameState();
   const { playNote } = useSfx();
+  const [menuOpen, setMenuOpen] = useState(false);
 
   const toggleSound = () => {
     const next = !state.sound;
@@ -32,6 +34,33 @@ export function TopBar() {
         >
           {state.sound ? 'SFX ON' : 'SFX OFF'}
         </button>
+      </div>
+
+      {/* Mobile-only: RESUME/GITHUB/LINKEDIN collapse behind a hamburger menu
+          below 768px (see .systemButtons/.mobileControls in TopBar.module.css).
+          SFX stays visible since it's a frequent toggle, not a link-out. */}
+      <div className={styles.mobileControls}>
+        <button data-sfx className={styles.chip} onClick={toggleSound}>
+          {state.sound ? 'SFX ON' : 'SFX OFF'}
+        </button>
+        <div className={styles.menuWrap}>
+          <button
+            data-sfx
+            className={styles.menuTrigger}
+            onClick={() => setMenuOpen(o => !o)}
+            aria-expanded={menuOpen}
+            aria-label="Links menu"
+          >
+            ☰
+          </button>
+          {menuOpen && (
+            <div className={styles.menuPanel}>
+              <a href="/Anjoelo_Calderon_Resume.pdf" target="_blank" rel="noreferrer" data-sfx className={styles.menuItem}>RESUME ↓</a>
+              <a href="https://github.com/jelo-ca" target="_blank" rel="noreferrer" data-sfx className={styles.menuItem}>GITHUB</a>
+              <a href="https://linkedin.com/in/anjoelo-calderon" target="_blank" rel="noreferrer" data-sfx className={styles.menuItem}>LINKEDIN</a>
+            </div>
+          )}
+        </div>
       </div>
     </>
   );

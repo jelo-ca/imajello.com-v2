@@ -260,10 +260,6 @@
     gap: 22px;
   }
 
-  .linkGrid {
-    grid-template-columns: 1fr;
-  }
-
   .statusGrid {
     grid-template-columns: 1fr;
   }

@@ -25,11 +25,66 @@
   color: #2b2b30;
 }
 
+.mobileControls {
+  display: none;
+}
+
+.menuWrap {
+  position: relative;
+}
+
+.menuTrigger {
+  font: 400 14px 'Silkscreen', monospace;
+  background: rgba(43, 43, 48, .94);
+  color: #f5d9dc;
+  border: 3px solid #2b2b30;
+  padding: 6px 11px;
+  cursor: pointer;
+}
+.menuTrigger:hover {
+  background: #ee9aa3;
+  color: #2b2b30;
+}
+
+.menuPanel {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  z-index: 60;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 140px;
+  background: rgba(43, 43, 48, .96);
+  border: 3px solid #2b2b30;
+  padding: 8px;
+}
+
+.menuItem {
+  font: 400 9px 'Silkscreen', monospace;
+  text-decoration: none;
+  color: #f5d9dc;
+  border: 2px solid #45454c;
+  padding: 8px 10px;
+  cursor: pointer;
+}
+.menuItem:hover {
+  background: #ee9aa3;
+  color: #2b2b30;
+}
+
 @media (max-width: 768px) {
   .systemButtons {
-    flex-wrap: wrap;
-    justify-content: flex-end;
-    max-width: calc(100vw - 36px);
+    display: none;
+  }
+
+  .mobileControls {
+    position: fixed;
+    top: 18px;
+    right: 18px;
+    z-index: 50;
+    display: flex;
+    gap: 8px;
   }
 
   .chip {
