@@ -186,14 +186,6 @@
   text-wrap: pretty;
 }
 
-.bioLong {
-  display: block;
-}
-
-.bioShort {
-  display: none;
-}
-
 @media (max-width: 768px) {
   .portraitBox,
   .statPanel {
@@ -221,13 +213,5 @@
 
   .statTrough {
     height: 6px;
-  }
-
-  .bioLong {
-    display: none;
-  }
-
-  .bioShort {
-    display: block;
   }
 }

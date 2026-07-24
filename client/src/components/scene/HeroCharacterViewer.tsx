@@ -111,15 +111,8 @@ export function HeroCharacterViewer() {
         <div className={styles.charClass}>{char.cls}</div>
       </div>
 
-      {/* reference line 142: static bio, [data-hero-bio] hidden on short viewports via global.css.
-          Two variants: full bio on desktop, one-line summary on mobile (see .bioLong/.bioShort
-          in HeroCharacterViewer.module.css) — CSS-only swap, both always rendered. */}
-      <p data-hero-bio className={`${styles.bio} ${styles.bioLong}`}>
-        Hi, I'm Anjoelo! I love building AI tools that actually solve problems — think semantic search over
-        millions of records, teaching computers to read messy documents, and making sure AI answers stay
-        honest. Studying CS at UC Irvine, originally from the Philippines.
-      </p>
-      <p data-hero-bio className={`${styles.bio} ${styles.bioShort}`}>
+      {/* reference line 142: static bio, [data-hero-bio] hidden on short viewports via global.css. */}
+      <p data-hero-bio className={styles.bio}>
         AI/ML software engineer at UC Irvine, originally from the Philippines.
       </p>
     </div>
