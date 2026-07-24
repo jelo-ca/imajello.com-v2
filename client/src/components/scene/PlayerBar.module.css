@@ -285,11 +285,7 @@
   }
 
   .navBadge {
-    top: -6px;
-    left: -6px;
-    width: 14px;
-    height: 14px;
-    font-size: 8px;
+    display: none;
   }
 
   .navGlyph {

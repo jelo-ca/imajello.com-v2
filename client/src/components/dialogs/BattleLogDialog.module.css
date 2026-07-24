@@ -204,4 +204,10 @@
   .info {
     min-width: 0;
   }
+
+  /* Number/ESC keybind hints are meaningless without a keyboard. */
+  .badge,
+  .escHint {
+    display: none;
+  }
 }

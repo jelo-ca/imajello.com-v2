@@ -18,7 +18,7 @@ export function QuestLogDialog({ onClose }: { onClose: () => void }) {
           <span className={styles.title}>Quest Log</span>
           <span className={styles.sub}>EXPERIENCE</span>
         </div>
-        <button data-sfx className={styles.closeBtn} onClick={onClose}>✕ ESC</button>
+        <button data-sfx className={styles.closeBtn} onClick={onClose}>✕ <span className={styles.escHint}>ESC</span></button>
       </div>
       <div className={styles.body}>
         <div className={styles.tabs}>

@@ -224,4 +224,10 @@
   .photoStage {
     min-height: 260px;
   }
+
+  /* Number/ESC keybind hints are meaningless without a keyboard. */
+  .badge,
+  .escHint {
+    display: none;
+  }
 }

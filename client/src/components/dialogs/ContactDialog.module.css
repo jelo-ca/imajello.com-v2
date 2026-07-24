@@ -271,4 +271,10 @@
   .formCard {
     height: auto;
   }
+
+  /* Number/ESC keybind hints are meaningless without a keyboard. */
+  .badge,
+  .escHint {
+    display: none;
+  }
 }

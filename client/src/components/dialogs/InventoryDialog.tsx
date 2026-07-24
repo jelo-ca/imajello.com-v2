@@ -26,7 +26,7 @@ export function InventoryDialog({ onClose }: { onClose: () => void }) {
           <span className={styles.title}>Inventory</span>
           <span className={styles.sub}>HOBBIES</span>
         </div>
-        <button data-sfx className={styles.closeBtn} onClick={onClose}>✕ ESC</button>
+        <button data-sfx className={styles.closeBtn} onClick={onClose}>✕ <span className={styles.escHint}>ESC</span></button>
       </div>
 
       {!activeItem ? (
