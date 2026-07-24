@@ -241,6 +241,12 @@
     display: none;
   }
 
+  /* Keyboard-only easter-egg hint (arrow-key/button sequence) — meaningless
+     without a keyboard, matches KeybindsLegend already being hidden on mobile. */
+  .konamiHint {
+    display: none;
+  }
+
   .playerPlate {
     position: fixed;
     top: 84px;

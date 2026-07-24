@@ -186,6 +186,14 @@
   text-wrap: pretty;
 }
 
+.bioLong {
+  display: block;
+}
+
+.bioShort {
+  display: none;
+}
+
 @media (max-width: 768px) {
   .portraitBox,
   .statPanel {
@@ -197,5 +205,29 @@
      HeroCharacterViewer.tsx onTouchStart/onTouchEnd). */
   .arrow {
     display: none;
+  }
+
+  /* .statPanel's box shrunk above, but its content (header + 4 stat rows)
+     didn't — tighten spacing and thin the bars so 4 stats actually fit
+     inside the smallest clamped size instead of overflowing the box. */
+  .statPanel {
+    gap: 6px;
+    padding: 10px 12px;
+  }
+
+  .statRow {
+    gap: 2px;
+  }
+
+  .statTrough {
+    height: 6px;
+  }
+
+  .bioLong {
+    display: none;
+  }
+
+  .bioShort {
+    display: block;
   }
 }
