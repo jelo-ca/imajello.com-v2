@@ -159,10 +159,34 @@
   background: repeating-linear-gradient(90deg, transparent 0 16px, #2b2b30 16px 18px);
 }
 
+.nameClassRow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+}
+
 .nameClassBox {
   text-align: center;
   background: #2b2b30;
   padding: 6px 18px;
+}
+
+/* Hidden on desktop — the .row arrows already handle character cycling there.
+   Shown only below 768px, where .row's arrows are replaced by swipe. */
+.mobileArrow {
+  display: none;
+  font: 400 14px 'Silkscreen', monospace;
+  background: #2b2b30;
+  color: #f5d9dc;
+  border: none;
+  padding: 8px 12px;
+  cursor: pointer;
+  flex: none;
+}
+.mobileArrow:hover {
+  background: #ee9aa3;
+  color: #2b2b30;
 }
 
 .charName {
@@ -193,10 +217,17 @@
     height: clamp(140px, 40vw, 210px);
   }
 
-  /* Arrow buttons are replaced by a swipe gesture on .row (see
-     HeroCharacterViewer.tsx onTouchStart/onTouchEnd). */
+  /* .row's arrow buttons are replaced by a swipe gesture there (see
+     HeroCharacterViewer.tsx onTouchStart/onTouchEnd); .mobileArrow beside
+     the name/class box takes over as the visible control instead. */
   .arrow {
     display: none;
+  }
+
+  .mobileArrow {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
   }
 
   /* .statPanel's box shrunk above, but its content (header + 4 stat rows)

@@ -105,10 +105,17 @@ export function HeroCharacterViewer() {
         <button data-sfx className={styles.arrow} onClick={goNext}>▶</button>
       </div>
 
-      {/* reference lines 136-139: character name/class plate, always shown (not template-gated) */}
-      <div className={styles.nameClassBox}>
-        <div className={styles.charName}>{char.name}</div>
-        <div className={styles.charClass}>{char.cls}</div>
+      {/* reference lines 136-139: character name/class plate, always shown (not template-gated).
+          Below 768px the .row arrows are hidden in favor of swipe (see onTouchStart/onTouchEnd
+          above); .mobileArrow gives mobile users a visible, discoverable way to rotate characters
+          too, since swipe alone isn't obvious. Desktop keeps using the .row arrows only. */}
+      <div className={styles.nameClassRow}>
+        <button data-sfx className={styles.mobileArrow} onClick={goPrev} aria-label="Previous character">◀</button>
+        <div className={styles.nameClassBox}>
+          <div className={styles.charName}>{char.name}</div>
+          <div className={styles.charClass}>{char.cls}</div>
+        </div>
+        <button data-sfx className={styles.mobileArrow} onClick={goNext} aria-label="Next character">▶</button>
       </div>
 
       {/* reference line 142: static bio, [data-hero-bio] hidden on short viewports via global.css. */}
