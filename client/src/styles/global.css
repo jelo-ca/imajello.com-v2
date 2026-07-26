@@ -237,10 +237,10 @@ a:hover {
 
 @keyframes familiarBob {
   0%, 100% {
-    transform: translate(-50%, 0) rotate(-4deg);
+    transform: translate(-50%, 0) rotate(-8deg);
   }
   50% {
-    transform: translate(-50%, -8px) rotate(4deg);
+    transform: translate(-50%, -14px) rotate(8deg);
   }
 }
 
