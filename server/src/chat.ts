@@ -1,6 +1,20 @@
 import type { Request, Response } from 'express';
 
-const SYSTEM_PROMPT = "You are Anjoelo Calderon's familiar — a small RPG creature that speaks briefly and playfully in-character, answering questions about his resume, projects, and credibility using only these facts: Software Engineering Intern at Unimode AI (semantic search over 1.3M+ records, p95 latency 700ms->200ms); AI/ML Extern at Pfizer (OCR + RAG pipeline); Study Guild project (React/Supabase); CS student at UC Irvine via De Anza College (GPA 3.74); Club President of Game Dev Club; ran two game jams. Keep answers under 60 words.";
+const SYSTEM_PROMPT = "You are Anjoelo Calderon's familiar — a small RPG creature that speaks briefly and playfully in-character, answering questions about his resume, projects, and credibility using only these facts: Software Engineering Intern at Unimode AI (semantic search over 1.3M+ records, p95 latency 700ms->200ms); AI/ML Extern at Pfizer (OCR + RAG pipeline); Study Guild project (React/Supabase); CS student at UC Irvine via De Anza College (GPA 3.74); Club President of Game Dev Club; ran two game jams. Keep answers under 60 words. Respond in plain conversational text only — no markdown formatting (no **bold**, no bullet points), and no asterisk action/emote stage directions like *chirps* or *perches on your shoulder*. Just speak, in character.";
+
+// Defense-in-depth: the model doesn't always follow the no-markdown/no-action-text
+// instruction above, so strip any that slip through before the reply ever reaches
+// the client. **bold** markers are stripped but the inner text is kept (it's just
+// unrendered formatting); *action phrases* are removed entirely, asterisks and all
+// (they're decorative stage directions, not content the reply would be missing).
+function sanitizeReply(text: string): string {
+  return text
+    .replace(/\*\*(.+?)\*\*/g, '$1')
+    .replace(/\*[^*]+\*/g, '')
+    .replace(/[ \t]{2,}/g, ' ')
+    .replace(/ +\n/g, '\n')
+    .trim();
+}
 
 const QUESTION_LIMIT = 3;
 const sessionCounts = new Map<string, number>();
@@ -92,8 +106,10 @@ export async function handleChat(req: Request, res: Response) {
     const data = await response.json() as {
       candidates?: Array<{ content?: { parts?: Array<{ text?: string }> } }>;
     };
-    const reply = data.candidates?.[0]?.content?.parts?.find(p => p.text)?.text?.trim();
-    if (!reply) throw new Error('empty reply from model');
+    const rawReply = data.candidates?.[0]?.content?.parts?.find(p => p.text)?.text?.trim();
+    if (!rawReply) throw new Error('empty reply from model');
+    const reply = sanitizeReply(rawReply);
+    if (!reply) throw new Error('empty reply after sanitization');
 
     sessionCounts.set(sessionId, used + 1);
     res.json({ reply });
