@@ -85,7 +85,7 @@ export interface ContentShape {
     sections: Record<SectionKey, SectionCopy>;
     misc: { escHint: string; closeGlyph: string };
     topBar: { resume: string; github: string; linkedin: string; sfxOn: string; sfxOff: string; linksMenuAriaLabel: string; hamburgerGlyph: string };
-    keybinds: { heading: string; changeCharacter: string; summonFamiliar: string; close: string };
+    keybinds: { heading: string; changeCharacter: string; summonFamiliar: string; close: string; move: string; jump: string; stopPlaying: string };
     playerBar: { playerPlate: string; level: string; hp: string; en: string; konamiHint: string; konamiUnlocked: string; xpMaxLabel: string; familiarLabel: string };
     hero: { statsLabel: string; prevAriaLabel: string; nextAriaLabel: string; startBtn: string };
     battleLog: { repoLink: string; rankPrefix: string; lootLabel: string };

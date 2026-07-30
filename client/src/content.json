@@ -207,7 +207,10 @@
       "heading": "KEYBINDS",
       "changeCharacter": "CHANGE CHARACTER",
       "summonFamiliar": "SUMMON FAMILIAR",
-      "close": "CLOSE"
+      "close": "CLOSE",
+      "move": "MOVE",
+      "jump": "JUMP",
+      "stopPlaying": "STOP PLAYING"
     },
 
     "playerBar": {

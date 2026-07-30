@@ -4,7 +4,14 @@ import styles from './KeybindsLegend.module.css';
 
 // Reference lines 48-60: ← → and ESC use the narrower key-chip padding
 // (3px 7px); digit keys 1-5 and F use the wider padding (3px 8px).
-function rows(): Array<{ key: string; label: string } | { keys: [string, string]; label: string }> {
+function rows(playing: boolean): Array<{ key: string; label: string } | { keys: [string, string]; label: string }> {
+  if (playing) {
+    return [
+      { keys: ['←', '→'], label: ui.keybinds.move },
+      { key: 'SPACE', label: ui.keybinds.jump },
+      { key: 'ESC', label: ui.keybinds.stopPlaying },
+    ];
+  }
   return [
     { keys: ['←', '→'], label: ui.keybinds.changeCharacter },
     { key: '1', label: ui.sections.journey.navLabel },
@@ -27,7 +34,7 @@ export function KeybindsLegend({ setPlatformRef }: Props) {
   return (
     <div className={styles.legend} ref={setPlatformRef('keybinds')}>
       <div className={styles.heading}>{ui.keybinds.heading}</div>
-      {rows().map((row, i) => (
+      {rows(state.playing).map((row, i) => (
         <div className={styles.row} key={i}>
           {'keys' in row
             ? row.keys.map(k => <span className={styles.keyNarrow} key={k}>{k}</span>)
