@@ -151,9 +151,6 @@ export interface ContentShape {
     mobileNotice: { text: string; dismissAriaLabel: string };
     dialogHost: { closeGlyph: string };
     platformer: {
-      // Retained until Task 3 removes the last code reading them.
-      decorativePlatforms: PlatformRectSpec[];
-      decorativePlatformsMobile: PlatformRectSpec[];
       maxLives: number;
       goalGlyph: string;
       banners: { win: string; gameOver: string };

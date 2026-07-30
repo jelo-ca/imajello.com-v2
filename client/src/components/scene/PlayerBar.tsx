@@ -33,7 +33,7 @@ export function PlayerBar({ onSummonFamiliar, setPlatformRef }: Props) {
     <div className={styles.bar} ref={setPlatformRef('bar')}>
       <div className={styles.xpTrack}><div className={styles.xpFill} style={{ width: `${xp}%` }} /></div>
 
-      <div className={styles.playerPlate} ref={setPlatformRef('plate')}>
+      <div className={styles.playerPlate}>
         <div className={styles.plateTop}>
           <span>{pb.playerPlate}</span>
           <span className={styles.level}>{pb.level}</span>

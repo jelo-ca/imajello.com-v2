@@ -6,3 +6,20 @@
   image-rendering: pixelated;
   pointer-events: none;
 }
+
+.banner {
+  position: fixed;
+  top: 34%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 90;
+  padding: 18px 34px;
+  font: 400 22px 'Silkscreen', monospace;
+  letter-spacing: .1em;
+  color: #f5d9dc;
+  background: rgba(43, 43, 48, .96);
+  border: 3px solid #ee9aa3;
+  box-shadow: 6px 6px 0 rgba(20, 20, 23, .5);
+  pointer-events: none;
+  text-align: center;
+}

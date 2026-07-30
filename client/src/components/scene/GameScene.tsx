@@ -4,7 +4,6 @@ import { TopBar } from './TopBar';
 import { KeybindsLegend } from './KeybindsLegend';
 import { PlayerBar } from './PlayerBar';
 import { Platformer } from './Platformer';
-import { DecorativePlatforms } from './DecorativePlatforms';
 import { useParticles } from '../../hooks/useParticles';
 import { useFamiliarToggle } from '../../hooks/useFamiliarToggle';
 import { useGameState } from '../../state/GameStateContext';
@@ -18,12 +17,10 @@ export function GameScene() {
   useParticles(particleHostRef, cursorHostRef, cursorRef);
   const toggleFamiliar = useFamiliarToggle();
 
-  // Registry of DOM nodes that double as platforms while playing — one whole HUD
-  // bar/box per entry (PlayerBar's entire bar, TopBar's whole link row/mobile controls,
-  // KeybindsLegend's box, the discoveries trigger), so the sprite walks a continuous
-  // floor/ledge rather than falling through the gaps between individual buttons.
-  // Platformer reads this via getBoundingClientRect(); the setter identity per key is
-  // cached so passing it down doesn't cause re-attachment on every GameScene render.
+  // Registry of the DOM nodes that make up the climb's ground floor — PlayerBar's whole
+  // bar on desktop, and its nav/familiar strips on mobile where that bar collapses (see
+  // useFloorRect's FLOOR_KEYS). Nothing else in the HUD is a platform. The setter
+  // identity per key is cached so passing it down doesn't re-attach refs on every render.
   const platformRefs = useRef<Record<string, HTMLElement | null>>({});
   const platformRefSetters = useRef<Record<string, (el: HTMLElement | null) => void>>({});
   const setPlatformRef = (key: string) => {
@@ -36,13 +33,12 @@ export function GameScene() {
   return (
     <div className={styles.scene}>
       <div ref={particleHostRef} className={styles.particles} aria-hidden />
-      <KeybindsLegend setPlatformRef={setPlatformRef} />
+      <KeybindsLegend />
       <div className={styles.heroWrap} style={{ transform: state.familiarOpen ? 'translateX(-14vw)' : 'translateX(0)' }}>
         <HeroCharacterViewer />
       </div>
-      <TopBar setPlatformRef={setPlatformRef} />
+      <TopBar />
       <PlayerBar onSummonFamiliar={toggleFamiliar} setPlatformRef={setPlatformRef} />
-      {state.playing && <DecorativePlatforms />}
       {state.playing && <Platformer platformRefs={platformRefs} />}
     </div>
   );

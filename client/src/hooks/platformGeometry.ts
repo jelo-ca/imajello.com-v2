@@ -50,15 +50,3 @@ export function levelPixelGeometry(): LevelGeometry {
     barrelSpawn: { top: spec.barrelSpawn.top * vh, left: spec.barrelSpawn.left * vw },
   };
 }
-
-// --- Superseded by the authored level; removed in Task 3 along with their last callers
-// (usePlatformRects.ts and DecorativePlatforms.tsx). Kept here only so this task's
-// commit still builds. ---
-export function decorativePlatformSpecs(): PlatformRectSpec[] {
-  const isMobile = window.innerWidth <= MOBILE_BREAKPOINT;
-  return isMobile ? content.ui.platformer.decorativePlatformsMobile : content.ui.platformer.decorativePlatforms;
-}
-
-export function decorativePlatformPixelRects(): PixelRect[] {
-  return decorativePlatformSpecs().map(specToPixelRect);
-}

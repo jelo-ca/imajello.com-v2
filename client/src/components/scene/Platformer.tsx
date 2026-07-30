@@ -1,8 +1,12 @@
+import { useCallback } from 'react';
 import { useGameState } from '../../state/GameStateContext';
 import { CHARS } from '../../data/chars';
-import { usePlatformRects } from '../../hooks/usePlatformRects';
+import { ui } from '../../content';
+import { useFloorRect } from '../../hooks/useFloorRect';
+import { useLevelGeometry } from '../../hooks/useLevelGeometry';
 import { useHeldKeys } from '../../hooks/useHeldKeys';
-import { usePlatformerLoop } from '../../hooks/usePlatformerLoop';
+import { useDonkeyKongLoop, BARREL_SIZE } from '../../hooks/useDonkeyKongLoop';
+import { DkLevel } from './DkLevel';
 import { TouchControls } from './TouchControls';
 import styles from './Platformer.module.css';
 
@@ -14,29 +18,36 @@ interface Props {
 }
 
 export function Platformer({ platformRefs }: Props) {
-  const { state } = useGameState();
+  const { state, dispatch } = useGameState();
   const char = CHARS[state.charIdx];
   const paused = state.open != null || state.familiarOpen || state.discoveriesOpen;
-  const platforms = usePlatformRects(platformRefs, [state.open, state.familiarOpen, state.discoveriesOpen]);
+  const floor = useFloorRect(platformRefs, [state.open, state.familiarOpen, state.discoveriesOpen]);
+  const level = useLevelGeometry();
   const { heldKeys, press, release } = useHeldKeys(paused);
-  // Nav-button platforms are walkable like any other platform, but standing on one no
-  // longer opens its dialog — that's click/keybind-only now (see PlayerBar/App.tsx).
-  const pose = usePlatformerLoop({
-    platforms,
+
+  // dispatch's identity is stable (React guarantees it for useReducer), so these stay
+  // stable too. That matters: useDonkeyKongLoop lists them as effect dependencies and
+  // calls setPose every frame, so unstable callbacks would rebuild the rAF loop 60x/sec.
+  const onHit = useCallback(() => dispatch({ type: 'DK_HIT' }), [dispatch]);
+  const onWin = useCallback(() => dispatch({ type: 'DK_WIN' }), [dispatch]);
+
+  const pose = useDonkeyKongLoop({
+    level,
+    floor,
     paused,
+    status: state.dkStatus,
     heldKeys,
     spriteWidth: SPRITE_WIDTH,
     spriteHeight: SPRITE_HEIGHT,
+    onHit,
+    onWin,
   });
 
-  // usePlatformerLoop's pose fields are placeholder values (computed from an empty
-  // platforms array) until it has measured a real nav-button platform and performed its
-  // one-time spawn placement. Render nothing until then, so the sprite never appears at
-  // (and never visibly falls from) that placeholder position.
   if (!pose.ready) return null;
 
   return (
     <>
+      <DkLevel level={level} barrels={pose.barrels} barrelSize={BARREL_SIZE} />
       <img
         src={char.src}
         alt=""
@@ -47,6 +58,8 @@ export function Platformer({ platformRefs }: Props) {
           transform: `translate3d(${pose.x}px, ${pose.y}px, 0) scaleX(${pose.facing === 'left' ? -1 : 1})`,
         }}
       />
+      {state.dkStatus === 'won' && <div className={styles.banner}>{ui.platformer.banners.win}</div>}
+      {state.dkStatus === 'gameover' && <div className={styles.banner}>{ui.platformer.banners.gameOver}</div>}
       <TouchControls onPress={press} onRelease={release} />
     </>
   );

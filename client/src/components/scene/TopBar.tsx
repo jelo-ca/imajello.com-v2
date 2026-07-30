@@ -5,11 +5,7 @@ import { DiscoveryListPanel } from '../shared/DiscoveryListPanel';
 import { ui } from '../../content';
 import styles from './TopBar.module.css';
 
-interface Props {
-  setPlatformRef: (key: string) => (el: HTMLElement | null) => void;
-}
-
-export function TopBar({ setPlatformRef }: Props) {
+export function TopBar() {
   const { state, dispatch } = useGameState();
   const { playNote } = useSfx();
   const [menuOpen, setMenuOpen] = useState(false);
@@ -28,8 +24,8 @@ export function TopBar({ setPlatformRef }: Props) {
 
   return (
     <>
-      <DiscoveryListPanel setPlatformRef={setPlatformRef} />
-      <div className={styles.systemButtons} ref={setPlatformRef('topbar-links')}>
+      <DiscoveryListPanel />
+      <div className={styles.systemButtons}>
         <a href="/Anjoelo_Calderon_Resume.pdf" target="_blank" rel="noreferrer" data-sfx className={styles.chip}>{tb.resume}</a>
         <a href="https://github.com/jelo-ca" target="_blank" rel="noreferrer" data-sfx className={styles.chip}>{tb.github}</a>
         <a href="https://linkedin.com/in/anjoelo-calderon" target="_blank" rel="noreferrer" data-sfx className={styles.chip}>{tb.linkedin}</a>
@@ -45,7 +41,7 @@ export function TopBar({ setPlatformRef }: Props) {
       {/* Mobile-only: RESUME/GITHUB/LINKEDIN collapse behind a hamburger menu
           below 768px (see .systemButtons/.mobileControls in TopBar.module.css).
           SFX stays visible since it's a frequent toggle, not a link-out. */}
-      <div className={styles.mobileControls} ref={setPlatformRef('topbar-mobile')}>
+      <div className={styles.mobileControls}>
         <button data-sfx className={styles.chip} onClick={toggleSound}>
           {state.sound ? tb.sfxOn : tb.sfxOff}
         </button>

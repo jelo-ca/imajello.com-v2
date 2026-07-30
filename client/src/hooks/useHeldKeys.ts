@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
 
-export type MoveKey = 'left' | 'right' | 'jump';
+export type MoveKey = 'left' | 'right' | 'up' | 'down' | 'jump';
 
 export interface HeldKeysApi {
   heldKeys: React.RefObject<Set<MoveKey>>;
@@ -11,6 +11,8 @@ export interface HeldKeysApi {
 const KEY_MAP: Record<string, MoveKey> = {
   ArrowLeft: 'left',
   ArrowRight: 'right',
+  ArrowUp: 'up',
+  ArrowDown: 'down',
   ' ': 'jump',
   Spacebar: 'jump',
 };
