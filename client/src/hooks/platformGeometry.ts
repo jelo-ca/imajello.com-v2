@@ -1,13 +1,12 @@
 import { content } from '../content';
-import type { PlatformRectSpec } from '../content';
+import type { PlatformRectSpec, LevelSpec } from '../content';
 
-// Shared by usePlatformRects.ts (collision geometry, in JS px) and DecorativePlatforms.tsx
-// (visual rendering, also now in JS px instead of CSS vh/vw) so the drawn box and the
-// collidable rectangle can never diverge again. CSS vh/vw resolve against the *large*
-// viewport per spec (URL-bar-collapsed height on mobile), while window.innerHeight/Width
-// reflect the *current* viewport (URL-bar-included) — these differ by 60-100px on mobile
-// while the URL bar is visible, more than half the sprite's height, which used to make the
-// drawn decorative platforms visibly disagree with where the sprite would actually land.
+// All level geometry is authored in content.json as viewport percentages and converted
+// to pixels here, so the rectangles DkLevel draws and the ones the physics loop collides
+// against come from one source and can never diverge. CSS vh/vw resolve against the
+// *large* viewport per spec (URL-bar-collapsed height on mobile) while
+// window.innerHeight/Width reflect the *current* viewport — on mobile those differ by
+// 60-100px, which is why the conversion is done in JS rather than in CSS units.
 export const MOBILE_BREAKPOINT = 768;
 
 export interface PixelRect {
@@ -17,9 +16,11 @@ export interface PixelRect {
   height: number;
 }
 
-export function decorativePlatformSpecs(): PlatformRectSpec[] {
-  const isMobile = window.innerWidth <= MOBILE_BREAKPOINT;
-  return isMobile ? content.ui.platformer.decorativePlatformsMobile : content.ui.platformer.decorativePlatforms;
+export interface LevelGeometry {
+  girders: PixelRect[];
+  ladders: PixelRect[];
+  goal: PixelRect;
+  barrelSpawn: { top: number; left: number };
 }
 
 export function specToPixelRect(spec: PlatformRectSpec): PixelRect {
@@ -31,6 +32,31 @@ export function specToPixelRect(spec: PlatformRectSpec): PixelRect {
     width: spec.width * vw,
     height: spec.height * vh,
   };
+}
+
+export function levelSpec(): LevelSpec {
+  const isMobile = window.innerWidth <= MOBILE_BREAKPOINT;
+  return isMobile ? content.ui.platformer.levelMobile : content.ui.platformer.level;
+}
+
+export function levelPixelGeometry(): LevelGeometry {
+  const spec = levelSpec();
+  const vw = window.innerWidth / 100;
+  const vh = window.innerHeight / 100;
+  return {
+    girders: spec.girders.map(specToPixelRect),
+    ladders: spec.ladders.map(specToPixelRect),
+    goal: specToPixelRect(spec.goal),
+    barrelSpawn: { top: spec.barrelSpawn.top * vh, left: spec.barrelSpawn.left * vw },
+  };
+}
+
+// --- Superseded by the authored level; removed in Task 3 along with their last callers
+// (usePlatformRects.ts and DecorativePlatforms.tsx). Kept here only so this task's
+// commit still builds. ---
+export function decorativePlatformSpecs(): PlatformRectSpec[] {
+  const isMobile = window.innerWidth <= MOBILE_BREAKPOINT;
+  return isMobile ? content.ui.platformer.decorativePlatformsMobile : content.ui.platformer.decorativePlatforms;
 }
 
 export function decorativePlatformPixelRects(): PixelRect[] {
