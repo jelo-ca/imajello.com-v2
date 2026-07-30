@@ -30,7 +30,7 @@ export function PlayerBar({ onSummonFamiliar, setPlatformRef }: Props) {
     : `${xp}% XP · ${state.visited.length}/4 CHAPTERS`;
 
   return (
-    <div className={styles.bar}>
+    <div className={styles.bar} ref={setPlatformRef('bar')}>
       <div className={styles.xpTrack}><div className={styles.xpFill} style={{ width: `${xp}%` }} /></div>
 
       <div className={styles.playerPlate} ref={setPlatformRef('plate')}>
@@ -50,7 +50,7 @@ export function PlayerBar({ onSummonFamiliar, setPlatformRef }: Props) {
         <span className={styles.xpLabel}>{xpLabel}</span>
       </div>
 
-      <div className={styles.nav}>
+      <div className={styles.nav} ref={setPlatformRef('nav')}>
         {NAV.map(item => {
           const visited = state.visited.includes(item.section);
           const hovering = state.navHover === item.section;
@@ -58,7 +58,6 @@ export function PlayerBar({ onSummonFamiliar, setPlatformRef }: Props) {
             <button
               key={item.section}
               data-sfx
-              ref={setPlatformRef(`nav-${item.section}`)}
               className={styles.navBtn}
               style={{
                 background: hovering ? 'rgba(238,154,163,.16)' : 'none',
@@ -78,8 +77,8 @@ export function PlayerBar({ onSummonFamiliar, setPlatformRef }: Props) {
         })}
       </div>
 
-      <div className={styles.familiarWrap}>
-        <button data-sfx className={styles.familiarBtn} ref={setPlatformRef('familiar')} onClick={onSummonFamiliar}>
+      <div className={styles.familiarWrap} ref={setPlatformRef('familiar')}>
+        <button data-sfx className={styles.familiarBtn} onClick={onSummonFamiliar}>
           <span className={styles.familiarBadge}>F</span>
           <span className={styles.familiarIcon}>🔮</span>
         </button>

@@ -45,7 +45,7 @@ export function TopBar({ setPlatformRef }: Props) {
       {/* Mobile-only: RESUME/GITHUB/LINKEDIN collapse behind a hamburger menu
           below 768px (see .systemButtons/.mobileControls in TopBar.module.css).
           SFX stays visible since it's a frequent toggle, not a link-out. */}
-      <div className={styles.mobileControls}>
+      <div className={styles.mobileControls} ref={setPlatformRef('topbar-mobile')}>
         <button data-sfx className={styles.chip} onClick={toggleSound}>
           {state.sound ? tb.sfxOn : tb.sfxOff}
         </button>
@@ -53,7 +53,6 @@ export function TopBar({ setPlatformRef }: Props) {
           <button
             data-sfx
             className={styles.menuTrigger}
-            ref={setPlatformRef('topbar-hamburger')}
             onClick={() => setMenuOpen(o => !o)}
             aria-expanded={menuOpen}
             aria-label={tb.linksMenuAriaLabel}

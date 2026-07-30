@@ -1,5 +1,4 @@
 import { useCallback, useEffect, useState } from 'react';
-import type { SectionKey } from '../data/discoveries';
 import { decorativePlatformPixelRects } from './platformGeometry';
 
 export interface Platform {
@@ -8,7 +7,6 @@ export interface Platform {
   left: number;
   width: number;
   height: number;
-  sectionKey?: SectionKey;
 }
 
 // Shares its vh/vw-to-px conversion with DecorativePlatforms.tsx (via platformGeometry.ts)
@@ -18,9 +16,9 @@ function decorativePlatforms(): Platform[] {
 }
 
 // `platformRefs.current` is a registry keyed by an arbitrary string (see GameScene's
-// `setPlatformRef`); keys starting with `nav-` carry a SectionKey suffix, used only to
-// identify the PlayerBar nav-button row as "the floor" (see floorTop() in
-// usePlatformerLoop) — standing on one no longer opens its dialog.
+// `setPlatformRef`) — one entry per whole HUD bar/box (the entire PlayerBar strip under
+// key 'bar', the entire TopBar row, KeybindsLegend's box, the discoveries trigger), so
+// the sprite walks a continuous floor/ledge with no gaps between individual buttons.
 export function usePlatformRects(
   platformRefs: React.RefObject<Record<string, HTMLElement | null>>,
   recomputeDeps: unknown[],
@@ -33,8 +31,7 @@ export function usePlatformRects(
       if (!el) continue;
       const rect = el.getBoundingClientRect();
       if (rect.width === 0 || rect.height === 0) continue; // hidden via CSS (e.g. mobile-only/desktop-only elements)
-      const sectionKey = key.startsWith('nav-') ? (key.slice(4) as SectionKey) : undefined;
-      measured.push({ key, top: rect.top, left: rect.left, width: rect.width, height: rect.height, sectionKey });
+      measured.push({ key, top: rect.top, left: rect.left, width: rect.width, height: rect.height });
     }
     setPlatforms([...measured, ...decorativePlatforms()]);
     // platformRefs is a stable ref object; its .current mutating doesn't need to appear here.

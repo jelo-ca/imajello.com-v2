@@ -18,11 +18,12 @@ export function GameScene() {
   useParticles(particleHostRef, cursorHostRef, cursorRef);
   const toggleFamiliar = useFamiliarToggle();
 
-  // Registry of DOM nodes that double as platforms while playing (PlayerBar's nav
-  // buttons/plate/familiar button, TopBar's link row/hamburger, KeybindsLegend, the
-  // discoveries trigger). Platformer reads this via getBoundingClientRect(); the
-  // setter identity per key is cached so passing it down doesn't cause re-attachment
-  // on every GameScene render.
+  // Registry of DOM nodes that double as platforms while playing — one whole HUD
+  // bar/box per entry (PlayerBar's entire bar, TopBar's whole link row/mobile controls,
+  // KeybindsLegend's box, the discoveries trigger), so the sprite walks a continuous
+  // floor/ledge rather than falling through the gaps between individual buttons.
+  // Platformer reads this via getBoundingClientRect(); the setter identity per key is
+  // cached so passing it down doesn't cause re-attachment on every GameScene render.
   const platformRefs = useRef<Record<string, HTMLElement | null>>({});
   const platformRefSetters = useRef<Record<string, (el: HTMLElement | null) => void>>({});
   const setPlatformRef = (key: string) => {

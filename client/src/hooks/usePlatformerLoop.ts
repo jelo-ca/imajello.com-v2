@@ -7,7 +7,7 @@ export interface PlatformerPose {
   y: number;
   facing: 'left' | 'right';
   grounded: boolean;
-  // False until the very first frame where real nav-button geometry has been measured
+  // False until the very first frame where the real PlayerBar geometry has been measured
   // (see hasSpawnedRef below). Callers must not render the sprite while this is false —
   // the pose fields are placeholder values that don't correspond to any real platform.
   ready: boolean;
@@ -25,9 +25,22 @@ interface Params {
   spriteHeight: number;
 }
 
+// PlayerBar's entire bar (GameScene registers it under the fixed key 'bar' — see
+// PlayerBar.tsx) is the floor on desktop: one continuous strip spanning its full width,
+// so there's no gap to fall through between the player plate, nav buttons, and familiar
+// button. Below 768px the bar itself collapses to zero height (PlayerBar.module.css
+// pulls .nav/.familiarWrap out to fixed-bottom instead), so the floor there is
+// nav.top === familiarWrap.top (the two sit flush against each other with no gap —
+// .nav is `right: 64px`, .familiarWrap is `width: 64px` at `right: 0`).
+function hasFloor(platforms: Platform[]): boolean {
+  return platforms.some(p => p.key === 'bar' || p.key === 'nav' || p.key === 'familiar');
+}
+
 function floorTop(platforms: Platform[]): number {
-  const navTops = platforms.filter(p => p.sectionKey !== undefined).map(p => p.top);
-  if (navTops.length > 0) return Math.min(...navTops);
+  const bar = platforms.find(p => p.key === 'bar');
+  if (bar) return bar.top;
+  const mobileFloorTops = platforms.filter(p => p.key === 'nav' || p.key === 'familiar').map(p => p.top);
+  if (mobileFloorTops.length > 0) return Math.min(...mobileFloorTops);
   return window.innerHeight - 40;
 }
 
@@ -47,8 +60,8 @@ export function usePlatformerLoop({ platforms, paused, heldKeys, spriteWidth, sp
     facing: 'right' as 'left' | 'right',
     grounded: false,
   });
-  // Flips true exactly once, the first tick where a real (sectionKey-bearing) platform
-  // exists — see the spawn-gate block at the top of tick() below.
+  // Flips true exactly once, the first tick where a real floor platform exists — see
+  // the spawn-gate block at the top of tick() below.
   const hasSpawnedRef = useRef(false);
   const [pose, setPose] = useState<PlatformerPose>({
     x: poseRef.current.x,
@@ -73,13 +86,12 @@ export function usePlatformerLoop({ platforms, paused, heldKeys, spriteWidth, sp
       // Spawn gate: decorativePlatforms() (part of `platforms`) is always non-empty
       // regardless of DOM measurement, since it's computed purely from content.json +
       // viewport size — so `platforms.length > 0` alone is not a reliable "measured yet"
-      // signal. Wait specifically for a real nav-button (sectionKey-bearing) platform,
-      // then perform the one-time spawn placement using accurate floorTop() and mark
-      // ready. Skip physics entirely until then so nothing gets simulated (or, via
-      // `pose.ready`, rendered) from the placeholder position.
+      // signal. Wait specifically for the real floor (desktop's 'bar', or mobile's
+      // 'nav'/'familiar'), then perform the one-time spawn placement using accurate
+      // floorTop() and mark ready. Skip physics entirely until then so nothing gets
+      // simulated (or, via `pose.ready`, rendered) from the placeholder position.
       if (!hasSpawnedRef.current) {
-        const hasRealFloor = platforms.some(pl => pl.sectionKey !== undefined);
-        if (!hasRealFloor) return;
+        if (!hasFloor(platforms)) return;
         p.x = window.innerWidth / 2 - spriteWidth / 2;
         p.y = floorTop(platforms) - spriteHeight;
         p.vx = 0;
@@ -122,7 +134,7 @@ export function usePlatformerLoop({ platforms, paused, heldKeys, spriteWidth, sp
       }
       p.grounded = landedKey !== null;
 
-      // Fell through everything — respawn on the floor (the lowest nav-button platform).
+      // Fell through everything — respawn on the floor (PlayerBar's 'bar' platform).
       if (p.y > window.innerHeight) {
         p.x = window.innerWidth / 2 - spriteWidth / 2;
         p.y = floorTop(platforms) - spriteHeight;
