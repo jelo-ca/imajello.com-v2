@@ -23,6 +23,12 @@ export function PlayerBar({ onSummonFamiliar, setPlatformRef }: Props) {
   const { tick } = useSfx();
   const pb = ui.playerBar;
 
+  // While playing, the decorative HP bar becomes the climb's lives display; outside
+  // play mode it falls back to the static width its stylesheet already sets.
+  const hpStyle = state.playing
+    ? { width: `${(state.dkLives / ui.platformer.maxLives) * 100}%` }
+    : undefined;
+
   const discoveredCount = Object.keys(state.discoveries).length;
   const xp = Math.round((discoveredCount / DISCOVERIES.length) * 100);
   const xpLabel = xp >= 100
@@ -40,7 +46,7 @@ export function PlayerBar({ onSummonFamiliar, setPlatformRef }: Props) {
         </div>
         <div className={styles.meterRow}>
           <span className={styles.meterLabelHp}>{pb.hp}</span>
-          <div className={styles.meterTrough}><div className={styles.meterFillHp} /><div className={styles.meterSegments} /></div>
+          <div className={styles.meterTrough}><div className={styles.meterFillHp} style={hpStyle} /><div className={styles.meterSegments} /></div>
         </div>
         <div className={styles.meterRow}>
           <span className={styles.meterLabelEn}>{pb.en}</span>

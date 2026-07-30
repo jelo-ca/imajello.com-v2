@@ -1,4 +1,4 @@
-import { useCallback } from 'react';
+import { useCallback, useEffect } from 'react';
 import { useGameState } from '../../state/GameStateContext';
 import { CHARS } from '../../data/chars';
 import { ui } from '../../content';
@@ -30,6 +30,15 @@ export function Platformer({ platformRefs }: Props) {
   // calls setPose every frame, so unstable callbacks would rebuild the rAF loop 60x/sec.
   const onHit = useCallback(() => dispatch({ type: 'DK_HIT' }), [dispatch]);
   const onWin = useCallback(() => dispatch({ type: 'DK_WIN' }), [dispatch]);
+
+  // Hold the banner briefly, then put the player back at the bottom for another run.
+  // Play mode is never exited here — ESC remains the only way out.
+  useEffect(() => {
+    if (state.dkStatus === 'climbing') return;
+    const delay = state.dkStatus === 'won' ? 3200 : 2000;
+    const timer = setTimeout(() => dispatch({ type: 'DK_RESTART' }), delay);
+    return () => clearTimeout(timer);
+  }, [state.dkStatus, dispatch]);
 
   const pose = useDonkeyKongLoop({
     level,

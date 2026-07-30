@@ -28,6 +28,8 @@ const MOVE_SPEED = 220; // px/s
 // ~13vh gap between girder rows. Ladders are the only way up, as in the original.
 const JUMP_VELOCITY = -500; // px/s, negative = up
 const CLIMB_SPEED = 150; // px/s
+const BARREL_SPEED = 150; // px/s
+const BARREL_INTERVAL = 2.2; // seconds between spawns
 
 export const BARREL_SIZE = 18; // px
 
@@ -57,6 +59,8 @@ export function useDonkeyKongLoop({
     climbing: false,
   });
   const barrelsRef = useRef<Barrel[]>([]);
+  const spawnTimerRef = useRef(0);
+  const barrelIdRef = useRef(0);
   const hasSpawnedRef = useRef(false);
   const prevStatusRef = useRef(status);
   const [pose, setPose] = useState<DkPose>({
@@ -111,6 +115,7 @@ export function useDonkeyKongLoop({
         if (status === 'climbing' && wasFrozen) {
           placePlayer(floor);
           barrelsRef.current = [];
+          spawnTimerRef.current = 0;
           publish(true);
           return;
         }
@@ -210,6 +215,66 @@ export function useDonkeyKongLoop({
         p.grounded = landed;
 
         if (p.y > window.innerHeight) placePlayer(floor);
+      }
+
+      // --- barrels ---
+      spawnTimerRef.current += dt;
+      if (spawnTimerRef.current >= BARREL_INTERVAL) {
+        spawnTimerRef.current -= BARREL_INTERVAL;
+        barrelsRef.current.push({
+          id: barrelIdRef.current++,
+          x: level.barrelSpawn.left,
+          y: level.barrelSpawn.top,
+          vx: BARREL_SPEED,
+          vy: 0,
+          grounded: false,
+        });
+      }
+
+      const live: Barrel[] = [];
+      for (const b of barrelsRef.current) {
+        b.vy += GRAVITY * dt;
+        const bPrevBottom = b.y + BARREL_SIZE;
+        b.x += b.vx * dt;
+        b.y += b.vy * dt;
+        const bNewBottom = b.y + BARREL_SIZE;
+
+        let bLanded = false;
+        for (const s of surfaces) {
+          if (b.x + BARREL_SIZE <= s.left || b.x >= s.left + s.width) continue;
+          if (bPrevBottom <= s.top && bNewBottom >= s.top && b.vy >= 0) {
+            b.y = s.top - BARREL_SIZE;
+            b.vy = 0;
+            bLanded = true;
+            break;
+          }
+        }
+        // Reversing only on a *fresh* landing is what produces the cascade: a barrel
+        // rolls to the end of its girder, drops to the row below, and heads back the
+        // other way. While it's simply rolling along, it re-lands every frame (the snap
+        // above puts prevBottom exactly on the surface), so grounded stays true and the
+        // direction holds.
+        if (bLanded && !b.grounded) b.vx = -b.vx;
+        b.grounded = bLanded;
+
+        const offScreen =
+          b.y > window.innerHeight ||
+          b.x < -BARREL_SIZE * 2 ||
+          b.x > window.innerWidth + BARREL_SIZE;
+        if (!offScreen) live.push(b);
+      }
+      barrelsRef.current = live;
+
+      const hit = live.some(b => overlaps(p.x, p.y, spriteWidth, spriteHeight, {
+        top: b.y, left: b.x, width: BARREL_SIZE, height: BARREL_SIZE,
+      }));
+      if (hit) {
+        // Clearing the field and repositioning immediately means the overlap is gone
+        // this same frame, so onHit() can't re-fire on the next one.
+        barrelsRef.current = [];
+        spawnTimerRef.current = 0;
+        placePlayer(floor);
+        onHit();
       }
 
       if (overlaps(p.x, p.y, spriteWidth, spriteHeight, level.goal)) {
