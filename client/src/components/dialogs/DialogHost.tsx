@@ -7,6 +7,7 @@ import { QuestLogDialog } from './QuestLogDialog';
 import { InventoryDialog } from './InventoryDialog';
 import { ContactDialog } from './ContactDialog';
 import type { SectionKey } from '../../data/discoveries';
+import { ui } from '../../content';
 import styles from './DialogHost.module.css';
 
 const HOTBAR: Array<{ section: SectionKey; glyph: string; num: string }> = [
@@ -55,8 +56,8 @@ export function DialogHost() {
           </button>
         ))}
         <button data-sfx className={styles.hotbarBtn} onClick={close}>
-          <span>[<span>✕</span>]</span>
-          <span className={styles.hotbarNum}>ESC</span>
+          <span>[<span>{ui.dialogHost.closeGlyph}</span>]</span>
+          <span className={styles.hotbarNum}>{ui.misc.escHint}</span>
         </button>
       </div>
 

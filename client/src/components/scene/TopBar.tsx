@@ -2,12 +2,14 @@ import { useState } from 'react';
 import { useGameState } from '../../state/GameStateContext';
 import { useSfx } from '../../hooks/useSfx';
 import { DiscoveryListPanel } from '../shared/DiscoveryListPanel';
+import { ui } from '../../content';
 import styles from './TopBar.module.css';
 
 export function TopBar() {
   const { state, dispatch } = useGameState();
   const { playNote } = useSfx();
   const [menuOpen, setMenuOpen] = useState(false);
+  const tb = ui.topBar;
 
   const toggleSound = () => {
     const next = !state.sound;
@@ -24,15 +26,15 @@ export function TopBar() {
     <>
       <DiscoveryListPanel />
       <div className={styles.systemButtons}>
-        <a href="/Anjoelo_Calderon_Resume.pdf" target="_blank" rel="noreferrer" data-sfx className={styles.chip}>RESUME ↓</a>
-        <a href="https://github.com/jelo-ca" target="_blank" rel="noreferrer" data-sfx className={styles.chip}>GITHUB</a>
-        <a href="https://linkedin.com/in/anjoelo-calderon" target="_blank" rel="noreferrer" data-sfx className={styles.chip}>LINKEDIN</a>
+        <a href="/Anjoelo_Calderon_Resume.pdf" target="_blank" rel="noreferrer" data-sfx className={styles.chip}>{tb.resume}</a>
+        <a href="https://github.com/jelo-ca" target="_blank" rel="noreferrer" data-sfx className={styles.chip}>{tb.github}</a>
+        <a href="https://linkedin.com/in/anjoelo-calderon" target="_blank" rel="noreferrer" data-sfx className={styles.chip}>{tb.linkedin}</a>
         <button
           data-sfx
           className={styles.chip}
           onClick={toggleSound}
         >
-          {state.sound ? 'SFX ON' : 'SFX OFF'}
+          {state.sound ? tb.sfxOn : tb.sfxOff}
         </button>
       </div>
 
@@ -41,7 +43,7 @@ export function TopBar() {
           SFX stays visible since it's a frequent toggle, not a link-out. */}
       <div className={styles.mobileControls}>
         <button data-sfx className={styles.chip} onClick={toggleSound}>
-          {state.sound ? 'SFX ON' : 'SFX OFF'}
+          {state.sound ? tb.sfxOn : tb.sfxOff}
         </button>
         <div className={styles.menuWrap}>
           <button
@@ -49,15 +51,15 @@ export function TopBar() {
             className={styles.menuTrigger}
             onClick={() => setMenuOpen(o => !o)}
             aria-expanded={menuOpen}
-            aria-label="Links menu"
+            aria-label={tb.linksMenuAriaLabel}
           >
-            ☰
+            {tb.hamburgerGlyph}
           </button>
           {menuOpen && (
             <div className={styles.menuPanel}>
-              <a href="/Anjoelo_Calderon_Resume.pdf" target="_blank" rel="noreferrer" data-sfx className={styles.menuItem}>RESUME ↓</a>
-              <a href="https://github.com/jelo-ca" target="_blank" rel="noreferrer" data-sfx className={styles.menuItem}>GITHUB</a>
-              <a href="https://linkedin.com/in/anjoelo-calderon" target="_blank" rel="noreferrer" data-sfx className={styles.menuItem}>LINKEDIN</a>
+              <a href="/Anjoelo_Calderon_Resume.pdf" target="_blank" rel="noreferrer" data-sfx className={styles.menuItem}>{tb.resume}</a>
+              <a href="https://github.com/jelo-ca" target="_blank" rel="noreferrer" data-sfx className={styles.menuItem}>{tb.github}</a>
+              <a href="https://linkedin.com/in/anjoelo-calderon" target="_blank" rel="noreferrer" data-sfx className={styles.menuItem}>{tb.linkedin}</a>
             </div>
           )}
         </div>

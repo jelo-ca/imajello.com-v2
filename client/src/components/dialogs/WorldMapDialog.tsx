@@ -1,4 +1,5 @@
 import { JOURNEY_STOPS } from '../../data/journey';
+import { ui } from '../../content';
 import { ImageSlot } from '../shared/ImageSlot';
 import styles from './WorldMapDialog.module.css';
 
@@ -8,10 +9,10 @@ export function WorldMapDialog({ onClose }: { onClose: () => void }) {
       <div className={styles.header}>
         <div className={styles.headerLeft}>
           <span className={styles.badge}>[1]</span>
-          <span className={styles.title}>World Map</span>
-          <span className={styles.sub}>PH → CA → UCI</span>
+          <span className={styles.title}>{ui.sections.journey.dialogTitle}</span>
+          <span className={styles.sub}>{ui.sections.journey.dialogSub}</span>
         </div>
-        <button data-sfx className={styles.closeBtn} onClick={onClose}>✕ <span className={styles.escHint}>ESC</span></button>
+        <button data-sfx className={styles.closeBtn} onClick={onClose}>{ui.misc.closeGlyph} <span className={styles.escHint}>{ui.misc.escHint}</span></button>
       </div>
       <div className={styles.body}>
         <div className={styles.grid}>
@@ -22,7 +23,7 @@ export function WorldMapDialog({ onClose }: { onClose: () => void }) {
                 <span className={stop.current ? styles.statusNow : styles.statusCleared}>{stop.statusLabel}</span>
               </div>
               <div className={styles.photoBox}>
-                <ImageSlot placeholder={`photo: ${stop.title}`} fit="contain" />
+                <ImageSlot placeholder={`${ui.worldMap.photoPrefix} ${stop.title}`} fit="contain" />
               </div>
               <div className={stop.current ? styles.cardTitleCurrent : styles.cardTitle}>{stop.title}</div>
               <p className={stop.current ? styles.bodyCurrent : styles.bodyText}>{stop.body}</p>

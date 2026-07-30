@@ -1,4 +1,5 @@
 import { useGameState } from '../../state/GameStateContext';
+import { ui } from '../../content';
 import styles from './Toast.module.css';
 
 export function Toast() {
@@ -9,7 +10,7 @@ export function Toast() {
       <span className={styles.star}>★</span>
       <div>
         <div className={styles.text}>{state.toast}</div>
-        <div className={styles.label}>DISCOVERED</div>
+        <div className={styles.label}>{ui.toast.discoveredLabel}</div>
       </div>
     </div>
   );

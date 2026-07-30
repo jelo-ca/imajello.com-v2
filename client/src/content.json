@@ -1,0 +1,351 @@
+{
+  "meta": {
+    "pageTitle": "Anjoelo Calderon - Software Engineer"
+  },
+
+  "chars": [
+    { "src": "/sprites/professional.png", "name": "THE ENGINEER", "cls": "CLASS: WIZARD", "stats": [
+      { "name": "PYTHON", "mod": "+4", "w": "88%" },
+      { "name": "ESTIMATING DEADLINES", "mod": "-2", "w": "20%" },
+      { "name": "RAG / LLAMAINDEX", "mod": "+3", "w": "74%" },
+      { "name": "JS / REACT", "mod": "+3", "w": "78%" } ] },
+    { "src": "/sprites/muaythai.png", "name": "MUAY THAI", "cls": "CLASS: FIGHTER", "stats": [
+      { "name": "GRAPPLING", "mod": "-3", "w": "18%" },
+      { "name": "DISCIPLINE", "mod": "+4", "w": "90%" },
+      { "name": "CLINCH", "mod": "+2", "w": "66%" },
+      { "name": "TEEP", "mod": "+3", "w": "74%" } ] },
+    { "src": "/sprites/musician.png", "name": "MUSICIAN", "cls": "CLASS: BARD", "stats": [
+      { "name": "COMPOSING", "mod": "-2", "w": "24%" },
+      { "name": "RHYTHM", "mod": "+4", "w": "84%" },
+      { "name": "EAR TRAINING", "mod": "+2", "w": "66%" },
+      { "name": "IMPROVISATION", "mod": "+3", "w": "74%" } ] },
+    { "src": "/sprites/gaming.png", "name": "GAMER", "cls": "CLASS: ROGUE", "stats": [
+      { "name": "FPS GAMES", "mod": "-3", "w": "20%" },
+      { "name": "STRATEGY", "mod": "+3", "w": "80%" },
+      { "name": "REFLEXES", "mod": "+4", "w": "86%" },
+      { "name": "GRINDING", "mod": "+3", "w": "76%" } ] },
+    { "src": "/sprites/travel.png", "name": "THE TRAVELER", "cls": "CLASS: RANGER", "stats": [
+      { "name": "GETTING LOST", "mod": "+3", "w": "80%" },
+      { "name": "PACKING LIGHT", "mod": "-2", "w": "22%" },
+      { "name": "NEW CUISINE", "mod": "+4", "w": "88%" },
+      { "name": "DIRECTIONS", "mod": "-1", "w": "30%" } ] }
+  ],
+
+  "journey": [
+    { "id": "journey-ph", "worldLabel": "WORLD 1-1", "statusLabel": "★★★ CLEARED", "current": false, "title": "Roots · Philippines", "body": "Born and raised in the Philippines — where curiosity about how games worked turned into curiosity about how everything worked." },
+    { "id": "journey-ca", "worldLabel": "WORLD 2-1", "statusLabel": "★★★ CLEARED", "current": false, "title": "The Move · California", "body": "Immigrated to the Bay Area — new country, new everything. Started over at De Anza College and made it count: 3.74 GPA, club president, two game jams directed." },
+    { "id": "journey-uci", "worldLabel": "WORLD 3-1", "statusLabel": "▶ NOW PLAYING", "current": true, "title": "Now · CS @ UCI", "body": "Studying CS at UC Irvine while shipping real systems — an internship at Unimode AI and an AI/ML externship with Pfizer." }
+  ],
+
+  "familiar": {
+    "animals": ["🐉", "🦊", "🐺", "🦉", "🐢", "🐦", "🐲", "🦇", "🐍", "🦁", "🐸", "🦎", "🐧", "🦅", "🐨", "🐼"],
+    "food": ["🍕", "🍔", "🍩", "🍗"],
+    "greetings": {
+      "🐉": "*uncurls a smoky tail* A hatchling of ancient fire, at your service. Ask away.",
+      "🦊": "*ears perk up* Oh! A visitor. I was just about to nap. What do you want to know?",
+      "🐺": "*circles once, sits* I run with Anjoelo's pack. Ask your questions, traveler.",
+      "🦉": "*blinks slowly* Ah, a seeker of knowledge. I have been awake this whole time, obviously.",
+      "🐢": "*pokes head out of shell* ...give me a second... okay, I'm ready. Go slow, I like slow.",
+      "🐦": "*chirps twice, hops closer* Tweet tweet! That means hello. Ask me something!",
+      "🐲": "*small wings flutter* I may be little, but I know all of Anjoelo's secrets. Try me.",
+      "🦇": "*hangs upside down, opens one eye* Ask quick, before I doze off again.",
+      "🐍": "*coils curiously* Ssssummoned, are we? Sssspeak your quessstion.",
+      "🦁": "*shakes a tiny mane* Roar! (that means hi.) State your business, adventurer.",
+      "🐸": "*ribbit* Hopped all the way here for you. What's the quest, friend?",
+      "🦎": "*tilts head, changes color slightly* Curious little thing, aren't I? Ask away.",
+      "🐧": "*waddles into view* Brrr, chilly out here. Warm me up with a good question.",
+      "🦅": "*swoops down, lands*  I've seen this whole resume from above. Ask and I'll tell you.",
+      "🐨": "*yawns, clings to a branch* Mm? Oh, right, you're here. What did you want to ask?",
+      "🐼": "*rolls over, munching* Five more minutes... okay fine, I'm up. Go ahead.",
+      "🍕": "*a slice waddles over, somehow* I am not an animal. I am pizza. Ask me anything anyway.",
+      "🍔": "*wobbles proudly on its bun* You have summoned... a burger. This was not in the plan, but here we are.",
+      "🍩": "*rolls in circles happily* Sprinkles and secrets, that's what I'm made of. Ask away!",
+      "🍗": "*a drumstick with eyes blinks at you* This is unusual, even for me. Go on, ask your question."
+    },
+    "fallbackGreeting": "*looks up at you* Ask me anything."
+  },
+
+  "quests": {
+    "main": [
+      { "dateRange": "MAR 2025 – PRESENT", "title": "Software Engineering Intern", "org": "Unimode AI · Fremont, CA", "bullets": [
+        "Semantic search API over 1.3M+ indexed records — cut p95 latency from 700ms to 200ms.",
+        "Automated onboarding pipeline — demo setup from ~3 days to under 4 hours.",
+        "Multi-agent adapter normalizing client schemas — hours of manual mapping to seconds." ] },
+      { "dateRange": "JAN – MAR 2026", "title": "AI/ML Extern", "org": "Pfizer · Remote", "bullets": [
+        "Document pipeline extracting structured data from scanned pharma PDFs with Tesseract, PaddleOCR, and frontier LLMs.",
+        "Multi-agent RAG system with LlamaIndex for semantic search over unstructured regulatory documents.",
+        "Regression harness — 20+ factual-retrieval and hallucination queries across 500+ documents." ] }
+    ],
+    "side": [
+      { "dateRange": "OCT 2021 – JUN 2024", "title": "Assistant Restaurant Manager — Country Gourmet American Bistro", "org": "Food Service · Sunnyvale, CA", "bullets": [
+        "Managed and trained a front service team of 9, resolving customer conflicts to raise overall service quality.",
+        "Oversaw technical operations to streamline daily processes, keeping the team efficient without burning out." ], "skills": ["TEAM LEADERSHIP", "GRACE UNDER FIRE"] },
+      { "dateRange": "SEP 2025 – MAR 2026", "title": "STEM Teaching Assistant", "org": "De Anza College · Cupertino, CA", "bullets": [
+        "Tutored 30+ students per term in calculus, linear algebra, and physics." ] },
+      { "dateRange": "JUN 2024 – MAR 2026", "title": "STEM Teacher", "org": "Young Gates · Milpitas, CA", "bullets": [
+        "Delivered 20+ hands-on workshops in programming, game dev, drones, and 3D design." ] },
+      { "dateRange": "FEB 2026 – JUN 2026", "title": "STEM Tutor", "org": "MESA De Anza · Cupertino, CA", "bullets": [
+        "Embedded in-class tutor, working alongside instructors on real-time problem-solving; mentored underrepresented students in STEM." ] }
+    ],
+    "achievements": [
+      { "icon": "🏆 GUILD MASTER", "title": "Club President, Game Dev Club", "desc": "Grew from 5 founding members to an online community of 200+." },
+      { "icon": "🏆 JAM DIRECTOR ×2", "title": "Two annual game jams", "desc": "145 → 300 participants, 69 submissions, 4 industry sponsors." },
+      { "icon": "🏆 EXPO FOUNDER", "title": "Co-Founder & Director, De Anza Expo", "desc": "Built a student tech showcase from scratch — logistics, sponsors, and a funding plan for the long haul." },
+      { "icon": "🏆 SCHOLAR", "title": "AS-T CS · GPA 3.74", "desc": "De Anza College, March 2026 — Magna Cum Laude in CS and Math. C++, data structures, x86 assembly, SQL." }
+    ],
+    "education": [
+      { "title": "UC Irvine — B.S. Computer Science", "meta": "2026 – Present · Irvine, CA" },
+      { "title": "De Anza College — AS-T Computer Science", "meta": "GPA 3.74 · March 2026 · Cupertino, CA" }
+    ],
+    "timelineBars": [
+      { "tag": "EDUCATION", "title": "AS-T CS", "titleSize": 11, "org": "De Anza College", "top": 184, "left": 14, "width": 118, "height": 532, "padding": "8px", "variant": "education-pink" },
+      { "title": "UC Irvine · Sept 2026 →", "titleSize": 9, "top": 44, "left": 14, "width": 118, "height": 46, "padding": "0 8px", "variant": "education-uci" },
+      { "tag": "MAIN", "title": "SWE Intern", "titleSize": 10, "org": "Unimode AI", "top": 128, "left": 138, "width": 84, "height": 224, "padding": "8px 6px", "variant": "main" },
+      { "title": "Pfizer Extern", "titleSize": 9.5, "top": 184, "left": 228, "width": 74, "height": 28, "padding": "2px 6px", "variant": "main" },
+      { "tag": "SIDE", "title": "PlanPal", "titleSize": 9.5, "top": 227, "left": 228, "width": 74, "height": 42, "padding": "4px 6px", "variant": "side" },
+      { "tag": "SIDE", "title": "STEM Teacher", "titleSize": 11, "org": "Young Gates", "top": 184, "left": 308, "width": 88, "height": 294, "padding": "8px", "variant": "side" },
+      { "tag": "SIDE", "title": "STEM TA", "titleSize": 10.5, "top": 184, "left": 402, "width": 88, "height": 84, "padding": "6px 8px", "variant": "side" },
+      { "tag": "SIDE", "title": "STEM Tutor", "titleSize": 10, "top": 142, "left": 496, "width": 88, "height": 56, "padding": "5px 8px", "variant": "side" },
+      { "tag": "SIDE", "title": "Asst. Restaurant Manager", "titleSize": 11, "org": "Country Gourmet", "top": 478, "left": 308, "width": 88, "height": 448, "padding": "8px", "variant": "side" }
+    ]
+  },
+
+  "discoveries": {
+    "items": [
+      { "key": "worldmap", "name": "Cartographer", "how": "Visit the World Map" },
+      { "key": "battlelog", "name": "War Historian", "how": "Visit the Battle Log" },
+      { "key": "questlog", "name": "Lore Keeper", "how": "Visit the Quest Log" },
+      { "key": "inventory", "name": "Pack Rat", "how": "Open the Inventory" },
+      { "key": "contact", "name": "Messenger", "how": "Reach the Contact page" },
+      { "key": "item", "name": "Curious Collector", "how": "Inspect an inventory item" },
+      { "key": "allchars", "name": "Shapeshifter", "how": "Cycle through every character" },
+      { "key": "sound", "name": "Sound Engineer", "how": "Toggle the sound" },
+      { "key": "familiar", "name": "Beast Tamer", "how": "Summon your familiar" },
+      { "key": "konami", "name": "Code Breaker", "how": "Enter a legendary input sequence" }
+    ],
+    "chatQuestionLimit": 3,
+    "konami": ["ArrowUp", "ArrowUp", "ArrowDown", "ArrowDown", "ArrowLeft", "ArrowRight", "ArrowLeft", "ArrowRight", "b", "a"],
+    "sectionOpenedToast": {
+      "journey": "World Map opened",
+      "quests": "Battle Log opened",
+      "experience": "Quest Log opened",
+      "contact": "Final chapter reached",
+      "hobbies": "Inventory opened"
+    },
+    "sectionToDiscovery": {
+      "journey": "worldmap",
+      "quests": "battlelog",
+      "experience": "questlog",
+      "hobbies": "inventory",
+      "contact": "contact"
+    }
+  },
+
+  "invItems": {
+    "items": [
+      { "key": "music", "icon": "🎸", "tag": "LUTE", "label": "Lute", "desc": "Guitar started as a way to unwind between problem sets and turned into writing and recording my own stuff — mostly lo-fi, mostly late at night.", "photos": [
+        { "id": "gal-music-1", "placeholder": "photo: playing guitar" },
+        { "id": "gal-music-2", "placeholder": "photo: recording session" } ] },
+      { "key": "muaythai", "icon": "🥊", "tag": "GLOVES", "label": "Boxing Gloves", "desc": "Muay Thai is where I go to think about nothing. A few sessions a week keeps me sharp and honest about how much I can actually push through.", "photos": [
+        { "id": "gal-muaythai-1", "placeholder": "photo: pad work" },
+        { "id": "gal-muaythai-2", "placeholder": "photo: sparring" } ] },
+      { "key": "tcg", "icon": "🃏", "tag": "TCG", "label": "TCG Cards", "desc": "Collecting and deck-building scratches the same itch as engineering — optimizing under constraints, just with more foil cards involved.", "photos": [
+        { "id": "gal-tcg-1", "placeholder": "photo: card collection" },
+        { "id": "gal-tcg-2", "placeholder": "photo: deck build" } ] },
+      { "key": "gaming", "icon": "🎮", "tag": "CTRL", "label": "Controller", "desc": "Where I first got curious about how software works. Still my go-to for game nights and co-op runs with friends.", "photos": [
+        { "id": "gal-gaming-1", "placeholder": "photo: gaming setup" },
+        { "id": "gal-gaming-2", "placeholder": "photo: game night" } ] },
+      { "key": "travel", "icon": "🧭", "tag": "COMPASS", "label": "Compass", "desc": "New cities force me to problem-solve outside my usual toolkit — reading transit maps, ordering in another language, getting comfortably lost. Every trip resets how I see a problem.", "photos": [
+        { "id": "gal-travel-1", "placeholder": "photo: city skyline" },
+        { "id": "gal-travel-2", "placeholder": "photo: on the road" } ] }
+    ],
+    "gridSize": 18,
+    "filledPositions": [1, 3, 6, 10, 13]
+  },
+
+  "projects": [
+    { "id": "pfizer", "repoUrl": "https://github.com/jelo-ca/pharma_rag", "imageId": "proj-pfizer", "imagePlaceholder": "screenshot: pipeline / demo", "rank": "S", "title": "AI/ML Extern — Pfizer", "status": "complete", "statusLabel": "✓ QUEST COMPLETE", "meta": "VIA EXTERN · JAN–MAR 2026 · REMOTE", "bullets": [
+      "Document pipeline extracting structured data from scanned pharma PDFs with Tesseract, PaddleOCR, and frontier LLMs.",
+      "Multi-agent RAG system with LlamaIndex for semantic search over unstructured regulatory documents.",
+      "Regression harness — 20+ factual-retrieval and hallucination queries across 500+ documents." ], "loot": ["PYTHON", "LLAMAINDEX", "TESSERACT", "PADDLEOCR"] },
+    { "id": "scheduler", "repoUrl": "https://github.com/jelo-ca/agentic-task-scheduler", "imageId": "proj-scheduler", "imageSrc": "/sprites/planpal-thumb.png", "imagePlaceholder": "screenshot: PlanPal", "rank": "S", "title": "PlanPal", "status": "complete", "statusLabel": "✓ QUEST COMPLETE", "meta": "CODEPATH · SPRING 2026", "bullets": [
+      "AI-assisted scheduler converting natural-language requests into structured, confidence-scored tasks through a multi-agent Gemini pipeline (Parser → Temporal → Normalization → Validation).",
+      "RAG chatbot grounded in live task context, answering scheduling questions via Gemini 2.0 Flash with a FastAPI backend and Streamlit UI.",
+      "Built a 3-tier evaluation harness (baseline vs. few-shot, adversarial robustness, context sensitivity) — few-shot prompting scored 96.7% vs. 88.3% baseline across 12 test cases." ], "loot": ["PYTHON", "FASTAPI", "GEMINI", "RAG"] },
+    { "id": "studyguild", "repoUrl": "https://github.com/jelo-ca/study-guild", "imageId": "proj-studyguild", "imagePlaceholder": "screenshot: Study Guild", "rank": "A", "title": "Study Guild", "status": "in-progress", "statusLabel": "◆ IN PROGRESS", "meta": "PERSONAL · DEC 2025 – PRESENT", "bullets": [
+      "Gamified multi-agent AI study tool generating in-scope study guides and quizzes from class modules and notes.",
+      "Database design that lets collected modules improve AI-generated quiz specialization per user." ], "loot": ["REACT", "RAG", "SUPABASE"] },
+    { "id": "scantry", "repoUrl": "https://github.com/jelo-ca/scantry", "imageId": "proj-scantry", "imagePlaceholder": "screenshot: Scantry", "rank": "A", "title": "Scantry", "status": "in-progress", "statusLabel": "◆ IN PROGRESS", "meta": "HACK YOUR SUMMER · JUL 2026 – PRESENT", "bullets": [
+      "Building a grocery inventory tracking system using Raspberry Pi and open-source Grocy." ], "loot": ["RASPBERRY PI", "GROCY"] }
+  ],
+
+  "ui": {
+    "sections": {
+      "journey":    { "navLabel": "WORLD MAP", "navSublabel": "THE JOURNEY",  "dialogTitle": "World Map",  "dialogSub": "PH → CA → UCI" },
+      "quests":     { "navLabel": "BATTLE LOG", "navSublabel": "PROJECTS",     "dialogTitle": "Battle Log", "dialogSub": "SELECTED PROJECTS" },
+      "experience": { "navLabel": "QUEST LOG",  "navSublabel": "EXPERIENCE",   "dialogTitle": "Quest Log",  "dialogSub": "EXPERIENCE" },
+      "hobbies":    { "navLabel": "INVENTORY",  "navSublabel": "HOBBIES",      "dialogTitle": "Inventory",  "dialogSub": "HOBBIES" },
+      "contact":    { "navLabel": "CONTACT",    "navSublabel": "SAY HELLO",    "dialogTitle": "Contact",    "dialogSub": "" }
+    },
+
+    "misc": {
+      "escHint": "ESC",
+      "closeGlyph": "✕"
+    },
+
+    "topBar": {
+      "resume": "RESUME ↓",
+      "github": "GITHUB",
+      "linkedin": "LINKEDIN",
+      "sfxOn": "SFX ON",
+      "sfxOff": "SFX OFF",
+      "linksMenuAriaLabel": "Links menu",
+      "hamburgerGlyph": "☰"
+    },
+
+    "keybinds": {
+      "heading": "KEYBINDS",
+      "changeCharacter": "CHANGE CHARACTER",
+      "summonFamiliar": "SUMMON FAMILIAR",
+      "close": "CLOSE"
+    },
+
+    "playerBar": {
+      "playerPlate": "P1 · IMAJELLO",
+      "level": "LVL 21",
+      "hp": "HP",
+      "en": "EN",
+      "konamiHint": "▲ ▲ ▼ ▼ ◀ ▶ ◀ ▶ B A",
+      "konamiUnlocked": "★ KONAMI MASTER UNLOCKED",
+      "xpMaxLabel": "LVL UP★ ALL CHAPTERS EXPLORED",
+      "familiarLabel": "FAMILIAR"
+    },
+
+    "hero": {
+      "eyebrow": "SOFTWARE ENGINEER · AI/ML · FREMONT CA",
+      "nameFirst": "Anjoelo Calder",
+      "nameAccent": "o",
+      "nameLast": "n",
+      "statsLabel": "STATS",
+      "prevAriaLabel": "Previous character",
+      "nextAriaLabel": "Next character",
+      "bio": "AI/ML software engineer at UC Irvine, originally from the Philippines."
+    },
+
+    "battleLog": {
+      "repoLink": "⌂ REPO",
+      "rankPrefix": "RANK",
+      "lootLabel": "LOOT:"
+    },
+
+    "worldMap": {
+      "photoPrefix": "photo:"
+    },
+
+    "inventory": {
+      "hint": "CLICK AN ITEM TO VIEW",
+      "back": "◀ BACK TO ITEMS",
+      "itemPrefix": "ITEM"
+    },
+
+    "questLog": {
+      "tabs": { "main": "MAIN QUESTS", "side": "SIDE QUESTS", "timeline": "TIMELINE" },
+      "mobileSelectAriaLabel": "Quest log section",
+      "mainIntro": "I find the edge cases more interesting than the happy path — reliable evaluation, honest failure modes, real constraints around latency and cost. That's the terrain I enjoy.",
+      "sideIntro": "Not everything is in a terminal. These jobs taught me the stuff that doesn't show up in a commit log.",
+      "sideTag": "⚔ SIDE QUEST",
+      "skillsLabel": "SKILLS GAINED:",
+      "achievementsHeading": "Achievements Unlocked",
+      "achievementsTag": "LEADERSHIP",
+      "educationLabel": "EDUCATION"
+    },
+
+    "timeline": {
+      "intro": "Everything, side by side — main quests, side quests, and school, in the order they actually happened. Recent at the top.",
+      "futureLabel": "↑ future",
+      "legend": {
+        "main": "Main quest",
+        "side": "Side quest",
+        "eduPink": "Education (De Anza)",
+        "eduUci": "Education (UCI)"
+      },
+      "yearLabels": [
+        { "top": 44, "text": "2027" },
+        { "top": 128, "text": "NOW", "now": true },
+        { "top": 212, "text": "2026" },
+        { "top": 380, "text": "2025" },
+        { "top": 548, "text": "2024" },
+        { "top": 716, "text": "2023" },
+        { "top": 884, "text": "2022" }
+      ]
+    },
+
+    "contact": {
+      "continueTag": "CONTINUE?",
+      "headingPrefix": "Ready for the next ",
+      "headingAccent": "quest?",
+      "intro": "Open to Summer 2027 internships and interesting collaborations in AI/ML and full-stack engineering.",
+      "links": { "email": "EMAIL", "github": "GITHUB", "linkedin": "LINKEDIN", "resume": "RESUME" },
+      "statusHeading": "PLAYER STATUS",
+      "status": [
+        { "label": "AVAILABILITY", "value": "NOW · FALL/SPRING/SUMMER" },
+        { "label": "FOCUS", "value": "AI/ML · FULL-STACK" },
+        { "label": "RESPONSE TIME", "value": "< 24 HRS" },
+        { "label": "LOCATION", "value": "OPEN TO RELOCATE" }
+      ],
+      "formLabel": "SEND A MESSAGE",
+      "placeholders": { "name": "YOUR NAME", "email": "YOUR EMAIL", "message": "YOUR MESSAGE" },
+      "sendBtn": "▶ SAY HELLO",
+      "finePrint": "Opens your email app pre-filled — nothing sends until you hit send there.",
+      "footer": "© 2026 · INSERT COIN",
+      "mailto": { "subjectPrefix": "Hello from ", "subjectFallback": "a visitor", "signaturePrefix": "\n\n— " }
+    },
+
+    "familiarChat": {
+      "sleepingPlaceholder": "zzz...",
+      "outOfQuestionsPlaceholder": "That's all for now...",
+      "defaultPlaceholder": "Ask your question...",
+      "sleepingLabel": "FAMILIAR IS SLEEPING",
+      "questionsLeftSuffix": "LEFT TODAY",
+      "questionSingular": "QUESTION",
+      "questionPlural": "QUESTIONS",
+      "panelHeader": "YOUR FAMILIAR",
+      "sleepBannerPrefix": "💤 *the familiar is fast asleep and won't wake up* (",
+      "sleepBannerSuffix": ")",
+      "sendBtn": "SEND",
+      "chatPrefixes": { "familiar": "FAMILIAR: ", "you": "YOU: " },
+      "errors": {
+        "requestFailed": "request failed",
+        "malformedResponse": "malformed response from server",
+        "noCredits": "no credits remaining"
+      }
+    },
+
+    "discoveryPanel": {
+      "triggerIcon": "🧭",
+      "triggerLabel": "DISCOVERIES",
+      "intro": "Poke around the site to find them all — some are in plain sight, some are secrets.",
+      "foundLabel": "FOUND",
+      "undiscoveredLabel": "UNDISCOVERED",
+      "hiddenPlaceholder": "???"
+    },
+
+    "imageSlot": {
+      "comingSoon": "COMING SOON"
+    },
+
+    "toast": {
+      "discoveredLabel": "DISCOVERED",
+      "levelUp": "LEVEL UP — all chapters explored"
+    },
+
+    "mobileNotice": {
+      "text": "Best experienced on desktop — some features are simplified on mobile.",
+      "dismissAriaLabel": "Dismiss"
+    },
+
+    "dialogHost": {
+      "closeGlyph": "✕"
+    }
+  }
+}

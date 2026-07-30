@@ -1,15 +1,8 @@
 import { TIMELINE_BARS } from '../../data/quests';
+import { ui } from '../../content';
 import styles from './TimelineTab.module.css';
 
-const YEAR_LABELS: Array<{ top: number; text: string; now?: boolean }> = [
-  { top: 44, text: '2027' },
-  { top: 128, text: 'NOW', now: true },
-  { top: 212, text: '2026' },
-  { top: 380, text: '2025' },
-  { top: 548, text: '2024' },
-  { top: 716, text: '2023' },
-  { top: 884, text: '2022' },
-];
+const YEAR_LABELS = ui.timeline.yearLabels;
 
 const VARIANT_CLASS: Record<string, string> = {
   'education-pink': styles.barEducationPink,
@@ -19,12 +12,13 @@ const VARIANT_CLASS: Record<string, string> = {
 };
 
 function Legend() {
+  const t = ui.timeline.legend;
   return (
     <div className={styles.legend}>
-      <span><span className={styles.swatchMain} /> Main quest</span>
-      <span><span className={styles.swatchSide} /> Side quest</span>
-      <span><span className={styles.swatchEduPink} /> Education (De Anza)</span>
-      <span><span className={styles.swatchEduUci} /> Education (UCI)</span>
+      <span><span className={styles.swatchMain} /> {t.main}</span>
+      <span><span className={styles.swatchSide} /> {t.side}</span>
+      <span><span className={styles.swatchEduPink} /> {t.eduPink}</span>
+      <span><span className={styles.swatchEduUci} /> {t.eduUci}</span>
     </div>
   );
 }
@@ -33,7 +27,7 @@ export function TimelineTab() {
   return (
     <div className={styles.wrap}>
       <div className={styles.introRow}>
-        <p className={styles.intro}>Everything, side by side — main quests, side quests, and school, in the order they actually happened. Recent at the top.</p>
+        <p className={styles.intro}>{ui.timeline.intro}</p>
         <Legend />
       </div>
       <div className={styles.chartScroll}>
@@ -44,7 +38,7 @@ export function TimelineTab() {
             ))}
           </div>
           <div className={styles.track}>
-            <div className={styles.futureLabel}>↑ future</div>
+            <div className={styles.futureLabel}>{ui.timeline.futureLabel}</div>
             {YEAR_LABELS.map(y => (
               <div
                 key={y.text}

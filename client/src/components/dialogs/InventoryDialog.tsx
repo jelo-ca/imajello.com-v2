@@ -1,6 +1,7 @@
 import { useGameState } from '../../state/GameStateContext';
 import { useSfx } from '../../hooks/useSfx';
 import { INV_ITEMS, INV_GRID_SIZE, INV_FILLED_POSITIONS } from '../../data/invItems';
+import { ui } from '../../content';
 import { ImageSlot } from '../shared/ImageSlot';
 import styles from './InventoryDialog.module.css';
 
@@ -23,15 +24,15 @@ export function InventoryDialog({ onClose }: { onClose: () => void }) {
       <div className={styles.header}>
         <div className={styles.headerLeft}>
           <span className={styles.badge}>[4]</span>
-          <span className={styles.title}>Inventory</span>
-          <span className={styles.sub}>HOBBIES</span>
+          <span className={styles.title}>{ui.sections.hobbies.dialogTitle}</span>
+          <span className={styles.sub}>{ui.sections.hobbies.dialogSub}</span>
         </div>
-        <button data-sfx className={styles.closeBtn} onClick={onClose}>✕ <span className={styles.escHint}>ESC</span></button>
+        <button data-sfx className={styles.closeBtn} onClick={onClose}>{ui.misc.closeGlyph} <span className={styles.escHint}>{ui.misc.escHint}</span></button>
       </div>
 
       {!activeItem ? (
         <div className={styles.gridBody}>
-          <p className={styles.hint}>CLICK AN ITEM TO VIEW</p>
+          <p className={styles.hint}>{ui.inventory.hint}</p>
           <div className={styles.grid}>
             {slots.map((slot, i) => slot.filled ? (
               <button key={i} data-sfx className={styles.slotFilled} onClick={() => openItem(slot.item.key)}>
@@ -45,7 +46,7 @@ export function InventoryDialog({ onClose }: { onClose: () => void }) {
         </div>
       ) : (
         <div className={styles.galleryBody}>
-          <button data-sfx className={styles.backBtn} onClick={back}>◀ BACK TO ITEMS</button>
+          <button data-sfx className={styles.backBtn} onClick={back}>{ui.inventory.back}</button>
           <div className={styles.galleryGrid}>
             <div className={styles.photoStage}>
               <span className={styles.watermark}>{activeItem.icon}</span>
@@ -79,7 +80,7 @@ export function InventoryDialog({ onClose }: { onClose: () => void }) {
             <div>
               <div className={styles.metaRow}>
                 <span className={styles.metaIcon}>{activeItem.icon}</span>
-                <span className={styles.metaTag}>{activeItem.tag} · ITEM {INV_ITEMS.findIndex(i => i.key === activeItem.key) + 1}/{INV_ITEMS.length}</span>
+                <span className={styles.metaTag}>{activeItem.tag} · {ui.inventory.itemPrefix} {INV_ITEMS.findIndex(i => i.key === activeItem.key) + 1}/{INV_ITEMS.length}</span>
               </div>
               <h3 className={styles.itemLabel}>{activeItem.label}</h3>
               <p className={styles.itemDesc}>{activeItem.desc}</p>

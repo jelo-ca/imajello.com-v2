@@ -2,24 +2,26 @@ import { useGameState } from '../../state/GameStateContext';
 import { useSfx } from '../../hooks/useSfx';
 import { DISCOVERIES } from '../../data/discoveries';
 import type { SectionKey } from '../../data/discoveries';
+import { ui } from '../../content';
 import styles from './PlayerBar.module.css';
 
-const NAV: Array<{ section: SectionKey; num: number; glyph: string; label: string; sublabel: string }> = [
-  { section: 'journey', num: 1, glyph: '◆', label: 'WORLD MAP', sublabel: 'THE JOURNEY' },
-  { section: 'quests', num: 2, glyph: '⚔', label: 'BATTLE LOG', sublabel: 'PROJECTS' },
-  { section: 'experience', num: 3, glyph: '▣', label: 'QUEST LOG', sublabel: 'EXPERIENCE' },
-  { section: 'hobbies', num: 4, glyph: '♦', label: 'INVENTORY', sublabel: 'HOBBIES' },
-  { section: 'contact', num: 5, glyph: '✉', label: 'CONTACT', sublabel: 'SAY HELLO' },
+const NAV: Array<{ section: SectionKey; num: number; glyph: string }> = [
+  { section: 'journey', num: 1, glyph: '◆' },
+  { section: 'quests', num: 2, glyph: '⚔' },
+  { section: 'experience', num: 3, glyph: '▣' },
+  { section: 'hobbies', num: 4, glyph: '♦' },
+  { section: 'contact', num: 5, glyph: '✉' },
 ];
 
 export function PlayerBar({ onSummonFamiliar }: { onSummonFamiliar: () => void }) {
   const { state, dispatch } = useGameState();
   const { tick } = useSfx();
+  const pb = ui.playerBar;
 
   const discoveredCount = Object.keys(state.discoveries).length;
   const xp = Math.round((discoveredCount / DISCOVERIES.length) * 100);
   const xpLabel = xp >= 100
-    ? 'LVL UP★ ALL CHAPTERS EXPLORED'
+    ? pb.xpMaxLabel
     : `${xp}% XP · ${state.visited.length}/4 CHAPTERS`;
 
   return (
@@ -28,18 +30,18 @@ export function PlayerBar({ onSummonFamiliar }: { onSummonFamiliar: () => void }
 
       <div className={styles.playerPlate}>
         <div className={styles.plateTop}>
-          <span>P1 · IMAJELLO</span>
-          <span className={styles.level}>LVL 21</span>
+          <span>{pb.playerPlate}</span>
+          <span className={styles.level}>{pb.level}</span>
         </div>
         <div className={styles.meterRow}>
-          <span className={styles.meterLabelHp}>HP</span>
+          <span className={styles.meterLabelHp}>{pb.hp}</span>
           <div className={styles.meterTrough}><div className={styles.meterFillHp} /><div className={styles.meterSegments} /></div>
         </div>
         <div className={styles.meterRow}>
-          <span className={styles.meterLabelEn}>EN</span>
+          <span className={styles.meterLabelEn}>{pb.en}</span>
           <div className={styles.meterTrough}><div className={styles.meterFillEn} /><div className={styles.meterSegments} /></div>
         </div>
-        <span className={styles.konamiHint}>{state.konamiUnlocked ? '★ KONAMI MASTER UNLOCKED' : '▲ ▲ ▼ ▼ ◀ ▶ ◀ ▶ B A'}</span>
+        <span className={styles.konamiHint}>{state.konamiUnlocked ? pb.konamiUnlocked : pb.konamiHint}</span>
         <span className={styles.xpLabel}>{xpLabel}</span>
       </div>
 
@@ -63,8 +65,8 @@ export function PlayerBar({ onSummonFamiliar }: { onSummonFamiliar: () => void }
               <div className={styles.navFill} style={{ transform: hovering ? 'scaleY(1)' : 'scaleY(0)' }} />
               <span className={styles.navBadge}>{item.num}</span>
               <span className={styles.navGlyph}>{item.glyph}</span>
-              <span className={styles.navLabel}>{item.label}</span>
-              <span className={styles.navSub}>{item.sublabel}</span>
+              <span className={styles.navLabel}>{ui.sections[item.section].navLabel}</span>
+              <span className={styles.navSub}>{ui.sections[item.section].navSublabel}</span>
             </button>
           );
         })}
@@ -75,7 +77,7 @@ export function PlayerBar({ onSummonFamiliar }: { onSummonFamiliar: () => void }
           <span className={styles.familiarBadge}>F</span>
           <span className={styles.familiarIcon}>🔮</span>
         </button>
-        <span className={styles.familiarLabel}>FAMILIAR</span>
+        <span className={styles.familiarLabel}>{pb.familiarLabel}</span>
       </div>
     </div>
   );

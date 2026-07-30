@@ -9,6 +9,7 @@ import { FamiliarChat } from './components/familiar/FamiliarChat';
 import { Toast } from './components/shared/Toast';
 import { KonamiOverlay } from './components/shared/KonamiOverlay';
 import { MobileNotice } from './components/shared/MobileNotice';
+import { ui } from './content';
 import styles from './App.module.css';
 
 const SECTION_KEYS: Record<string, 'journey' | 'quests' | 'experience' | 'hobbies' | 'contact'> = {
@@ -76,7 +77,7 @@ export default function App() {
   useEffect(() => {
     if (state.levelUpTrigger === 0) return;
     const timer = setTimeout(() => {
-      dispatch({ type: 'SET_TOAST', text: 'LEVEL UP — all chapters explored' });
+      dispatch({ type: 'SET_TOAST', text: ui.toast.levelUp });
       fanfare();
     }, 3400);
     return () => clearTimeout(timer);

@@ -3,6 +3,7 @@ import type { TouchEvent } from 'react';
 import { useGameState } from '../../state/GameStateContext';
 import { useSfx } from '../../hooks/useSfx';
 import { CHARS } from '../../data/chars';
+import { ui } from '../../content';
 import styles from './HeroCharacterViewer.module.css';
 
 // Minimum horizontal drag distance (px) to count as a swipe, below which
@@ -56,8 +57,8 @@ export function HeroCharacterViewer() {
 
   return (
     <div className={styles.wrap}>
-      <div className={styles.eyebrow}>SOFTWARE ENGINEER · AI/ML · FREMONT CA</div>
-      <h1 className={styles.name}>Anjoelo Calder<span className={styles.accent}>o</span>n</h1>
+      <div className={styles.eyebrow}>{ui.hero.eyebrow}</div>
+      <h1 className={styles.name}>{ui.hero.nameFirst}<span className={styles.accent}>{ui.hero.nameAccent}</span>{ui.hero.nameLast}</h1>
 
       {/* reference lines 69-85: one flex row, arrows flanking portrait box + stat panel */}
       <div className={styles.row} onTouchStart={onTouchStart} onTouchEnd={onTouchEnd}>
@@ -86,7 +87,7 @@ export function HeroCharacterViewer() {
 
         <div className={styles.statPanel}>
           <div className={styles.statsHeader}>
-            <span className={styles.statsLabel}>STATS</span>
+            <span className={styles.statsLabel}>{ui.hero.statsLabel}</span>
           </div>
           {char.stats.map(stat => (
             <div className={styles.statRow} key={stat.name}>
@@ -110,17 +111,17 @@ export function HeroCharacterViewer() {
           above); .mobileArrow gives mobile users a visible, discoverable way to rotate characters
           too, since swipe alone isn't obvious. Desktop keeps using the .row arrows only. */}
       <div className={styles.nameClassRow}>
-        <button data-sfx className={styles.mobileArrow} onClick={goPrev} aria-label="Previous character">◀</button>
+        <button data-sfx className={styles.mobileArrow} onClick={goPrev} aria-label={ui.hero.prevAriaLabel}>◀</button>
         <div className={styles.nameClassBox}>
           <div className={styles.charName}>{char.name}</div>
           <div className={styles.charClass}>{char.cls}</div>
         </div>
-        <button data-sfx className={styles.mobileArrow} onClick={goNext} aria-label="Next character">▶</button>
+        <button data-sfx className={styles.mobileArrow} onClick={goNext} aria-label={ui.hero.nextAriaLabel}>▶</button>
       </div>
 
       {/* reference line 142: static bio, [data-hero-bio] hidden on short viewports via global.css. */}
       <p data-hero-bio className={styles.bio}>
-        AI/ML software engineer at UC Irvine, originally from the Philippines.
+        {ui.hero.bio}
       </p>
     </div>
   );

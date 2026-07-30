@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { ui } from '../../content';
 import styles from './MobileNotice.module.css';
 
 const DISMISS_KEY = 'imajello-mobile-notice-dismissed';
@@ -21,8 +22,8 @@ export function MobileNotice() {
 
   return (
     <div className={styles.banner} role="status">
-      <span className={styles.text}>Best experienced on desktop — some features are simplified on mobile.</span>
-      <button className={styles.closeBtn} onClick={dismiss} aria-label="Dismiss">✕</button>
+      <span className={styles.text}>{ui.mobileNotice.text}</span>
+      <button className={styles.closeBtn} onClick={dismiss} aria-label={ui.mobileNotice.dismissAriaLabel}>{ui.misc.closeGlyph}</button>
     </div>
   );
 }

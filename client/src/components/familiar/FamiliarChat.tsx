@@ -3,6 +3,7 @@ import { useGameState } from '../../state/GameStateContext';
 import { useFamiliarToggle } from '../../hooks/useFamiliarToggle';
 import { useSfx } from '../../hooks/useSfx';
 import { CHAT_QUESTION_LIMIT } from '../../data/discoveries';
+import { ui } from '../../content';
 import styles from './FamiliarChat.module.css';
 
 function getSessionId(): string {
@@ -27,13 +28,14 @@ export function FamiliarChat() {
 
   if (!state.familiarOpen) return null;
 
+  const fc = ui.familiarChat;
   const questionsLeft = CHAT_QUESTION_LIMIT - state.chatQuestionsAsked;
   const sleepy = state.familiarAsleep || questionsLeft <= 0;
   const disabled = state.familiarAsleep || state.chatSending || questionsLeft <= 0;
-  const placeholder = state.familiarAsleep ? 'zzz...' : questionsLeft <= 0 ? "That's all for now..." : 'Ask your question...';
+  const placeholder = state.familiarAsleep ? fc.sleepingPlaceholder : questionsLeft <= 0 ? fc.outOfQuestionsPlaceholder : fc.defaultPlaceholder;
   const questionsLabel = state.familiarAsleep
-    ? 'FAMILIAR IS SLEEPING'
-    : `${questionsLeft} QUESTION${questionsLeft === 1 ? '' : 'S'} LEFT TODAY`;
+    ? fc.sleepingLabel
+    : `${questionsLeft} ${questionsLeft === 1 ? fc.questionSingular : fc.questionPlural} ${fc.questionsLeftSuffix}`;
 
   const send = async () => {
     const text = state.chatInputValue.trim();
@@ -47,11 +49,11 @@ export function FamiliarChat() {
         body: JSON.stringify({ message: text, sessionId: getSessionId() }),
       });
       const data = await res.json();
-      if (!res.ok) throw new Error(data.error ?? 'request failed');
-      if (!data.reply || typeof data.reply !== 'string') throw new Error('malformed response from server');
+      if (!res.ok) throw new Error(data.error ?? fc.errors.requestFailed);
+      if (!data.reply || typeof data.reply !== 'string') throw new Error(fc.errors.malformedResponse);
       dispatch({ type: 'CHAT_SEND_SUCCESS', reply: data.reply });
     } catch (err) {
-      const reason = err instanceof Error ? err.message : 'no credits remaining';
+      const reason = err instanceof Error ? err.message : fc.errors.noCredits;
       dispatch({ type: 'CHAT_SEND_ERROR', reason });
     }
   };
@@ -64,13 +66,13 @@ export function FamiliarChat() {
       </div>
       <div className={styles.panel}>
         <div className={styles.panelHeader}>
-          <span>YOUR FAMILIAR</span>
-          <button data-sfx className={styles.closeBtn} onClick={toggleFamiliar}>✕</button>
+          <span>{fc.panelHeader}</span>
+          <button data-sfx className={styles.closeBtn} onClick={toggleFamiliar}>{ui.misc.closeGlyph}</button>
         </div>
         <div className={styles.body}>
           <div ref={scrollRef} className={styles.scroll}>
             {state.familiarAsleep ? (
-              <div>💤 *the familiar is fast asleep and won't wake up* ({state.familiarSleepReason})</div>
+              <div>{fc.sleepBannerPrefix}{state.familiarSleepReason}{fc.sleepBannerSuffix}</div>
             ) : (
               state.chatMessages.map((m, i) => <div key={i} style={{ color: m.color }}>{m.text}</div>)
             )}
@@ -85,7 +87,7 @@ export function FamiliarChat() {
               disabled={disabled}
               className={styles.input}
             />
-            <button data-sfx disabled={disabled} className={styles.sendBtn} onClick={send}>SEND</button>
+            <button data-sfx disabled={disabled} className={styles.sendBtn} onClick={send}>{fc.sendBtn}</button>
           </div>
           <span className={styles.questionsLeft}>{questionsLabel}</span>
         </div>

@@ -1,3 +1,4 @@
+import { ui } from '../../content';
 import styles from './ImageSlot.module.css';
 
 interface Props {
@@ -14,7 +15,7 @@ export function ImageSlot({ src, alt = '', placeholder, fit = 'cover', style }: 
   }
   return (
     <div className={styles.placeholder} style={style} title={placeholder}>
-      <span className={styles.badge}>COMING SOON</span>
+      <span className={styles.badge}>{ui.imageSlot.comingSoon}</span>
     </div>
   );
 }

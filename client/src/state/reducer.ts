@@ -1,6 +1,7 @@
 import type { State, Action } from './types';
 import { CHARS } from '../data/chars';
 import { DISCOVERIES, CHAT_QUESTION_LIMIT } from '../data/discoveries';
+import { ui } from '../content';
 
 export const initialState: State = {
   open: null,
@@ -70,7 +71,7 @@ export function reducer(state: State, action: Action): State {
         ...state,
         familiarOpen: true,
         familiarEmoji: action.emoji,
-        chatMessages: [{ text: 'FAMILIAR: ' + action.greeting, color: '#ee9aa3' }],
+        chatMessages: [{ text: ui.familiarChat.chatPrefixes.familiar + action.greeting, color: '#ee9aa3' }],
         chatQuestionsAsked: 0,
         familiarAsleep: false,
         familiarSleepReason: '',
@@ -118,7 +119,7 @@ export function reducer(state: State, action: Action): State {
     case 'CHAT_SEND_START':
       return {
         ...state,
-        chatMessages: [...state.chatMessages, { text: 'YOU: ' + action.text, color: '#f5d9dc' }],
+        chatMessages: [...state.chatMessages, { text: ui.familiarChat.chatPrefixes.you + action.text, color: '#f5d9dc' }],
         chatInputValue: '',
         chatSending: true,
         chatQuestionsAsked: state.chatQuestionsAsked + 1,
@@ -126,7 +127,7 @@ export function reducer(state: State, action: Action): State {
     case 'CHAT_SEND_SUCCESS':
       return {
         ...state,
-        chatMessages: [...state.chatMessages, { text: 'FAMILIAR: ' + action.reply, color: '#ee9aa3' }],
+        chatMessages: [...state.chatMessages, { text: ui.familiarChat.chatPrefixes.familiar + action.reply, color: '#ee9aa3' }],
         chatSending: false,
       };
     case 'CHAT_SEND_ERROR':
