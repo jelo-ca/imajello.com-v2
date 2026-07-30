@@ -9,6 +9,11 @@ export interface Barrel {
   vx: number;
   vy: number;
   grounded: boolean;
+  // A barrel spawns in mid-air above the top girder, so its very first touchdown is an
+  // arrival, not a row-to-row transition, and must not trigger the cascade's direction
+  // flip. Without this the barrel reverses the instant it lands and rolls straight back
+  // off the edge it spawned over, never travelling anywhere.
+  hasLanded: boolean;
 }
 
 export interface DkPose {
@@ -228,6 +233,7 @@ export function useDonkeyKongLoop({
           vx: BARREL_SPEED,
           vy: 0,
           grounded: false,
+          hasLanded: false,
         });
       }
 
@@ -254,7 +260,8 @@ export function useDonkeyKongLoop({
         // other way. While it's simply rolling along, it re-lands every frame (the snap
         // above puts prevBottom exactly on the surface), so grounded stays true and the
         // direction holds.
-        if (bLanded && !b.grounded) b.vx = -b.vx;
+        if (bLanded && !b.grounded && b.hasLanded) b.vx = -b.vx;
+        if (bLanded) b.hasLanded = true;
         b.grounded = bLanded;
 
         const offScreen =

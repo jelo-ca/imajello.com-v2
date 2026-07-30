@@ -369,10 +369,10 @@
           { "top": 62, "left": 30, "width": 2.2, "height": 13 },
           { "top": 49, "left": 65, "width": 2.2, "height": 13 },
           { "top": 36, "left": 30, "width": 2.2, "height": 13 },
-          { "top": 23, "left": 30, "width": 2.2, "height": 13 }
+          { "top": 23, "left": 65, "width": 2.2, "height": 13 }
         ],
-        "goal": { "top": 17, "left": 68, "width": 7, "height": 6 },
-        "barrelSpawn": { "top": 19, "left": 4 }
+        "goal": { "top": 17, "left": 4, "width": 7, "height": 6 },
+        "barrelSpawn": { "top": 19, "left": 16 }
       },
       "levelMobile": {
         "girders": [
@@ -385,8 +385,8 @@
           { "top": 52, "left": 30, "width": 5, "height": 18 },
           { "top": 34, "left": 55, "width": 5, "height": 18 }
         ],
-        "goal": { "top": 27, "left": 58, "width": 14, "height": 7 },
-        "barrelSpawn": { "top": 30, "left": 4 }
+        "goal": { "top": 27, "left": 4, "width": 14, "height": 7 },
+        "barrelSpawn": { "top": 30, "left": 26 }
       },
       "controls": {
         "leftGlyph": "◀",
