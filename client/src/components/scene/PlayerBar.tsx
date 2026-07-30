@@ -13,7 +13,12 @@ const NAV: Array<{ section: SectionKey; num: number; glyph: string }> = [
   { section: 'contact', num: 5, glyph: '✉' },
 ];
 
-export function PlayerBar({ onSummonFamiliar }: { onSummonFamiliar: () => void }) {
+interface Props {
+  onSummonFamiliar: () => void;
+  setPlatformRef: (key: string) => (el: HTMLElement | null) => void;
+}
+
+export function PlayerBar({ onSummonFamiliar, setPlatformRef }: Props) {
   const { state, dispatch } = useGameState();
   const { tick } = useSfx();
   const pb = ui.playerBar;
@@ -28,7 +33,7 @@ export function PlayerBar({ onSummonFamiliar }: { onSummonFamiliar: () => void }
     <div className={styles.bar}>
       <div className={styles.xpTrack}><div className={styles.xpFill} style={{ width: `${xp}%` }} /></div>
 
-      <div className={styles.playerPlate}>
+      <div className={styles.playerPlate} ref={setPlatformRef('plate')}>
         <div className={styles.plateTop}>
           <span>{pb.playerPlate}</span>
           <span className={styles.level}>{pb.level}</span>
@@ -53,6 +58,7 @@ export function PlayerBar({ onSummonFamiliar }: { onSummonFamiliar: () => void }
             <button
               key={item.section}
               data-sfx
+              ref={setPlatformRef(`nav-${item.section}`)}
               className={styles.navBtn}
               style={{
                 background: hovering ? 'rgba(238,154,163,.16)' : 'none',
@@ -73,7 +79,7 @@ export function PlayerBar({ onSummonFamiliar }: { onSummonFamiliar: () => void }
       </div>
 
       <div className={styles.familiarWrap}>
-        <button data-sfx className={styles.familiarBtn} onClick={onSummonFamiliar}>
+        <button data-sfx className={styles.familiarBtn} ref={setPlatformRef('familiar')} onClick={onSummonFamiliar}>
           <span className={styles.familiarBadge}>F</span>
           <span className={styles.familiarIcon}>🔮</span>
         </button>

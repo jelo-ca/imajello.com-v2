@@ -178,12 +178,6 @@ a:hover {
   }
 }
 
-@media (max-height: 640px) {
-  [data-hero-bio] {
-    display: none !important;
-  }
-}
-
 @media (max-height: 520px) {
   [data-hero-dots] {
     display: none !important;

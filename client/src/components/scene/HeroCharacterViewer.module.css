@@ -7,24 +7,6 @@
   display: contents;
 }
 
-.eyebrow {
-  font: 400 11px 'Silkscreen', monospace;
-  letter-spacing: .12em;
-  color: #c25f74;
-}
-
-.name {
-  margin: 0;
-  font: 400 clamp(28px, min(5.4vw, 6vh), 68px)/0.95 'Archivo Black', sans-serif;
-  text-transform: uppercase;
-  letter-spacing: -.01em;
-  text-align: center;
-}
-
-.accent {
-  color: #c25f74;
-}
-
 .row {
   display: flex;
   align-items: center;
@@ -200,14 +182,19 @@
   margin-top: 2px;
 }
 
-.bio {
-  margin: 0;
-  font-size: clamp(12px, 1.9vh, 14px);
-  line-height: 1.5;
-  color: #3a3a40;
-  max-width: 480px;
-  text-align: center;
-  text-wrap: pretty;
+.startBtn {
+  font: 400 13px 'Silkscreen', monospace;
+  letter-spacing: .06em;
+  background: #2b2b30;
+  color: #f5d9dc;
+  border: 3px solid #2b2b30;
+  padding: 12px 28px;
+  cursor: pointer;
+}
+.startBtn:hover {
+  background: #ee9aa3;
+  color: #2b2b30;
+  border-color: #ee9aa3;
 }
 
 @media (max-width: 768px) {

@@ -30,6 +30,7 @@ export interface State {
   msgBody: string;
   navHover: SectionKey | null;
   familiarHover: boolean;
+  playing: boolean;
   // Ephemeral, session-only counter — incremented exactly once by OPEN_SECTION when
   // a live dispatch (never HYDRATE_PERSISTED) first brings visited.length to 4, so
   // App.tsx can schedule the delayed "LEVEL UP" toast/fanfare without misfiring on
@@ -55,6 +56,8 @@ export type Action =
   | { type: 'SET_NAV_HOVER'; section: SectionKey | null }
   | { type: 'SET_FAMILIAR_HOVER'; value: boolean }
   | { type: 'SET_KONAMI_UNLOCKED' }
+  | { type: 'START_PLATFORMER' }
+  | { type: 'STOP_PLATFORMER' }
   | { type: 'SET_TOAST'; text: string | null }
   | { type: 'CHAT_SEND_START'; text: string }
   | { type: 'CHAT_SEND_SUCCESS'; reply: string }

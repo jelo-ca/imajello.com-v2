@@ -207,7 +207,10 @@
       "heading": "KEYBINDS",
       "changeCharacter": "CHANGE CHARACTER",
       "summonFamiliar": "SUMMON FAMILIAR",
-      "close": "CLOSE"
+      "close": "CLOSE",
+      "move": "MOVE",
+      "jump": "JUMP",
+      "stopPlaying": "STOP PLAYING"
     },
 
     "playerBar": {
@@ -222,14 +225,10 @@
     },
 
     "hero": {
-      "eyebrow": "SOFTWARE ENGINEER · AI/ML · FREMONT CA",
-      "nameFirst": "Anjoelo Calder",
-      "nameAccent": "o",
-      "nameLast": "n",
       "statsLabel": "STATS",
       "prevAriaLabel": "Previous character",
       "nextAriaLabel": "Next character",
-      "bio": "AI/ML software engineer at UC Irvine, originally from the Philippines."
+      "startBtn": "▶ START"
     },
 
     "battleLog": {
@@ -346,6 +345,27 @@
 
     "dialogHost": {
       "closeGlyph": "✕"
+    },
+
+    "platformer": {
+      "decorativePlatforms": [
+        { "top": 78, "left": 8, "width": 11, "height": 3 },
+        { "top": 66, "left": 40, "width": 13, "height": 3 },
+        { "top": 54, "left": 78, "width": 11, "height": 3 },
+        { "top": 42, "left": 22, "width": 10, "height": 3 }
+      ],
+      "decorativePlatformsMobile": [
+        { "top": 78, "left": 8, "width": 30, "height": 2.5 },
+        { "top": 64, "left": 52, "width": 32, "height": 2.5 }
+      ],
+      "controls": {
+        "leftGlyph": "◀",
+        "rightGlyph": "▶",
+        "jumpGlyph": "⤒",
+        "leftAriaLabel": "Move left",
+        "rightAriaLabel": "Move right",
+        "jumpAriaLabel": "Jump"
+      }
     }
   }
 }

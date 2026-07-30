@@ -49,6 +49,8 @@ export interface Project {
 
 export interface SectionCopy { navLabel: string; navSublabel: string; dialogTitle: string; dialogSub: string; }
 
+export interface PlatformRectSpec { top: number; left: number; width: number; height: number; }
+
 export interface ContentShape {
   meta: { pageTitle: string };
   chars: Char[];
@@ -83,9 +85,9 @@ export interface ContentShape {
     sections: Record<SectionKey, SectionCopy>;
     misc: { escHint: string; closeGlyph: string };
     topBar: { resume: string; github: string; linkedin: string; sfxOn: string; sfxOff: string; linksMenuAriaLabel: string; hamburgerGlyph: string };
-    keybinds: { heading: string; changeCharacter: string; summonFamiliar: string; close: string };
+    keybinds: { heading: string; changeCharacter: string; summonFamiliar: string; close: string; move: string; jump: string; stopPlaying: string };
     playerBar: { playerPlate: string; level: string; hp: string; en: string; konamiHint: string; konamiUnlocked: string; xpMaxLabel: string; familiarLabel: string };
-    hero: { eyebrow: string; nameFirst: string; nameAccent: string; nameLast: string; statsLabel: string; prevAriaLabel: string; nextAriaLabel: string; bio: string };
+    hero: { statsLabel: string; prevAriaLabel: string; nextAriaLabel: string; startBtn: string };
     battleLog: { repoLink: string; rankPrefix: string; lootLabel: string };
     worldMap: { photoPrefix: string };
     inventory: { hint: string; back: string; itemPrefix: string };
@@ -141,6 +143,11 @@ export interface ContentShape {
     toast: { discoveredLabel: string; levelUp: string };
     mobileNotice: { text: string; dismissAriaLabel: string };
     dialogHost: { closeGlyph: string };
+    platformer: {
+      decorativePlatforms: PlatformRectSpec[];
+      decorativePlatformsMobile: PlatformRectSpec[];
+      controls: { leftGlyph: string; rightGlyph: string; jumpGlyph: string; leftAriaLabel: string; rightAriaLabel: string; jumpAriaLabel: string };
+    };
   };
 }
 

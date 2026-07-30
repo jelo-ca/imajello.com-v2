@@ -36,8 +36,9 @@ export default function App() {
       if (e.key === 'Escape' && state.discoveriesOpen) { dispatch({ type: 'TOGGLE_DISCOVERIES' }); return; }
       if (e.key === 'Escape' && state.open) { dispatch({ type: 'CLOSE_SECTION' }); return; }
       if (e.key === 'Escape' && state.familiarOpen) { dispatch({ type: 'CLOSE_FAMILIAR' }); return; }
+      if (e.key === 'Escape' && state.playing) { dispatch({ type: 'STOP_PLATFORMER' }); return; }
       trackKonami(e.key);
-      if (!state.open) {
+      if (!state.open && !state.playing) {
         if (e.key === 'ArrowLeft') { e.preventDefault(); dispatch({ type: 'PREV_CHAR' }); return; }
         if (e.key === 'ArrowRight') { e.preventDefault(); dispatch({ type: 'NEXT_CHAR' }); return; }
       }
@@ -50,7 +51,7 @@ export default function App() {
     };
     window.addEventListener('keydown', onKeyDown);
     return () => window.removeEventListener('keydown', onKeyDown);
-  }, [state.discoveriesOpen, state.open, state.familiarOpen, dispatch, trackKonami, toggleFamiliar]);
+  }, [state.discoveriesOpen, state.open, state.familiarOpen, state.playing, dispatch, trackKonami, toggleFamiliar]);
 
   useEffect(() => {
     const onHover = (e: MouseEvent) => {
