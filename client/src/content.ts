@@ -51,6 +51,13 @@ export interface SectionCopy { navLabel: string; navSublabel: string; dialogTitl
 
 export interface PlatformRectSpec { top: number; left: number; width: number; height: number; }
 
+export interface LevelSpec {
+  girders: PlatformRectSpec[];
+  ladders: PlatformRectSpec[];
+  goal: PlatformRectSpec;
+  barrelSpawn: { top: number; left: number };
+}
+
 export interface ContentShape {
   meta: { pageTitle: string };
   chars: Char[];
@@ -144,9 +151,18 @@ export interface ContentShape {
     mobileNotice: { text: string; dismissAriaLabel: string };
     dialogHost: { closeGlyph: string };
     platformer: {
+      // Retained until Task 3 removes the last code reading them.
       decorativePlatforms: PlatformRectSpec[];
       decorativePlatformsMobile: PlatformRectSpec[];
-      controls: { leftGlyph: string; rightGlyph: string; jumpGlyph: string; leftAriaLabel: string; rightAriaLabel: string; jumpAriaLabel: string };
+      maxLives: number;
+      goalGlyph: string;
+      banners: { win: string; gameOver: string };
+      level: LevelSpec;
+      levelMobile: LevelSpec;
+      controls: {
+        leftGlyph: string; rightGlyph: string; upGlyph: string; downGlyph: string; jumpGlyph: string;
+        leftAriaLabel: string; rightAriaLabel: string; upAriaLabel: string; downAriaLabel: string; jumpAriaLabel: string;
+      };
     };
   };
 }

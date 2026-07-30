@@ -121,7 +121,8 @@
       { "key": "allchars", "name": "Shapeshifter", "how": "Cycle through every character" },
       { "key": "sound", "name": "Sound Engineer", "how": "Toggle the sound" },
       { "key": "familiar", "name": "Beast Tamer", "how": "Summon your familiar" },
-      { "key": "konami", "name": "Code Breaker", "how": "Enter a legendary input sequence" }
+      { "key": "konami", "name": "Code Breaker", "how": "Enter a legendary input sequence" },
+      { "key": "summit", "name": "Summit Climber", "how": "Reach the top of the climb" }
     ],
     "chatQuestionLimit": 3,
     "konami": ["ArrowUp", "ArrowUp", "ArrowDown", "ArrowDown", "ArrowLeft", "ArrowRight", "ArrowLeft", "ArrowRight", "b", "a"],
@@ -358,12 +359,54 @@
         { "top": 78, "left": 8, "width": 30, "height": 2.5 },
         { "top": 64, "left": 52, "width": 32, "height": 2.5 }
       ],
+      "maxLives": 3,
+      "goalGlyph": "🏆",
+      "banners": {
+        "win": "YOU WIN",
+        "gameOver": "GAME OVER"
+      },
+      "level": {
+        "girders": [
+          { "top": 75, "left": 0, "width": 80, "height": 1.5 },
+          { "top": 62, "left": 20, "width": 80, "height": 1.5 },
+          { "top": 49, "left": 0, "width": 80, "height": 1.5 },
+          { "top": 36, "left": 20, "width": 80, "height": 1.5 },
+          { "top": 23, "left": 0, "width": 80, "height": 1.5 }
+        ],
+        "ladders": [
+          { "top": 75, "left": 60, "width": 2.2, "height": 13 },
+          { "top": 62, "left": 30, "width": 2.2, "height": 13 },
+          { "top": 49, "left": 65, "width": 2.2, "height": 13 },
+          { "top": 36, "left": 30, "width": 2.2, "height": 13 },
+          { "top": 23, "left": 30, "width": 2.2, "height": 13 }
+        ],
+        "goal": { "top": 17, "left": 68, "width": 7, "height": 6 },
+        "barrelSpawn": { "top": 19, "left": 4 }
+      },
+      "levelMobile": {
+        "girders": [
+          { "top": 70, "left": 0, "width": 78, "height": 1.4 },
+          { "top": 52, "left": 22, "width": 78, "height": 1.4 },
+          { "top": 34, "left": 0, "width": 78, "height": 1.4 }
+        ],
+        "ladders": [
+          { "top": 70, "left": 55, "width": 5, "height": 22 },
+          { "top": 52, "left": 30, "width": 5, "height": 18 },
+          { "top": 34, "left": 55, "width": 5, "height": 18 }
+        ],
+        "goal": { "top": 27, "left": 58, "width": 14, "height": 7 },
+        "barrelSpawn": { "top": 30, "left": 4 }
+      },
       "controls": {
         "leftGlyph": "◀",
         "rightGlyph": "▶",
+        "upGlyph": "▲",
+        "downGlyph": "▼",
         "jumpGlyph": "⤒",
         "leftAriaLabel": "Move left",
         "rightAriaLabel": "Move right",
+        "upAriaLabel": "Climb up",
+        "downAriaLabel": "Climb down",
         "jumpAriaLabel": "Jump"
       }
     }

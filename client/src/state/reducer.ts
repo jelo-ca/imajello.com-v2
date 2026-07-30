@@ -32,6 +32,8 @@ export const initialState: State = {
   navHover: null,
   familiarHover: false,
   playing: false,
+  dkLives: ui.platformer.maxLives,
+  dkStatus: 'climbing',
   levelUpTrigger: 0,
 };
 
@@ -116,9 +118,22 @@ export function reducer(state: State, action: Action): State {
     case 'SET_KONAMI_UNLOCKED':
       return state.konamiUnlocked ? state : unlockDiscovery({ ...state, konamiUnlocked: true }, 'konami');
     case 'START_PLATFORMER':
-      return { ...state, playing: true };
+      // Every run starts clean, so a previous game-over or win never leaks into the next.
+      return { ...state, playing: true, dkLives: ui.platformer.maxLives, dkStatus: 'climbing' };
     case 'STOP_PLATFORMER':
       return { ...state, playing: false };
+    case 'DK_HIT': {
+      const dkLives = state.dkLives - 1;
+      return dkLives <= 0
+        ? { ...state, dkLives: 0, dkStatus: 'gameover' }
+        : { ...state, dkLives };
+    }
+    case 'DK_WIN':
+      // Idempotent: the loop can call onWin() on several frames before this state change
+      // propagates back to it, and unlockDiscovery would otherwise re-fire the toast.
+      return state.dkStatus === 'won' ? state : unlockDiscovery({ ...state, dkStatus: 'won' }, 'summit');
+    case 'DK_RESTART':
+      return { ...state, dkLives: ui.platformer.maxLives, dkStatus: 'climbing' };
     case 'SET_TOAST':
       return { ...state, toast: action.text };
     case 'CHAT_SEND_START':
