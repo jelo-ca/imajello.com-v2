@@ -8,6 +8,10 @@ export interface PlatformerPose {
   y: number;
   facing: 'left' | 'right';
   grounded: boolean;
+  // False until the very first frame where real nav-button geometry has been measured
+  // (see hasSpawnedRef below). Callers must not render the sprite while this is false —
+  // the pose fields are placeholder values that don't correspond to any real platform.
+  ready: boolean;
 }
 
 const GRAVITY = 1800; // px/s^2
@@ -30,6 +34,13 @@ function floorTop(platforms: Platform[]): number {
 }
 
 export function usePlatformerLoop({ platforms, paused, heldKeys, spriteWidth, spriteHeight, onTriggerSection }: Params): PlatformerPose {
+  // NOTE: this initializer only ever runs once, on the very first render — at that point
+  // usePlatformRects (the caller's `platforms` source) has not measured anything yet (it
+  // starts at [] and only populates via its own effect), so `floorTop(platforms)` here
+  // would hit the window.innerHeight-40 fallback, not the real bar position. These x/y
+  // values are placeholders and are never simulated or rendered — see hasSpawnedRef below,
+  // which performs the real spawn placement once real nav-button geometry exists, and
+  // `pose.ready`, which callers must check before rendering anything from this hook.
   const poseRef = useRef({
     x: window.innerWidth / 2 - spriteWidth / 2,
     y: floorTop(platforms) - spriteHeight,
@@ -38,12 +49,16 @@ export function usePlatformerLoop({ platforms, paused, heldKeys, spriteWidth, sp
     facing: 'right' as 'left' | 'right',
     grounded: false,
   });
+  // Flips true exactly once, the first tick where a real (sectionKey-bearing) platform
+  // exists — see the spawn-gate block at the top of tick() below.
+  const hasSpawnedRef = useRef(false);
   const lastLandedKeyRef = useRef<string | null>(null);
   const [pose, setPose] = useState<PlatformerPose>({
     x: poseRef.current.x,
     y: poseRef.current.y,
     facing: 'right',
     grounded: false,
+    ready: false,
   });
 
   useEffect(() => {
@@ -57,6 +72,27 @@ export function usePlatformerLoop({ platforms, paused, heldKeys, spriteWidth, sp
       if (paused) return;
 
       const p = poseRef.current;
+
+      // Spawn gate: decorativePlatforms() (part of `platforms`) is always non-empty
+      // regardless of DOM measurement, since it's computed purely from content.json +
+      // viewport size — so `platforms.length > 0` alone is not a reliable "measured yet"
+      // signal. Wait specifically for a real nav-button (sectionKey-bearing) platform,
+      // then perform the one-time spawn placement using accurate floorTop() and mark
+      // ready. Skip physics entirely until then so nothing gets simulated (or, via
+      // `pose.ready`, rendered) from the placeholder position.
+      if (!hasSpawnedRef.current) {
+        const hasRealFloor = platforms.some(pl => pl.sectionKey !== undefined);
+        if (!hasRealFloor) return;
+        p.x = window.innerWidth / 2 - spriteWidth / 2;
+        p.y = floorTop(platforms) - spriteHeight;
+        p.vx = 0;
+        p.vy = 0;
+        p.grounded = false;
+        hasSpawnedRef.current = true;
+        setPose({ x: p.x, y: p.y, facing: p.facing, grounded: p.grounded, ready: true });
+        return; // spawn placement only this frame; normal physics/collision begins next frame
+      }
+
       const keys = heldKeys.current;
       const movingLeft = keys.has('left');
       const movingRight = keys.has('right');
@@ -109,7 +145,7 @@ export function usePlatformerLoop({ platforms, paused, heldKeys, spriteWidth, sp
         }
       }
 
-      setPose({ x: p.x, y: p.y, facing: p.facing, grounded: p.grounded });
+      setPose({ x: p.x, y: p.y, facing: p.facing, grounded: p.grounded, ready: true });
     };
 
     raf = requestAnimationFrame(tick);

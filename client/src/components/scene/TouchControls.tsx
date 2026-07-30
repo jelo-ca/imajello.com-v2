@@ -7,9 +7,12 @@ interface Props {
 }
 
 export function TouchControls({ onPress, onRelease }: Props) {
+  // Note: React's touch listeners are passive by default, so calling preventDefault()
+  // here would be a no-op (and logs a console warning) — omitted rather than kept as
+  // dead code.
   const bind = (key: MoveKey) => ({
-    onTouchStart: (e: React.TouchEvent) => { e.preventDefault(); onPress(key); },
-    onTouchEnd: (e: React.TouchEvent) => { e.preventDefault(); onRelease(key); },
+    onTouchStart: () => onPress(key),
+    onTouchEnd: () => onRelease(key),
   });
 
   return (

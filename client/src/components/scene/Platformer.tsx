@@ -38,6 +38,12 @@ export function Platformer({ platformRefs }: Props) {
     onTriggerSection,
   });
 
+  // usePlatformerLoop's pose fields are placeholder values (computed from an empty
+  // platforms array) until it has measured a real nav-button platform and performed its
+  // one-time spawn placement. Render nothing until then, so the sprite never appears at
+  // (and never visibly falls from) that placeholder position.
+  if (!pose.ready) return null;
+
   return (
     <>
       <img
