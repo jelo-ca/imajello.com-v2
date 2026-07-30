@@ -32,15 +32,17 @@ export function useHeldKeys(paused: boolean): HeldKeysApi {
     }
     // Bail out of both preventDefault() and the held-keys mutation whenever the event
     // isn't meant for the game: typing targets (mirrors the guard App.tsx's own keydown
-    // handler uses) and — more broadly — any interactive element that itself expects to
-    // handle Space/arrow keys (buttons, links, selects, custom [role="button"]s), e.g.
-    // dialog close buttons, inventory items, quest-log tabs, the SFX toggle, or the native
-    // <select> in QuestLogDialog.
+    // handler uses) and the native <select> in QuestLogDialog, which also expects arrow
+    // keys. Buttons/links are deliberately NOT included here: nothing in this app moves
+    // focus off a clicked button, so a broader guard would leave movement permanently
+    // unresponsive after clicking any HUD button while playing. Dialogs, the familiar
+    // chat, and the discoveries panel don't need this guard anyway — `paused` (above)
+    // already unregisters these listeners entirely whenever one of those is open.
     const isBlockedTarget = (target: EventTarget | null): boolean => {
       const el = target as HTMLElement | null;
       if (!el) return false;
       if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA' || el.isContentEditable) return true;
-      return !!el.closest?.('button, a, select, [role="button"]');
+      return !!el.closest?.('select');
     };
     const onKeyDown = (e: KeyboardEvent) => {
       if (isBlockedTarget(e.target)) return;
