@@ -17,11 +17,15 @@ function rows(): Array<{ key: string; label: string } | { keys: [string, string]
   ];
 }
 
-export function KeybindsLegend() {
+interface Props {
+  setPlatformRef: (key: string) => (el: HTMLElement | null) => void;
+}
+
+export function KeybindsLegend({ setPlatformRef }: Props) {
   const { state } = useGameState();
   if (state.familiarOpen) return null;
   return (
-    <div className={styles.legend}>
+    <div className={styles.legend} ref={setPlatformRef('keybinds')}>
       <div className={styles.heading}>{ui.keybinds.heading}</div>
       {rows().map((row, i) => (
         <div className={styles.row} key={i}>

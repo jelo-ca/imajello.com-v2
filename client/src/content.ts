@@ -49,6 +49,8 @@ export interface Project {
 
 export interface SectionCopy { navLabel: string; navSublabel: string; dialogTitle: string; dialogSub: string; }
 
+export interface PlatformRectSpec { top: number; left: number; width: number; height: number; }
+
 export interface ContentShape {
   meta: { pageTitle: string };
   chars: Char[];
@@ -141,6 +143,7 @@ export interface ContentShape {
     toast: { discoveredLabel: string; levelUp: string };
     mobileNotice: { text: string; dismissAriaLabel: string };
     dialogHost: { closeGlyph: string };
+    platformer: { decorativePlatforms: PlatformRectSpec[]; decorativePlatformsMobile: PlatformRectSpec[] };
   };
 }
 

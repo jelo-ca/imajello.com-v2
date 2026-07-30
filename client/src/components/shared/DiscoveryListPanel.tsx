@@ -3,7 +3,11 @@ import { DISCOVERIES } from '../../data/discoveries';
 import { ui } from '../../content';
 import styles from './DiscoveryListPanel.module.css';
 
-export function DiscoveryListPanel() {
+interface Props {
+  setPlatformRef: (key: string) => (el: HTMLElement | null) => void;
+}
+
+export function DiscoveryListPanel({ setPlatformRef }: Props) {
   const { state, dispatch } = useGameState();
   const discoveredCount = Object.keys(state.discoveries).length;
   const dp = ui.discoveryPanel;
@@ -13,6 +17,7 @@ export function DiscoveryListPanel() {
       <button
         data-sfx
         className={styles.trigger}
+        ref={setPlatformRef('discovery-trigger')}
         onClick={() => dispatch({ type: 'TOGGLE_DISCOVERIES' })}
       >
         <span>{dp.triggerIcon}</span> {dp.triggerLabel} {discoveredCount}/{DISCOVERIES.length}

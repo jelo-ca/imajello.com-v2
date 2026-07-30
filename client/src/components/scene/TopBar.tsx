@@ -5,7 +5,11 @@ import { DiscoveryListPanel } from '../shared/DiscoveryListPanel';
 import { ui } from '../../content';
 import styles from './TopBar.module.css';
 
-export function TopBar() {
+interface Props {
+  setPlatformRef: (key: string) => (el: HTMLElement | null) => void;
+}
+
+export function TopBar({ setPlatformRef }: Props) {
   const { state, dispatch } = useGameState();
   const { playNote } = useSfx();
   const [menuOpen, setMenuOpen] = useState(false);
@@ -24,8 +28,8 @@ export function TopBar() {
 
   return (
     <>
-      <DiscoveryListPanel />
-      <div className={styles.systemButtons}>
+      <DiscoveryListPanel setPlatformRef={setPlatformRef} />
+      <div className={styles.systemButtons} ref={setPlatformRef('topbar-links')}>
         <a href="/Anjoelo_Calderon_Resume.pdf" target="_blank" rel="noreferrer" data-sfx className={styles.chip}>{tb.resume}</a>
         <a href="https://github.com/jelo-ca" target="_blank" rel="noreferrer" data-sfx className={styles.chip}>{tb.github}</a>
         <a href="https://linkedin.com/in/anjoelo-calderon" target="_blank" rel="noreferrer" data-sfx className={styles.chip}>{tb.linkedin}</a>
@@ -49,6 +53,7 @@ export function TopBar() {
           <button
             data-sfx
             className={styles.menuTrigger}
+            ref={setPlatformRef('topbar-hamburger')}
             onClick={() => setMenuOpen(o => !o)}
             aria-expanded={menuOpen}
             aria-label={tb.linksMenuAriaLabel}

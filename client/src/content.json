@@ -342,6 +342,19 @@
 
     "dialogHost": {
       "closeGlyph": "✕"
+    },
+
+    "platformer": {
+      "decorativePlatforms": [
+        { "top": 18, "left": 8, "width": 11, "height": 3 },
+        { "top": 32, "left": 40, "width": 13, "height": 3 },
+        { "top": 50, "left": 78, "width": 11, "height": 3 },
+        { "top": 66, "left": 22, "width": 10, "height": 3 }
+      ],
+      "decorativePlatformsMobile": [
+        { "top": 22, "left": 8, "width": 30, "height": 2.5 },
+        { "top": 40, "left": 52, "width": 32, "height": 2.5 }
+      ]
     }
   }
 }
