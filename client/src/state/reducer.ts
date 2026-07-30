@@ -133,10 +133,13 @@ export function reducer(state: State, action: Action): State {
         ? { ...state, dkLives: 0, dkStatus: 'gameover' }
         : { ...state, dkLives };
     }
-    case 'DK_WIN':
-      // Idempotent: the loop can call onWin() on several frames before this state change
-      // propagates back to it, and unlockDiscovery would otherwise re-fire the toast.
-      return state.dkStatus === 'won' ? state : unlockDiscovery({ ...state, dkStatus: 'won' }, 'summit');
+    case 'DK_WIN': {
+      // Idempotent, same reason as DK_HIT: the loop can call onWin() on several frames
+      // before this state change propagates back to it. Both resolution paths must be
+      // idempotent against any already-resolved state, not just against a repeat win.
+      if (state.dkStatus !== 'climbing') return state;
+      return unlockDiscovery({ ...state, dkStatus: 'won' }, 'summit');
+    }
     case 'DK_RESTART':
       return { ...state, dkLives: ui.platformer.maxLives, dkStatus: 'climbing' };
     case 'SET_TOAST':
