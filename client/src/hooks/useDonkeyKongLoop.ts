@@ -9,11 +9,16 @@ export interface Barrel {
   vx: number;
   vy: number;
   grounded: boolean;
-  // A barrel spawns in mid-air above the top girder, so its very first touchdown is an
-  // arrival, not a row-to-row transition, and must not trigger the cascade's direction
-  // flip. Without this the barrel reverses the instant it lands and rolls straight back
-  // off the edge it spawned over, never travelling anywhere.
-  hasLanded: boolean;
+  // Jumper barrels hop periodically while rolling.
+  jumper: boolean;
+  hopTimer: number;
+  // `top` of the surface this barrel last came to rest on, or null before its first
+  // landing. The cascade's direction flip fires only when a barrel arrives on a
+  // *different* surface than it was resting on — i.e. an actual row-to-row step. Both
+  // the spawn arrival (nothing to compare against) and a jumper's hop-in-place (same
+  // surface) must leave direction untouched, or barrels reverse on the spot and roll
+  // straight back off the edge they came from.
+  surfaceTop: number | null;
 }
 
 export interface DkPose {
@@ -30,13 +35,27 @@ export interface DkPose {
 const GRAVITY = 1800; // px/s^2
 const MOVE_SPEED = 220; // px/s
 // Peak height ~69px: enough to clear a barrel, deliberately NOT enough to clear the
-// ~13vh gap between girder rows. Ladders are the only way up, as in the original.
+// ~20vh gap between girder rows. Ladders are the only way up, as in the original.
 const JUMP_VELOCITY = -500; // px/s, negative = up
 const CLIMB_SPEED = 150; // px/s
-const BARREL_SPEED = 150; // px/s
-const BARREL_INTERVAL = 2.2; // seconds between spawns
+// Kept below MOVE_SPEED so a barrel chasing you from behind can still be outrun.
+const BARREL_SPEED = 200; // px/s
+// Randomised so the rhythm can't be memorised; occasionally two roll out together.
+const BARREL_INTERVAL_MIN = 1.1; // seconds
+const BARREL_INTERVAL_MAX = 2.6; // seconds
+const BARREL_PAIR_CHANCE = 0.25;
+// Some barrels hop as they roll, so a single well-timed jump isn't always the answer.
+// Peak ~28px puts a hopping barrel's top around 46px up, still clearable under the
+// player's ~69px jump but only with real timing.
+const BARREL_JUMPER_CHANCE = 0.3;
+const BARREL_HOP_VELOCITY = -320; // px/s, negative = up
+const BARREL_HOP_INTERVAL = 0.9; // seconds between hops while grounded
 
 export const BARREL_SIZE = 18; // px
+
+function randomSpawnDelay(): number {
+  return BARREL_INTERVAL_MIN + Math.random() * (BARREL_INTERVAL_MAX - BARREL_INTERVAL_MIN);
+}
 
 interface Params {
   level: LevelGeometry;
@@ -65,6 +84,7 @@ export function useDonkeyKongLoop({
   });
   const barrelsRef = useRef<Barrel[]>([]);
   const spawnTimerRef = useRef(0);
+  const nextSpawnRef = useRef(randomSpawnDelay());
   const barrelIdRef = useRef(0);
   const hasSpawnedRef = useRef(false);
   const prevStatusRef = useRef(status);
@@ -85,6 +105,23 @@ export function useDonkeyKongLoop({
       p.vy = 0;
       p.grounded = true;
       p.climbing = false;
+    };
+
+    // xOffset trails a paired barrel behind the leader (barrels roll right off the
+    // spawn), so the two travel as a close pair rather than overlapping.
+    const spawnBarrel = (xOffset: number) => {
+      barrelsRef.current.push({
+        id: barrelIdRef.current++,
+        x: level.barrelSpawn.left + xOffset,
+        y: level.barrelSpawn.top,
+        vx: BARREL_SPEED,
+        vy: 0,
+        grounded: false,
+        jumper: Math.random() < BARREL_JUMPER_CHANCE,
+        // Staggered so jumpers spawned together don't hop in lockstep.
+        hopTimer: Math.random() * BARREL_HOP_INTERVAL,
+        surfaceTop: null,
+      });
     };
 
     const publish = (ready: boolean) => {
@@ -121,6 +158,7 @@ export function useDonkeyKongLoop({
           placePlayer(floor);
           barrelsRef.current = [];
           spawnTimerRef.current = 0;
+          nextSpawnRef.current = randomSpawnDelay();
           publish(true);
           return;
         }
@@ -224,44 +262,51 @@ export function useDonkeyKongLoop({
 
       // --- barrels ---
       spawnTimerRef.current += dt;
-      if (spawnTimerRef.current >= BARREL_INTERVAL) {
-        spawnTimerRef.current -= BARREL_INTERVAL;
-        barrelsRef.current.push({
-          id: barrelIdRef.current++,
-          x: level.barrelSpawn.left,
-          y: level.barrelSpawn.top,
-          vx: BARREL_SPEED,
-          vy: 0,
-          grounded: false,
-          hasLanded: false,
-        });
+      if (spawnTimerRef.current >= nextSpawnRef.current) {
+        // Subtract the interval that was actually waited (not the new random one) so
+        // the overshoot carries forward and the cadence doesn't drift late.
+        spawnTimerRef.current -= nextSpawnRef.current;
+        nextSpawnRef.current = randomSpawnDelay();
+        spawnBarrel(0);
+        // Sometimes a second barrel rolls out right behind the first, so one barrel
+        // going past is no guarantee of a clear gap behind it.
+        if (Math.random() < BARREL_PAIR_CHANCE) spawnBarrel(-BARREL_SIZE * 1.7);
       }
 
       const live: Barrel[] = [];
       for (const b of barrelsRef.current) {
+        if (b.jumper && b.grounded) {
+          b.hopTimer += dt;
+          if (b.hopTimer >= BARREL_HOP_INTERVAL) {
+            b.hopTimer = 0;
+            b.vy = BARREL_HOP_VELOCITY;
+            b.grounded = false;
+          }
+        }
         b.vy += GRAVITY * dt;
         const bPrevBottom = b.y + BARREL_SIZE;
         b.x += b.vx * dt;
         b.y += b.vy * dt;
         const bNewBottom = b.y + BARREL_SIZE;
 
-        let bLanded = false;
+        let landedTop: number | null = null;
         for (const s of surfaces) {
           if (b.x + BARREL_SIZE <= s.left || b.x >= s.left + s.width) continue;
           if (bPrevBottom <= s.top && bNewBottom >= s.top && b.vy >= 0) {
             b.y = s.top - BARREL_SIZE;
             b.vy = 0;
-            bLanded = true;
+            landedTop = s.top;
             break;
           }
         }
-        // Reversing only on a *fresh* landing is what produces the cascade: a barrel
-        // rolls to the end of its girder, drops to the row below, and heads back the
-        // other way. While it's simply rolling along, it re-lands every frame (the snap
-        // above puts prevBottom exactly on the surface), so grounded stays true and the
-        // direction holds.
-        if (bLanded && !b.grounded && b.hasLanded) b.vx = -b.vx;
-        if (bLanded) b.hasLanded = true;
+        const bLanded = landedTop !== null;
+        // Reverse only when the barrel has arrived on a *different* surface than the one
+        // it was resting on — that's the row-to-row step that makes the cascade zig-zag.
+        // Rolling along a girder re-lands every frame on the same surface, a jumper's hop
+        // comes back down on the same surface, and the spawn arrival has no previous
+        // surface at all; none of those should flip direction.
+        if (bLanded && b.surfaceTop !== null && landedTop !== b.surfaceTop) b.vx = -b.vx;
+        if (bLanded) b.surfaceTop = landedTop;
         b.grounded = bLanded;
 
         const offScreen =
@@ -280,6 +325,7 @@ export function useDonkeyKongLoop({
         // this same frame, so onHit() can't re-fire on the next one.
         barrelsRef.current = [];
         spawnTimerRef.current = 0;
+        nextSpawnRef.current = randomSpawnDelay();
         placePlayer(floor);
         onHit();
       }
