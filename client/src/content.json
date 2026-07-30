@@ -222,14 +222,10 @@
     },
 
     "hero": {
-      "eyebrow": "SOFTWARE ENGINEER · AI/ML · FREMONT CA",
-      "nameFirst": "Anjoelo Calder",
-      "nameAccent": "o",
-      "nameLast": "n",
       "statsLabel": "STATS",
       "prevAriaLabel": "Previous character",
       "nextAriaLabel": "Next character",
-      "bio": "AI/ML software engineer at UC Irvine, originally from the Philippines."
+      "startBtn": "▶ START"
     },
 
     "battleLog": {

@@ -31,6 +31,7 @@ export const initialState: State = {
   msgBody: '',
   navHover: null,
   familiarHover: false,
+  playing: false,
   levelUpTrigger: 0,
 };
 
@@ -114,6 +115,10 @@ export function reducer(state: State, action: Action): State {
       return { ...state, familiarHover: action.value };
     case 'SET_KONAMI_UNLOCKED':
       return state.konamiUnlocked ? state : unlockDiscovery({ ...state, konamiUnlocked: true }, 'konami');
+    case 'START_PLATFORMER':
+      return { ...state, playing: true };
+    case 'STOP_PLATFORMER':
+      return { ...state, playing: false };
     case 'SET_TOAST':
       return { ...state, toast: action.text };
     case 'CHAT_SEND_START':
