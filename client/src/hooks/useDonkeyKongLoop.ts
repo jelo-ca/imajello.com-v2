@@ -122,21 +122,49 @@ export function useDonkeyKongLoop({
       const surfaces: PixelRect[] = [floor, ...level.girders];
       const keys = heldKeys.current;
 
+      // A ladder's authored bottom is vh-scaled (content.json), but the floor it must
+      // reach is measured in real pixels from PlayerBar (useFloorRect) — those two don't
+      // scale together as the viewport grows, so at tall enough viewports the ground
+      // ladder's vh-authored bottom falls short of the actual floor and can never be
+      // grabbed. Instead of trusting the authored bottom, extend each ladder down to
+      // whichever is lower: its authored bottom, or the top of the nearest surface
+      // actually below it (LADDER_EPS excludes the girder the ladder starts on). Ladders
+      // that run girder-to-girder are unaffected since their authored bottom already
+      // equals the next girder's top.
+      const LADDER_EPS = 0.5;
+      const ladderBottom = (l: PixelRect): number => {
+        let nearestBelow: number | null = null;
+        for (const s of surfaces) {
+          if (s.top > l.top + LADDER_EPS && (nearestBelow === null || s.top < nearestBelow)) {
+            nearestBelow = s.top;
+          }
+        }
+        const authoredBottom = l.top + l.height;
+        return nearestBelow === null ? authoredBottom : Math.max(authoredBottom, nearestBelow);
+      };
+
       const centerX = p.x + spriteWidth / 2;
       const ladder = level.ladders.find(l =>
         centerX > l.left && centerX < l.left + l.width &&
-        p.y + spriteHeight > l.top && p.y < l.top + l.height,
+        p.y + spriteHeight > l.top && p.y < ladderBottom(l),
       ) ?? null;
 
+      // Entry and exit are checked in the same tick, so keep them mutually exclusive:
+      // without justMounted, a player who walks onto a ladder still holding left/right
+      // and presses up/down would have climbing set true and then immediately false in
+      // the same frame, walking straight past the ladder instead of climbing it.
+      let justMounted = false;
       if (!p.climbing && ladder && (keys.has('up') || keys.has('down'))) {
         p.climbing = true;
         p.vy = 0;
+        justMounted = true;
       }
-      if (p.climbing && (!ladder || keys.has('left') || keys.has('right'))) {
+      if (!justMounted && p.climbing && (!ladder || keys.has('left') || keys.has('right'))) {
         p.climbing = false;
       }
 
       if (p.climbing && ladder) {
+        const bottom = ladderBottom(ladder);
         const dir = keys.has('up') ? -1 : keys.has('down') ? 1 : 0;
         p.y += dir * CLIMB_SPEED * dt;
         // Hold the sprite centred on the rungs so it can't drift off sideways mid-climb.
@@ -147,8 +175,8 @@ export function useDonkeyKongLoop({
           p.y = ladder.top - spriteHeight;
           p.climbing = false;
           p.grounded = true;
-        } else if (p.y + spriteHeight >= ladder.top + ladder.height) {
-          p.y = ladder.top + ladder.height - spriteHeight;
+        } else if (p.y + spriteHeight >= bottom) {
+          p.y = bottom - spriteHeight;
           p.climbing = false;
         }
       } else {
