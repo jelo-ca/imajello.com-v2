@@ -20,7 +20,7 @@ export function Platformer({ platformRefs }: Props) {
   const char = CHARS[state.charIdx];
   const paused = state.open != null || state.familiarOpen || state.discoveriesOpen;
   const platforms = usePlatformRects(platformRefs, [state.open, state.familiarOpen, state.discoveriesOpen]);
-  const { heldKeys, press, release } = useHeldKeys();
+  const { heldKeys, press, release } = useHeldKeys(paused);
   // dispatch's identity is stable (React guarantees this for useReducer), so wrapping in
   // useCallback keeps this stable across renders too — without it, a fresh arrow function
   // every render would appear in usePlatformerLoop's effect deps and tear down/rebuild the
@@ -48,7 +48,7 @@ export function Platformer({ platformRefs }: Props) {
     <>
       <img
         src={char.src}
-        alt={char.name}
+        alt=""
         className={styles.sprite}
         style={{
           width: SPRITE_WIDTH,

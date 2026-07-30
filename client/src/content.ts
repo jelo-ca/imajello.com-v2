@@ -143,7 +143,11 @@ export interface ContentShape {
     toast: { discoveredLabel: string; levelUp: string };
     mobileNotice: { text: string; dismissAriaLabel: string };
     dialogHost: { closeGlyph: string };
-    platformer: { decorativePlatforms: PlatformRectSpec[]; decorativePlatformsMobile: PlatformRectSpec[] };
+    platformer: {
+      decorativePlatforms: PlatformRectSpec[];
+      decorativePlatformsMobile: PlatformRectSpec[];
+      controls: { leftGlyph: string; rightGlyph: string; jumpGlyph: string; leftAriaLabel: string; rightAriaLabel: string; jumpAriaLabel: string };
+    };
   };
 }
 

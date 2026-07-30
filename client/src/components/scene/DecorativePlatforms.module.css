@@ -1,11 +1,3 @@
-.desktopOnly { display: contents; }
-.mobileOnly { display: none; }
-
-@media (max-width: 768px) {
-  .desktopOnly { display: none; }
-  .mobileOnly { display: contents; }
-}
-
 .platform {
   position: fixed;
   z-index: 4;

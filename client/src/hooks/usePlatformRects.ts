@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
-import { content } from '../content';
 import type { SectionKey } from '../data/discoveries';
+import { decorativePlatformPixelRects } from './platformGeometry';
 
 export interface Platform {
   key: string;
@@ -11,20 +11,10 @@ export interface Platform {
   sectionKey?: SectionKey;
 }
 
-const MOBILE_BREAKPOINT = 768;
-
+// Shares its vh/vw-to-px conversion with DecorativePlatforms.tsx (via platformGeometry.ts)
+// so the collidable rectangle computed here can never diverge from what's actually drawn.
 function decorativePlatforms(): Platform[] {
-  const isMobile = window.innerWidth <= MOBILE_BREAKPOINT;
-  const specs = isMobile ? content.ui.platformer.decorativePlatformsMobile : content.ui.platformer.decorativePlatforms;
-  const vw = window.innerWidth / 100;
-  const vh = window.innerHeight / 100;
-  return specs.map((p, i) => ({
-    key: `decorative-${i}`,
-    top: p.top * vh,
-    left: p.left * vw,
-    width: p.width * vw,
-    height: p.height * vh,
-  }));
+  return decorativePlatformPixelRects().map((rect, i) => ({ key: `decorative-${i}`, ...rect }));
 }
 
 // `platformRefs.current` is a registry keyed by an arbitrary string (see GameScene's
