@@ -4,6 +4,7 @@ import { TopBar } from './TopBar';
 import { KeybindsLegend } from './KeybindsLegend';
 import { PlayerBar } from './PlayerBar';
 import { Platformer } from './Platformer';
+import { DecorativePlatforms } from './DecorativePlatforms';
 import { useParticles } from '../../hooks/useParticles';
 import { useFamiliarToggle } from '../../hooks/useFamiliarToggle';
 import { useGameState } from '../../state/GameStateContext';
@@ -40,6 +41,7 @@ export function GameScene() {
       </div>
       <TopBar setPlatformRef={setPlatformRef} />
       <PlayerBar onSummonFamiliar={toggleFamiliar} setPlatformRef={setPlatformRef} />
+      {state.playing && <DecorativePlatforms />}
       {state.playing && <Platformer platformRefs={platformRefs} />}
     </div>
   );

@@ -1,0 +1,15 @@
+.desktopOnly { display: contents; }
+.mobileOnly { display: none; }
+
+@media (max-width: 768px) {
+  .desktopOnly { display: none; }
+  .mobileOnly { display: contents; }
+}
+
+.platform {
+  position: fixed;
+  z-index: 4;
+  background: #2b2b30;
+  border: 3px solid #1c1c20;
+  box-shadow: 3px 3px 0 rgba(20, 20, 23, .35);
+}
