@@ -123,6 +123,11 @@ export function reducer(state: State, action: Action): State {
     case 'STOP_PLATFORMER':
       return { ...state, playing: false };
     case 'DK_HIT': {
+      // Idempotent, same reason as DK_WIN: the loop can call onHit() on several frames
+      // before this state change propagates back to it. Without this guard, a barrel
+      // that overlaps the player right as they reach the goal could fire after dkStatus
+      // is already 'won' (or 'gameover') and stomp it back to 'gameover'.
+      if (state.dkStatus !== 'climbing') return state;
       const dkLives = state.dkLives - 1;
       return dkLives <= 0
         ? { ...state, dkLives: 0, dkStatus: 'gameover' }
