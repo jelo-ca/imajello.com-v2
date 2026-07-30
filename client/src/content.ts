@@ -153,7 +153,7 @@ export interface ContentShape {
     platformer: {
       maxLives: number;
       goalGlyph: string;
-      banners: { win: string; gameOver: string };
+      banners: { win: string; gameOver: string; lifeSingular: string; lifePlural: string; tryAgain: string };
       level: LevelSpec;
       levelMobile: LevelSpec;
       controls: {

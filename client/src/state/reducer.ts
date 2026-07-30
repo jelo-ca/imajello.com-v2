@@ -131,7 +131,9 @@ export function reducer(state: State, action: Action): State {
       const dkLives = state.dkLives - 1;
       return dkLives <= 0
         ? { ...state, dkLives: 0, dkStatus: 'gameover' }
-        : { ...state, dkLives };
+        // Pause on 'dead' so the player is shown how many lives are left before the
+        // climb resumes; DK_RESUME puts them back to 'climbing' without refilling lives.
+        : { ...state, dkLives, dkStatus: 'dead' };
     }
     case 'DK_WIN': {
       // Idempotent, same reason as DK_HIT: the loop can call onWin() on several frames
@@ -140,6 +142,9 @@ export function reducer(state: State, action: Action): State {
       if (state.dkStatus !== 'climbing') return state;
       return unlockDiscovery({ ...state, dkStatus: 'won' }, 'summit');
     }
+    case 'DK_RESUME':
+      // Carry on the same run — only the death pause ends here, lives stay as they are.
+      return state.dkStatus === 'dead' ? { ...state, dkStatus: 'climbing' } : state;
     case 'DK_RESTART':
       return { ...state, dkLives: ui.platformer.maxLives, dkStatus: 'climbing' };
     case 'SET_TOAST':

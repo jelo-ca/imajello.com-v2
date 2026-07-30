@@ -39,6 +39,31 @@ export function levelSpec(): LevelSpec {
   return isMobile ? content.ui.platformer.levelMobile : content.ui.platformer.level;
 }
 
+// A ladder runs from the girder it stands on down to whatever surface is next below it.
+// Resolving that here — rather than trusting the vh-authored height from content.json —
+// serves two purposes. Girder positions are vh-scaled but PlayerBar's height is very
+// nearly fixed in pixels, so the two drift apart as the viewport grows: an authored
+// bottom can fall short of the real floor (leaving the ground ladder ungrabbable) or
+// overshoot it (drawing the ladder down through the HUD). And because both the physics
+// loop and the renderer consume this same result, the climbable region and the drawn
+// ladder can never disagree.
+const LADDER_EPS = 0.5;
+
+export function resolveLadderRects(level: LevelGeometry, floor: PixelRect | null): PixelRect[] {
+  const surfaces = floor ? [floor, ...level.girders] : level.girders;
+  return level.ladders.map(l => {
+    let nearestBelow: number | null = null;
+    for (const s of surfaces) {
+      // EPS excludes the girder the ladder itself stands on.
+      if (s.top > l.top + LADDER_EPS && (nearestBelow === null || s.top < nearestBelow)) {
+        nearestBelow = s.top;
+      }
+    }
+    const bottom = nearestBelow ?? l.top + l.height;
+    return { top: l.top, left: l.left, width: l.width, height: Math.max(0, bottom - l.top) };
+  });
+}
+
 export function levelPixelGeometry(): LevelGeometry {
   const spec = levelSpec();
   const vw = window.innerWidth / 100;

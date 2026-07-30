@@ -38,6 +38,9 @@ const MOVE_SPEED = 220; // px/s
 // ~20vh gap between girder rows. Ladders are the only way up, as in the original.
 const JUMP_VELOCITY = -500; // px/s, negative = up
 const CLIMB_SPEED = 150; // px/s
+// Slack on the ladder grab test so standing exactly on a girder still counts as being
+// at the head of the ladder that descends from it.
+const LADDER_GRAB_EPS = 1;
 // Kept below MOVE_SPEED so a barrel chasing you from behind can still be outrun.
 const BARREL_SPEED = 200; // px/s
 // Randomised so the rhythm can't be memorised; occasionally two roll out together.
@@ -59,9 +62,12 @@ function randomSpawnDelay(): number {
 
 interface Params {
   level: LevelGeometry;
+  // Pre-resolved so the climbable region always matches the drawn ladder — see
+  // resolveLadderRects in platformGeometry.
+  ladders: PixelRect[];
   floor: PixelRect | null;
   paused: boolean;
-  status: 'climbing' | 'won' | 'gameover';
+  status: 'climbing' | 'dead' | 'won' | 'gameover';
   heldKeys: React.RefObject<Set<MoveKey>>;
   spriteWidth: number;
   spriteHeight: number;
@@ -74,7 +80,7 @@ function overlaps(ax: number, ay: number, aw: number, ah: number, b: PixelRect):
 }
 
 export function useDonkeyKongLoop({
-  level, floor, paused, status, heldKeys, spriteWidth, spriteHeight, onHit, onWin,
+  level, ladders, floor, paused, status, heldKeys, spriteWidth, spriteHeight, onHit, onWin,
 }: Params): DkPose {
   const pRef = useRef({
     x: 0, y: 0, vx: 0, vy: 0,
@@ -170,31 +176,19 @@ export function useDonkeyKongLoop({
       const surfaces: PixelRect[] = [floor, ...level.girders];
       const keys = heldKeys.current;
 
-      // A ladder's authored bottom is vh-scaled (content.json), but the floor it must
-      // reach is measured in real pixels from PlayerBar (useFloorRect) — those two don't
-      // scale together as the viewport grows, so at tall enough viewports the ground
-      // ladder's vh-authored bottom falls short of the actual floor and can never be
-      // grabbed. Instead of trusting the authored bottom, extend each ladder down to
-      // whichever is lower: its authored bottom, or the top of the nearest surface
-      // actually below it (LADDER_EPS excludes the girder the ladder starts on). Ladders
-      // that run girder-to-girder are unaffected since their authored bottom already
-      // equals the next girder's top.
-      const LADDER_EPS = 0.5;
-      const ladderBottom = (l: PixelRect): number => {
-        let nearestBelow: number | null = null;
-        for (const s of surfaces) {
-          if (s.top > l.top + LADDER_EPS && (nearestBelow === null || s.top < nearestBelow)) {
-            nearestBelow = s.top;
-          }
-        }
-        const authoredBottom = l.top + l.height;
-        return nearestBelow === null ? authoredBottom : Math.max(authoredBottom, nearestBelow);
-      };
-
+      // `ladders` arrives already resolved (see resolveLadderRects in platformGeometry):
+      // each one's height runs exactly to the surface below it, so the climbable region
+      // and the drawn ladder are guaranteed to be the same rectangle.
+      // The vertical test has to include the boundary. Landing snaps the player to
+      // exactly `surface.top - spriteHeight`, so someone standing on a girder has their
+      // feet precisely on it — and a ladder leading *down* from that girder has
+      // `l.top === girderTop`. A strict `>` would compare girderTop with itself, fail,
+      // and make descending a ladder impossible; only climbing up would ever work.
       const centerX = p.x + spriteWidth / 2;
-      const ladder = level.ladders.find(l =>
+      const feet = p.y + spriteHeight;
+      const ladder = ladders.find(l =>
         centerX > l.left && centerX < l.left + l.width &&
-        p.y + spriteHeight > l.top && p.y < ladderBottom(l),
+        feet >= l.top - LADDER_GRAB_EPS && p.y < l.top + l.height,
       ) ?? null;
 
       // Entry and exit are checked in the same tick, so keep them mutually exclusive:
@@ -212,7 +206,7 @@ export function useDonkeyKongLoop({
       }
 
       if (p.climbing && ladder) {
-        const bottom = ladderBottom(ladder);
+        const bottom = ladder.top + ladder.height;
         const dir = keys.has('up') ? -1 : keys.has('down') ? 1 : 0;
         p.y += dir * CLIMB_SPEED * dt;
         // Hold the sprite centred on the rungs so it can't drift off sideways mid-climb.
@@ -339,7 +333,7 @@ export function useDonkeyKongLoop({
 
     raf = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(raf);
-  }, [level, floor, paused, status, heldKeys, spriteWidth, spriteHeight, onHit, onWin]);
+  }, [level, ladders, floor, paused, status, heldKeys, spriteWidth, spriteHeight, onHit, onWin]);
 
   return pose;
 }

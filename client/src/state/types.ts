@@ -33,7 +33,9 @@ export interface State {
   playing: boolean;
   // Donkey Kong climb run state. Ephemeral like `playing` — never persisted.
   dkLives: number;
-  dkStatus: 'climbing' | 'won' | 'gameover';
+  // 'dead' is the brief pause after losing a life while lives remain, so the player gets
+  // told what happened before being dropped back at the bottom.
+  dkStatus: 'climbing' | 'dead' | 'won' | 'gameover';
   // Ephemeral, session-only counter — incremented exactly once by OPEN_SECTION when
   // a live dispatch (never HYDRATE_PERSISTED) first brings visited.length to 4, so
   // App.tsx can schedule the delayed "LEVEL UP" toast/fanfare without misfiring on
@@ -63,6 +65,9 @@ export type Action =
   | { type: 'STOP_PLATFORMER' }
   | { type: 'DK_HIT' }
   | { type: 'DK_WIN' }
+  // Resume the current run after a non-fatal death — lives are left as they are.
+  | { type: 'DK_RESUME' }
+  // Start a fresh run: lives back to full. Used by the game-over "try again" button.
   | { type: 'DK_RESTART' }
   | { type: 'SET_TOAST'; text: string | null }
   | { type: 'CHAT_SEND_START'; text: string }

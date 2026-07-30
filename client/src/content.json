@@ -354,7 +354,10 @@
       "goalGlyph": "🏆",
       "banners": {
         "win": "YOU WIN",
-        "gameOver": "GAME OVER"
+        "gameOver": "GAME OVER",
+        "lifeSingular": "LIFE LEFT",
+        "lifePlural": "LIVES LEFT",
+        "tryAgain": "TRY AGAIN"
       },
       "level": {
         "girders": [
