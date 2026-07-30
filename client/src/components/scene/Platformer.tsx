@@ -1,7 +1,5 @@
-import { useCallback } from 'react';
 import { useGameState } from '../../state/GameStateContext';
 import { CHARS } from '../../data/chars';
-import type { SectionKey } from '../../data/discoveries';
 import { usePlatformRects } from '../../hooks/usePlatformRects';
 import { useHeldKeys } from '../../hooks/useHeldKeys';
 import { usePlatformerLoop } from '../../hooks/usePlatformerLoop';
@@ -16,26 +14,19 @@ interface Props {
 }
 
 export function Platformer({ platformRefs }: Props) {
-  const { state, dispatch } = useGameState();
+  const { state } = useGameState();
   const char = CHARS[state.charIdx];
   const paused = state.open != null || state.familiarOpen || state.discoveriesOpen;
   const platforms = usePlatformRects(platformRefs, [state.open, state.familiarOpen, state.discoveriesOpen]);
   const { heldKeys, press, release } = useHeldKeys(paused);
-  // dispatch's identity is stable (React guarantees this for useReducer), so wrapping in
-  // useCallback keeps this stable across renders too — without it, a fresh arrow function
-  // every render would appear in usePlatformerLoop's effect deps and tear down/rebuild the
-  // whole requestAnimationFrame loop on every single frame.
-  const onTriggerSection = useCallback(
-    (section: SectionKey) => dispatch({ type: 'OPEN_SECTION', section }),
-    [dispatch],
-  );
+  // Nav-button platforms are walkable like any other platform, but standing on one no
+  // longer opens its dialog — that's click/keybind-only now (see PlayerBar/App.tsx).
   const pose = usePlatformerLoop({
     platforms,
     paused,
     heldKeys,
     spriteWidth: SPRITE_WIDTH,
     spriteHeight: SPRITE_HEIGHT,
-    onTriggerSection,
   });
 
   // usePlatformerLoop's pose fields are placeholder values (computed from an empty

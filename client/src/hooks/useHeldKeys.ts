@@ -20,8 +20,8 @@ export function useHeldKeys(paused: boolean): HeldKeysApi {
 
   useEffect(() => {
     // Platformer stays mounted (only "paused") while a dialog is open on top of it (e.g.
-    // walking into the Contact nav button opens ContactDialog, or opening the Familiar
-    // chat) — the physics loop itself already early-returns while paused, but these
+    // clicking a PlayerBar nav button opens its dialog, or opening the Familiar chat) —
+    // the physics loop itself already early-returns while paused, but these
     // window-level listeners used to keep intercepting Space/arrow keys the whole time
     // regardless, breaking input to whatever's actually on screen. While paused, don't
     // register the listeners at all, and clear any keys already held so nothing carries

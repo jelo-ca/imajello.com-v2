@@ -18,8 +18,9 @@ function decorativePlatforms(): Platform[] {
 }
 
 // `platformRefs.current` is a registry keyed by an arbitrary string (see GameScene's
-// `setPlatformRef`); keys starting with `nav-` carry a SectionKey suffix so landing on
-// that rect can trigger opening the matching dialog (wired in usePlatformerLoop).
+// `setPlatformRef`); keys starting with `nav-` carry a SectionKey suffix, used only to
+// identify the PlayerBar nav-button row as "the floor" (see floorTop() in
+// usePlatformerLoop) — standing on one no longer opens its dialog.
 export function usePlatformRects(
   platformRefs: React.RefObject<Record<string, HTMLElement | null>>,
   recomputeDeps: unknown[],
