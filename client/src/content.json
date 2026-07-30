@@ -210,6 +210,7 @@
       "summonFamiliar": "SUMMON FAMILIAR",
       "close": "CLOSE",
       "move": "MOVE",
+      "climb": "CLIMB LADDER",
       "jump": "JUMP",
       "stopPlaying": "STOP PLAYING"
     },

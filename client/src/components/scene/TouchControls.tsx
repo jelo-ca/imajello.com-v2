@@ -11,17 +11,23 @@ export function TouchControls({ onPress, onRelease }: Props) {
   const c = ui.platformer.controls;
   // Note: React's touch listeners are passive by default, so calling preventDefault()
   // here would be a no-op (and logs a console warning) — omitted rather than kept as
-  // dead code.
+  // dead code. onTouchCancel is bound alongside onTouchEnd so a gesture the browser
+  // takes over (scroll, system swipe) can't leave a direction stuck held down.
   const bind = (key: MoveKey) => ({
     onTouchStart: () => onPress(key),
     onTouchEnd: () => onRelease(key),
+    onTouchCancel: () => onRelease(key),
   });
 
   return (
     <div className={styles.wrap}>
       <div className={styles.dpad}>
-        <button type="button" className={styles.btn} aria-label={c.leftAriaLabel} {...bind('left')}>{c.leftGlyph}</button>
-        <button type="button" className={styles.btn} aria-label={c.rightAriaLabel} {...bind('right')}>{c.rightGlyph}</button>
+        <button type="button" className={`${styles.btn} ${styles.up}`} aria-label={c.upAriaLabel} {...bind('up')}>{c.upGlyph}</button>
+        <div className={styles.dpadRow}>
+          <button type="button" className={styles.btn} aria-label={c.leftAriaLabel} {...bind('left')}>{c.leftGlyph}</button>
+          <button type="button" className={styles.btn} aria-label={c.rightAriaLabel} {...bind('right')}>{c.rightGlyph}</button>
+        </div>
+        <button type="button" className={`${styles.btn} ${styles.down}`} aria-label={c.downAriaLabel} {...bind('down')}>{c.downGlyph}</button>
       </div>
       <button type="button" className={`${styles.btn} ${styles.jump}`} aria-label={c.jumpAriaLabel} {...bind('jump')}>{c.jumpGlyph}</button>
     </div>

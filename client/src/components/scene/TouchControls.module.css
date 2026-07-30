@@ -9,6 +9,7 @@
     left: 0;
     right: 0;
     bottom: 64px;
+    align-items: flex-end;
     justify-content: space-between;
     padding: 0 16px;
     z-index: 65;
@@ -18,14 +19,21 @@
 
 .dpad {
   display: flex;
-  gap: 10px;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
   pointer-events: auto;
 }
 
+.dpadRow {
+  display: flex;
+  gap: 44px;
+}
+
 .btn {
-  width: 48px;
-  height: 48px;
-  font: 400 16px 'Silkscreen', monospace;
+  width: 44px;
+  height: 44px;
+  font: 400 15px 'Silkscreen', monospace;
   background: rgba(43, 43, 48, .9);
   color: #f5d9dc;
   border: 3px solid #2b2b30;
@@ -35,6 +43,13 @@
   user-select: none;
 }
 
+.up,
+.down {
+  align-self: center;
+}
+
 .jump {
+  width: 56px;
+  height: 56px;
   align-self: flex-end;
 }

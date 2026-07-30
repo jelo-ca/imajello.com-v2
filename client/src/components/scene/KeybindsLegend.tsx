@@ -8,6 +8,7 @@ function rows(playing: boolean): Array<{ key: string; label: string } | { keys: 
   if (playing) {
     return [
       { keys: ['←', '→'], label: ui.keybinds.move },
+      { keys: ['↑', '↓'], label: ui.keybinds.climb },
       { key: 'SPACE', label: ui.keybinds.jump },
       { key: 'ESC', label: ui.keybinds.stopPlaying },
     ];
