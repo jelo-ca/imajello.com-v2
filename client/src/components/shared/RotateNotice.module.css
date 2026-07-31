@@ -1,0 +1,59 @@
+.overlay {
+  display: none;
+}
+
+/* Phone landscape only. The max-height bound is what separates a phone on its side from
+   a tablet or a short desktop window — tablets in landscape are tall enough to play and
+   are deliberately left alone. Driven by a media query rather than JS so it reacts the
+   instant the device is rotated. */
+@media (orientation: landscape) and (max-height: 500px) {
+  .overlay {
+    position: fixed;
+    inset: 0;
+    /* Above every other layer, including DialogHost's cursor host at 200. */
+    z-index: 500;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    padding: 20px;
+    box-sizing: border-box;
+    text-align: center;
+    background: #2b2b30;
+    color: #f5d9dc;
+  }
+}
+
+.glyph {
+  font-size: 34px;
+  line-height: 1;
+  animation: rotateHint 2.4s ease-in-out infinite;
+}
+
+.heading {
+  font: 400 13px 'Silkscreen', monospace;
+  letter-spacing: .12em;
+  color: #ee9aa3;
+}
+
+.text {
+  margin: 0;
+  max-width: 34ch;
+  font-size: 12px;
+  line-height: 1.5;
+  color: #a8a5ac;
+  text-wrap: pretty;
+}
+
+@keyframes rotateHint {
+  0%, 45% { transform: rotate(-90deg); }
+  55%, 100% { transform: rotate(0deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .glyph {
+    animation: none;
+    transform: none;
+  }
+}

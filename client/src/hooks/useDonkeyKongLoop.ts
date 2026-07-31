@@ -191,12 +191,19 @@ export function useDonkeyKongLoop({
         feet >= l.top - LADDER_GRAB_EPS && p.y < l.top + l.height,
       ) ?? null;
 
+      // Mounting is directional: up only grabs when there's ladder above your feet, down
+      // only when there's ladder below them. That matters now that up doubles as jump —
+      // standing at the very top of a ladder leaves up free to jump rather than
+      // re-grabbing a ladder that's already been climbed.
+      const canClimbUp = ladder !== null && feet > ladder.top + LADDER_GRAB_EPS;
+      const canClimbDown = ladder !== null && feet < ladder.top + ladder.height - LADDER_GRAB_EPS;
+
       // Entry and exit are checked in the same tick, so keep them mutually exclusive:
       // without justMounted, a player who walks onto a ladder still holding left/right
       // and presses up/down would have climbing set true and then immediately false in
       // the same frame, walking straight past the ladder instead of climbing it.
       let justMounted = false;
-      if (!p.climbing && ladder && (keys.has('up') || keys.has('down'))) {
+      if (!p.climbing && ((keys.has('up') && canClimbUp) || (keys.has('down') && canClimbDown))) {
         p.climbing = true;
         p.vy = 0;
         justMounted = true;
@@ -227,7 +234,9 @@ export function useDonkeyKongLoop({
         p.vx = movingLeft ? -MOVE_SPEED : movingRight ? MOVE_SPEED : 0;
         if (movingLeft) p.facing = 'left';
         if (movingRight) p.facing = 'right';
-        if (keys.has('jump') && p.grounded) {
+        // Reaching this branch means we're not climbing, so up is free to mean jump.
+        // 'jump' itself is still bound for the on-screen touch button.
+        if ((keys.has('jump') || keys.has('up')) && p.grounded) {
           p.vy = JUMP_VELOCITY;
           p.grounded = false;
         }

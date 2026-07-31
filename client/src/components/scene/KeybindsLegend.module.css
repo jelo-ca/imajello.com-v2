@@ -18,6 +18,13 @@
   text-align: left;
 }
 
+/* While the climb is running the legend would sit right under the top girder (32vh) and
+   crowd it. Drop it into the gap between the top and middle rows instead — the shorter
+   4-row playing list fits there with clearance on both sides. */
+.playing {
+  top: 38vh;
+}
+
 .heading {
   font: 400 8px 'Silkscreen', monospace;
   letter-spacing: .1em;

@@ -92,7 +92,7 @@ export interface ContentShape {
     sections: Record<SectionKey, SectionCopy>;
     misc: { escHint: string; closeGlyph: string };
     topBar: { resume: string; github: string; linkedin: string; sfxOn: string; sfxOff: string; linksMenuAriaLabel: string; hamburgerGlyph: string };
-    keybinds: { heading: string; changeCharacter: string; summonFamiliar: string; close: string; move: string; climb: string; jump: string; stopPlaying: string };
+    keybinds: { heading: string; changeCharacter: string; summonFamiliar: string; close: string; move: string; climb: string; jump: string; stopPlaying: string; startGame: string };
     playerBar: { playerPlate: string; level: string; hp: string; en: string; konamiHint: string; konamiUnlocked: string; xpMaxLabel: string; familiarLabel: string };
     hero: { statsLabel: string; prevAriaLabel: string; nextAriaLabel: string; startBtn: string };
     battleLog: { repoLink: string; rankPrefix: string; lootLabel: string };
@@ -148,6 +148,7 @@ export interface ContentShape {
     discoveryPanel: { triggerIcon: string; triggerLabel: string; intro: string; foundLabel: string; undiscoveredLabel: string; hiddenPlaceholder: string };
     imageSlot: { comingSoon: string };
     toast: { discoveredLabel: string; levelUp: string };
+    rotateNotice: { glyph: string; heading: string; text: string };
     mobileNotice: { text: string; dismissAriaLabel: string };
     dialogHost: { closeGlyph: string };
     platformer: {

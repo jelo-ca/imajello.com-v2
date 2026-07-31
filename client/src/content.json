@@ -212,7 +212,8 @@
       "move": "MOVE",
       "climb": "CLIMB LADDER",
       "jump": "JUMP",
-      "stopPlaying": "STOP PLAYING"
+      "stopPlaying": "STOP PLAYING",
+      "startGame": "START GAME"
     },
 
     "playerBar": {
@@ -338,6 +339,12 @@
     "toast": {
       "discoveredLabel": "DISCOVERED",
       "levelUp": "LEVEL UP — all chapters explored"
+    },
+
+    "rotateNotice": {
+      "glyph": "📱",
+      "heading": "ROTATE YOUR DEVICE",
+      "text": "This site is built for portrait. Turn your phone upright to carry on."
     },
 
     "mobileNotice": {

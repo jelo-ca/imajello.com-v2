@@ -9,6 +9,7 @@ import { FamiliarChat } from './components/familiar/FamiliarChat';
 import { Toast } from './components/shared/Toast';
 import { KonamiOverlay } from './components/shared/KonamiOverlay';
 import { MobileNotice } from './components/shared/MobileNotice';
+import { RotateNotice } from './components/shared/RotateNotice';
 import { ui } from './content';
 import styles from './App.module.css';
 
@@ -41,6 +42,13 @@ export default function App() {
       if (!state.open && !state.playing) {
         if (e.key === 'ArrowLeft') { e.preventDefault(); dispatch({ type: 'PREV_CHAR' }); return; }
         if (e.key === 'ArrowRight') { e.preventDefault(); dispatch({ type: 'NEXT_CHAR' }); return; }
+        // Space starts the climb from the character picker. It's free to mean this
+        // because the game itself no longer binds it — up doubles as jump in play.
+        if ((e.key === ' ' || e.key === 'Spacebar') && !state.familiarOpen) {
+          e.preventDefault();
+          dispatch({ type: 'START_PLATFORMER' });
+          return;
+        }
       }
       const section = SECTION_KEYS[e.key];
       if (section) dispatch({ type: 'OPEN_SECTION', section });
@@ -92,6 +100,9 @@ export default function App() {
       <FamiliarChat />
       <Toast />
       <KonamiOverlay trigger={konamiTrigger} />
+      {/* Last child so it stacks over everything; its own media query decides whether
+          it's visible at all. */}
+      <RotateNotice />
     </div>
   );
 }

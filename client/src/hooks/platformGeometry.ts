@@ -34,6 +34,11 @@ export function specToPixelRect(spec: PlatformRectSpec): PixelRect {
   };
 }
 
+function goalSquareRect(spec: PlatformRectSpec, vw: number, vh: number): PixelRect {
+  const side = spec.height * vh;
+  return { top: spec.top * vh, left: spec.left * vw, width: side, height: side };
+}
+
 export function levelSpec(): LevelSpec {
   const isMobile = window.innerWidth <= MOBILE_BREAKPOINT;
   return isMobile ? content.ui.platformer.levelMobile : content.ui.platformer.level;
@@ -71,7 +76,12 @@ export function levelPixelGeometry(): LevelGeometry {
   return {
     girders: spec.girders.map(specToPixelRect),
     ladders: spec.ladders.map(specToPixelRect),
-    goal: specToPixelRect(spec.goal),
+    // The goal is a square tile. Authoring width in vw and height in vh would let its
+    // proportions swing with the viewport's aspect ratio, so the side is taken from the
+    // authored height alone — which also leaves its bottom edge exactly where it was,
+    // resting on the top girder. Collision reads this same rect, so the drawn tile and
+    // the winning region stay identical.
+    goal: goalSquareRect(spec.goal, vw, vh),
     barrelSpawn: { top: spec.barrelSpawn.top * vh, left: spec.barrelSpawn.left * vw },
   };
 }

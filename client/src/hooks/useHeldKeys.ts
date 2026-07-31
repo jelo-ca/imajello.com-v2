@@ -8,13 +8,14 @@ export interface HeldKeysApi {
   release: (key: MoveKey) => void;
 }
 
+// Up does double duty: it climbs when there's a ladder to climb and jumps otherwise
+// (resolved in useDonkeyKongLoop, which knows the ladder geometry). Space is deliberately
+// not bound — the 'jump' key still exists for the on-screen touch button.
 const KEY_MAP: Record<string, MoveKey> = {
   ArrowLeft: 'left',
   ArrowRight: 'right',
   ArrowUp: 'up',
   ArrowDown: 'down',
-  ' ': 'jump',
-  Spacebar: 'jump',
 };
 
 export function useHeldKeys(paused: boolean): HeldKeysApi {

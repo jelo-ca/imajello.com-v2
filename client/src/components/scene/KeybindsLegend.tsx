@@ -8,12 +8,14 @@ function rows(playing: boolean): Array<{ key: string; label: string } | { keys: 
   if (playing) {
     return [
       { keys: ['←', '→'], label: ui.keybinds.move },
+      // Up is context-sensitive: it climbs when there's ladder to climb, jumps otherwise.
+      { key: '↑', label: ui.keybinds.jump },
       { keys: ['↑', '↓'], label: ui.keybinds.climb },
-      { key: 'SPACE', label: ui.keybinds.jump },
       { key: 'ESC', label: ui.keybinds.stopPlaying },
     ];
   }
   return [
+    { key: 'SPACE', label: ui.keybinds.startGame },
     { keys: ['←', '→'], label: ui.keybinds.changeCharacter },
     { key: '1', label: ui.sections.journey.navLabel },
     { key: '2', label: ui.sections.quests.navLabel },
@@ -29,7 +31,7 @@ export function KeybindsLegend() {
   const { state } = useGameState();
   if (state.familiarOpen) return null;
   return (
-    <div className={styles.legend}>
+    <div className={state.playing ? `${styles.legend} ${styles.playing}` : styles.legend}>
       <div className={styles.heading}>{ui.keybinds.heading}</div>
       {rows(state.playing).map((row, i) => (
         <div className={styles.row} key={i}>
