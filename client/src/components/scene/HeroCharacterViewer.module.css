@@ -39,6 +39,9 @@
   justify-content: center;
   flex: none;
   border: 3px solid #2b2b30;
+  /* Clips the character-swap slide so portraits appear to move within the
+     square rather than flying in/out past its border. */
+  overflow: hidden;
 }
 
 .scanlines {
@@ -52,8 +55,9 @@
 .portraitImg {
   position: absolute;
   bottom: 18px;
-  left: 50%;
-  transform: translateX(-50%);
+  /* Centred via left offset, not translateX(-50%): the slide keyframes set
+     transform themselves and would otherwise cancel the centring mid-swap. */
+  left: 19%;
   width: 62%;
   height: auto;
   image-rendering: pixelated;

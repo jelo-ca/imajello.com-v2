@@ -84,47 +84,44 @@ a:hover {
   }
 }
 
+/* 135% is a percentage of the portrait's own width, so it scales with the
+   responsive portrait box: the sprite is 62% of the box and sits 19% from its
+   left edge, so 0.81/0.62 ≈ 131% of the sprite's width clears the frame.
+   The box clips (HeroCharacterViewer.module.css .portraitBox overflow), so the
+   swap reads as one sprite sliding out and the next sliding in behind it. */
 @keyframes charInR {
   from {
-    opacity: 0;
-    transform: translateX(70px);
+    transform: translateX(135%);
   }
   to {
-    opacity: 1;
     transform: translateX(0);
   }
 }
 
 @keyframes charInL {
   from {
-    opacity: 0;
-    transform: translateX(-70px);
+    transform: translateX(-135%);
   }
   to {
-    opacity: 1;
     transform: translateX(0);
   }
 }
 
 @keyframes charOutR {
   from {
-    opacity: 1;
     transform: translateX(0);
   }
   to {
-    opacity: 0;
-    transform: translateX(70px);
+    transform: translateX(135%);
   }
 }
 
 @keyframes charOutL {
   from {
-    opacity: 1;
     transform: translateX(0);
   }
   to {
-    opacity: 0;
-    transform: translateX(-70px);
+    transform: translateX(-135%);
   }
 }
 
