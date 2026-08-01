@@ -122,6 +122,7 @@
       { "key": "sound", "name": "Sound Engineer", "how": "Toggle the sound" },
       { "key": "familiar", "name": "Beast Tamer", "how": "Summon your familiar" },
       { "key": "konami", "name": "Code Breaker", "how": "Enter a legendary input sequence" },
+      { "key": "nickname", "name": "Sweet Tooth", "how": "Find the name behind the name" },
       { "key": "summit", "name": "Summit Climber", "how": "Reach the top of the climb" }
     ],
     "chatQuestionLimit": 3,
@@ -228,6 +229,9 @@
     },
 
     "hero": {
+      "name": { "first": "Anjoelo", "nickname": "A Jello", "lastPre": "Calder", "lastAccent": "o", "lastPost": "n" },
+      "eyebrow": "SOFTWARE ENGINEER · AI/ML · FREMONT CA",
+      "nameToggleAriaLabel": "Reveal the nickname",
       "statsLabel": "STATS",
       "prevAriaLabel": "Previous character",
       "nextAriaLabel": "Next character",

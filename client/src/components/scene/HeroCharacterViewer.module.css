@@ -7,6 +7,43 @@
   display: contents;
 }
 
+/* Identity block, ported from the reference's hero header (lines 64-65), with the
+   order flipped: the name sits above the eyebrow line rather than below it. */
+.title {
+  margin: 0;
+  font: 400 clamp(28px, min(5.4vw, 6vh), 68px)/0.95 'Archivo Black', sans-serif;
+  text-transform: uppercase;
+  letter-spacing: -.01em;
+  text-align: center;
+}
+
+.titleAccent {
+  color: #c25f74;
+}
+
+/* The first name is a button so it can be clicked to swap in the nickname, but it
+   has to read as plain h1 text until hovered — hence the full style reset. */
+.firstName {
+  font: inherit;
+  letter-spacing: inherit;
+  text-transform: inherit;
+  color: inherit;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+}
+.firstName:hover {
+  color: #c25f74;
+}
+
+.eyebrow {
+  font: 400 11px 'Silkscreen', monospace;
+  letter-spacing: .12em;
+  color: #c25f74;
+  text-align: center;
+}
+
 .row {
   display: flex;
   align-items: center;

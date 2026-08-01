@@ -30,6 +30,10 @@ export interface State {
   msgBody: string;
   navHover: SectionKey | null;
   familiarHover: boolean;
+  // Whether the hero title currently shows the nickname instead of the first name.
+  // Deliberately not persisted: the `nickname` discovery is permanent, but the swap
+  // itself resets on reload so the toggle stays a thing you can play with each visit.
+  nicknameOn: boolean;
   playing: boolean;
   // Donkey Kong climb run state. Ephemeral like `playing` — never persisted.
   dkLives: number;
@@ -61,6 +65,7 @@ export type Action =
   | { type: 'SET_NAV_HOVER'; section: SectionKey | null }
   | { type: 'SET_FAMILIAR_HOVER'; value: boolean }
   | { type: 'SET_KONAMI_UNLOCKED' }
+  | { type: 'TOGGLE_NICKNAME' }
   | { type: 'START_PLATFORMER' }
   | { type: 'STOP_PLATFORMER' }
   | { type: 'DK_HIT' }

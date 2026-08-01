@@ -94,7 +94,15 @@ export interface ContentShape {
     topBar: { resume: string; github: string; linkedin: string; sfxOn: string; sfxOff: string; linksMenuAriaLabel: string; hamburgerGlyph: string };
     keybinds: { heading: string; changeCharacter: string; summonFamiliar: string; close: string; move: string; climb: string; jump: string; stopPlaying: string; startGame: string };
     playerBar: { playerPlate: string; level: string; hp: string; en: string; konamiHint: string; konamiUnlocked: string; xpMaxLabel: string; familiarLabel: string };
-    hero: { statsLabel: string; prevAriaLabel: string; nextAriaLabel: string; startBtn: string };
+    hero: {
+      name: { first: string; nickname: string; lastPre: string; lastAccent: string; lastPost: string };
+      eyebrow: string;
+      nameToggleAriaLabel: string;
+      statsLabel: string;
+      prevAriaLabel: string;
+      nextAriaLabel: string;
+      startBtn: string;
+    };
     battleLog: { repoLink: string; rankPrefix: string; lootLabel: string };
     worldMap: { photoPrefix: string };
     inventory: { hint: string; back: string; itemPrefix: string };

@@ -53,6 +53,22 @@ export function HeroCharacterViewer() {
 
   return (
     <div className={styles.wrap}>
+      <h1 className={styles.title}>
+        <button
+          data-sfx
+          className={styles.firstName}
+          onClick={() => { tick(); dispatch({ type: 'TOGGLE_NICKNAME' }); }}
+          aria-label={ui.hero.nameToggleAriaLabel}
+        >
+          {state.nicknameOn ? ui.hero.name.nickname : ui.hero.name.first}
+        </button>
+        {' '}
+        {ui.hero.name.lastPre}
+        <span className={styles.titleAccent}>{ui.hero.name.lastAccent}</span>
+        {ui.hero.name.lastPost}
+      </h1>
+      <div className={styles.eyebrow}>{ui.hero.eyebrow}</div>
+
       <div className={styles.row} onTouchStart={onTouchStart} onTouchEnd={onTouchEnd}>
         <button data-sfx className={styles.arrow} onClick={goPrev}>◀</button>
 

@@ -31,6 +31,7 @@ export const initialState: State = {
   msgBody: '',
   navHover: null,
   familiarHover: false,
+  nicknameOn: false,
   playing: false,
   dkLives: ui.platformer.maxLives,
   dkStatus: 'climbing',
@@ -117,6 +118,10 @@ export function reducer(state: State, action: Action): State {
       return { ...state, familiarHover: action.value };
     case 'SET_KONAMI_UNLOCKED':
       return state.konamiUnlocked ? state : unlockDiscovery({ ...state, konamiUnlocked: true }, 'konami');
+    case 'TOGGLE_NICKNAME':
+      // unlockDiscovery is a no-op once unlocked, so only the first click toasts —
+      // every click after that just flips the name back and forth.
+      return unlockDiscovery({ ...state, nicknameOn: !state.nicknameOn }, 'nickname');
     case 'START_PLATFORMER':
       // Every run starts clean, so a previous game-over or win never leaks into the next.
       return { ...state, playing: true, dkLives: ui.platformer.maxLives, dkStatus: 'climbing' };
