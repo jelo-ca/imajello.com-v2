@@ -403,7 +403,7 @@
         "READY"
       ],
       "skipHint": "PRESS ANY KEY TO SKIP",
-      "durationMs": 2600,
+      "durationMs": 4200,
       "skipAriaLabel": "Skip loading screen"
     },
 
