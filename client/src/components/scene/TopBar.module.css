@@ -25,6 +25,13 @@
   color: #2b2b30;
 }
 
+/* The roadmap is the one chip that opens something in-page, so it gets the pink
+   border the discovery trigger uses to mark interactive HUD affordances. */
+.roadmapChip {
+  border-color: #ee9aa3;
+  color: #ee9aa3;
+}
+
 .mobileControls {
   display: none;
 }
@@ -63,6 +70,8 @@
 .menuItem {
   font: 400 9px 'Silkscreen', monospace;
   text-decoration: none;
+  text-align: left;
+  background: none;
   color: #f5d9dc;
   border: 2px solid #45454c;
   padding: 8px 10px;

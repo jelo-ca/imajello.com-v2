@@ -26,6 +26,15 @@ export function TopBar() {
     <>
       <DiscoveryListPanel />
       <div className={styles.systemButtons}>
+        <button
+          data-sfx
+          className={`${styles.chip} ${styles.roadmapChip}`}
+          onClick={() => dispatch({ type: 'TOGGLE_ROADMAP' })}
+          aria-expanded={state.roadmapOpen}
+          aria-label={ui.roadmap.openAriaLabel}
+        >
+          {tb.roadmap}
+        </button>
         <a href="/Anjoelo_Calderon_Resume.pdf" target="_blank" rel="noreferrer" data-sfx className={styles.chip}>{tb.resume}</a>
         <a href="https://github.com/jelo-ca" target="_blank" rel="noreferrer" data-sfx className={styles.chip}>{tb.github}</a>
         <a href="https://linkedin.com/in/anjoelo-calderon" target="_blank" rel="noreferrer" data-sfx className={styles.chip}>{tb.linkedin}</a>
@@ -57,6 +66,13 @@ export function TopBar() {
           </button>
           {menuOpen && (
             <div className={styles.menuPanel}>
+              <button
+                data-sfx
+                className={`${styles.menuItem} ${styles.roadmapChip}`}
+                onClick={() => { setMenuOpen(false); dispatch({ type: 'TOGGLE_ROADMAP' }); }}
+              >
+                {tb.roadmap}
+              </button>
               <a href="/Anjoelo_Calderon_Resume.pdf" target="_blank" rel="noreferrer" data-sfx className={styles.menuItem}>{tb.resume}</a>
               <a href="https://github.com/jelo-ca" target="_blank" rel="noreferrer" data-sfx className={styles.menuItem}>{tb.github}</a>
               <a href="https://linkedin.com/in/anjoelo-calderon" target="_blank" rel="noreferrer" data-sfx className={styles.menuItem}>{tb.linkedin}</a>

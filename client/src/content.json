@@ -199,10 +199,44 @@
       "resume": "RESUME ↓",
       "github": "GITHUB",
       "linkedin": "LINKEDIN",
+      "roadmap": "ROADMAP",
       "sfxOn": "SFX ON",
       "sfxOff": "SFX OFF",
       "linksMenuAriaLabel": "Links menu",
       "hamburgerGlyph": "☰"
+    },
+
+    "roadmap": {
+      "title": "ROADMAP",
+      "sub": "PATCH NOTES · PENDING",
+      "intro": "This site is a work in progress. Here's what's queued up next.",
+      "openAriaLabel": "Open roadmap",
+      "closeAriaLabel": "Close roadmap",
+      "statusLabel": "STATUS",
+      "footer": "Check back — the changelog grows.",
+      "items": [
+        {
+          "icon": "🎨",
+          "title": "UPDATED SPRITES",
+          "status": "IN PROGRESS",
+          "state": "active",
+          "desc": "Hand-drawn character sprites for every class, plus proper walk and climb animation frames."
+        },
+        {
+          "icon": "📷",
+          "title": "UPLOAD PHOTOS",
+          "status": "QUEUED",
+          "state": "queued",
+          "desc": "Real photos filling the empty slots in the inventory and world map instead of placeholders."
+        },
+        {
+          "icon": "🎵",
+          "title": "MUSIC & EFFECTS",
+          "status": "QUEUED",
+          "state": "queued",
+          "desc": "Original chiptune background track and a fuller set of sound effects for the game and menus."
+        }
+      ]
     },
 
     "keybinds": {
@@ -354,6 +388,23 @@
     "mobileNotice": {
       "text": "Best experienced on desktop — some features are simplified on mobile.",
       "dismissAriaLabel": "Dismiss"
+    },
+
+    "boot": {
+      "title": "IMAJELLO",
+      "subtitle": "PORTFOLIO.EXE",
+      "badge": "BUILD 0.9 · DEV",
+      "heading": "SITE UNDER CONSTRUCTION",
+      "text": "This site is still in development — sprites, photos and audio are being worked on. Everything here already works, some of it just isn't finished.",
+      "steps": [
+        "LOADING SPRITES",
+        "MOUNTING WORLD MAP",
+        "WAKING FAMILIAR",
+        "READY"
+      ],
+      "skipHint": "PRESS ANY KEY TO SKIP",
+      "durationMs": 2600,
+      "skipAriaLabel": "Skip loading screen"
     },
 
     "dialogHost": {

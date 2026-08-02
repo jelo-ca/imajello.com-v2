@@ -1,0 +1,166 @@
+/* Above the HUD chips (50) and DialogHost's cursor host (200), below RotateNotice (500). */
+.backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 300;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  box-sizing: border-box;
+  background: rgba(20, 20, 23, .72);
+  animation: roadmapFade .14s ease both;
+}
+
+.panel {
+  width: min(460px, 100%);
+  max-height: calc(100vh - 48px);
+  overflow: auto;
+  box-sizing: border-box;
+  background: var(--ink);
+  color: var(--cream);
+  border: 3px solid var(--pink);
+  box-shadow: 8px 8px 0 rgba(20, 20, 23, .55);
+  padding: 16px;
+  animation: roadmapIn .16s ease both;
+}
+
+.header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  border-bottom: 2px solid var(--border-dark);
+  padding-bottom: 12px;
+}
+
+.title {
+  font: 400 14px var(--font-pixel);
+  letter-spacing: .08em;
+  color: var(--pink);
+}
+
+.sub {
+  margin-top: 6px;
+  font: 400 8px var(--font-pixel);
+  letter-spacing: .12em;
+  color: var(--grey);
+}
+
+.closeBtn {
+  flex: none;
+  font: 400 12px var(--font-pixel);
+  background: none;
+  border: 2px solid var(--cream);
+  color: var(--cream);
+  padding: 4px 9px;
+  cursor: pointer;
+}
+.closeBtn:hover {
+  background: var(--cream);
+  color: var(--ink);
+}
+
+.intro {
+  margin: 12px 0 14px;
+  font-size: 12px;
+  line-height: 1.6;
+  color: var(--grey-light);
+  text-wrap: pretty;
+}
+
+.list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.item {
+  background: var(--ink-dark);
+  border: 2px solid var(--border-dark);
+  padding: 11px 12px;
+}
+
+.itemHead {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+}
+
+.icon {
+  font-size: 14px;
+  line-height: 1;
+}
+
+.itemTitle {
+  flex: 1;
+  font: 400 10px var(--font-pixel);
+  letter-spacing: .06em;
+}
+
+.statusActive,
+.statusQueued {
+  flex: none;
+  font: 400 7px var(--font-pixel);
+  letter-spacing: .1em;
+  padding: 4px 6px;
+  border: 2px solid currentColor;
+}
+
+.statusActive {
+  color: var(--yellow);
+}
+
+.statusQueued {
+  color: var(--grey);
+}
+
+.desc {
+  margin: 8px 0 0;
+  font-size: 11px;
+  line-height: 1.55;
+  color: var(--grey-light);
+  text-wrap: pretty;
+}
+
+.footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-top: 14px;
+  padding-top: 12px;
+  border-top: 2px solid var(--border-dark);
+  font: 400 8px var(--font-pixel);
+  letter-spacing: .08em;
+  color: var(--grey);
+}
+
+.escHint {
+  flex: none;
+  border: 2px solid var(--border-dark);
+  padding: 3px 6px;
+}
+
+@keyframes roadmapFade {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes roadmapIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .backdrop, .panel { animation: none; }
+}
+
+@media (max-width: 480px) {
+  .backdrop { padding: 14px; }
+  .panel { padding: 13px; }
+  .title { font-size: 12px; }
+}

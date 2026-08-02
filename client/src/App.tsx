@@ -10,6 +10,8 @@ import { Toast } from './components/shared/Toast';
 import { KonamiOverlay } from './components/shared/KonamiOverlay';
 import { MobileNotice } from './components/shared/MobileNotice';
 import { RotateNotice } from './components/shared/RotateNotice';
+import { BootScreen } from './components/shared/BootScreen';
+import { RoadmapDialog } from './components/shared/RoadmapDialog';
 import { ui } from './content';
 import styles from './App.module.css';
 
@@ -34,6 +36,12 @@ export default function App() {
     const onKeyDown = (e: KeyboardEvent) => {
       const target = e.target as HTMLElement;
       if (target && (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA' || target.isContentEditable)) return;
+      // Roadmap is a modal overlay, so it swallows every shortcut while it's up —
+      // otherwise digits/space would drive the HUD behind it.
+      if (state.roadmapOpen) {
+        if (e.key === 'Escape') dispatch({ type: 'CLOSE_ROADMAP' });
+        return;
+      }
       if (e.key === 'Escape' && state.discoveriesOpen) { dispatch({ type: 'TOGGLE_DISCOVERIES' }); return; }
       if (e.key === 'Escape' && state.open) { dispatch({ type: 'CLOSE_SECTION' }); return; }
       if (e.key === 'Escape' && state.familiarOpen) { dispatch({ type: 'CLOSE_FAMILIAR' }); return; }
@@ -59,7 +67,7 @@ export default function App() {
     };
     window.addEventListener('keydown', onKeyDown);
     return () => window.removeEventListener('keydown', onKeyDown);
-  }, [state.discoveriesOpen, state.open, state.familiarOpen, state.playing, dispatch, trackKonami, toggleFamiliar]);
+  }, [state.roadmapOpen, state.discoveriesOpen, state.open, state.familiarOpen, state.playing, dispatch, trackKonami, toggleFamiliar]);
 
   useEffect(() => {
     const onHover = (e: MouseEvent) => {
@@ -100,6 +108,8 @@ export default function App() {
       <FamiliarChat />
       <Toast />
       <KonamiOverlay trigger={konamiTrigger} />
+      <RoadmapDialog />
+      <BootScreen />
       {/* Last child so it stacks over everything; its own media query decides whether
           it's visible at all. */}
       <RotateNotice />

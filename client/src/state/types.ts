@@ -19,6 +19,8 @@ export interface State {
   discoveries: Record<string, boolean>;
   charsSeen: number[];
   discoveriesOpen: boolean;
+  // Dev roadmap overlay. Ephemeral — always closed on load.
+  roadmapOpen: boolean;
   chatMessages: ChatMessage[];
   chatInputValue: string;
   chatSending: boolean;
@@ -62,6 +64,8 @@ export type Action =
   | { type: 'INV_BACK' }
   | { type: 'SWAP_PHOTOS' }
   | { type: 'TOGGLE_DISCOVERIES' }
+  | { type: 'TOGGLE_ROADMAP' }
+  | { type: 'CLOSE_ROADMAP' }
   | { type: 'SET_NAV_HOVER'; section: SectionKey | null }
   | { type: 'SET_FAMILIAR_HOVER'; value: boolean }
   | { type: 'SET_KONAMI_UNLOCKED' }

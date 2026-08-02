@@ -29,6 +29,14 @@ export interface TimelineBar {
 
 export interface Discovery { key: string; name: string; how: string; }
 
+export interface RoadmapItem {
+  icon: string;
+  title: string;
+  status: string;
+  state: 'active' | 'queued';
+  desc: string;
+}
+
 export interface InvPhoto { id: string; placeholder: string; }
 export interface InvItem { key: string; icon: string; tag: string; label: string; desc: string; photos: InvPhoto[]; }
 
@@ -91,7 +99,17 @@ export interface ContentShape {
   ui: {
     sections: Record<SectionKey, SectionCopy>;
     misc: { escHint: string; closeGlyph: string };
-    topBar: { resume: string; github: string; linkedin: string; sfxOn: string; sfxOff: string; linksMenuAriaLabel: string; hamburgerGlyph: string };
+    topBar: { resume: string; github: string; linkedin: string; roadmap: string; sfxOn: string; sfxOff: string; linksMenuAriaLabel: string; hamburgerGlyph: string };
+    roadmap: {
+      title: string;
+      sub: string;
+      intro: string;
+      openAriaLabel: string;
+      closeAriaLabel: string;
+      statusLabel: string;
+      footer: string;
+      items: RoadmapItem[];
+    };
     keybinds: { heading: string; changeCharacter: string; summonFamiliar: string; close: string; move: string; climb: string; jump: string; stopPlaying: string; startGame: string };
     playerBar: { playerPlate: string; level: string; hp: string; en: string; konamiHint: string; konamiUnlocked: string; xpMaxLabel: string; familiarLabel: string };
     hero: {
@@ -158,6 +176,17 @@ export interface ContentShape {
     toast: { discoveredLabel: string; levelUp: string };
     rotateNotice: { glyph: string; heading: string; text: string };
     mobileNotice: { text: string; dismissAriaLabel: string };
+    boot: {
+      title: string;
+      subtitle: string;
+      badge: string;
+      heading: string;
+      text: string;
+      steps: string[];
+      skipHint: string;
+      durationMs: number;
+      skipAriaLabel: string;
+    };
     dialogHost: { closeGlyph: string };
     platformer: {
       maxLives: number;

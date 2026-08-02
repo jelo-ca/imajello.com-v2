@@ -1,0 +1,147 @@
+/* Entry boot screen. Sits under RotateNotice (z-index 500) on purpose — a phone held
+   sideways should be told to rotate even while the site is still "booting". */
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 450;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  box-sizing: border-box;
+  background: var(--ink-darker);
+  color: var(--cream);
+  /* Faint CRT scanlines over the flat fill. */
+  background-image: repeating-linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, .18) 0px,
+    rgba(0, 0, 0, .18) 1px,
+    transparent 1px,
+    transparent 3px
+  );
+}
+
+/* Stays hit-testable through the fade on purpose: the click that skipped the screen
+   would otherwise land on whatever HUD button sits underneath. */
+.overlayExiting {
+  animation: bootOut .26s ease forwards;
+}
+
+.panel {
+  width: min(440px, 100%);
+  text-align: center;
+}
+
+.badge {
+  display: inline-block;
+  font: 400 8px var(--font-pixel);
+  letter-spacing: .12em;
+  color: var(--ink);
+  background: var(--yellow);
+  border: 3px solid var(--ink);
+  padding: 5px 9px;
+  margin-bottom: 18px;
+}
+
+.title {
+  margin: 0;
+  font: 400 30px var(--font-pixel);
+  letter-spacing: .06em;
+  color: var(--pink);
+  text-shadow: 4px 4px 0 var(--ink);
+}
+
+.subtitle {
+  margin-top: 8px;
+  font: 400 10px var(--font-pixel);
+  letter-spacing: .22em;
+  color: var(--grey-light);
+}
+
+.warning {
+  margin: 22px 0 20px;
+  text-align: left;
+  background: var(--ink);
+  border: 3px solid var(--pink);
+  box-shadow: 6px 6px 0 rgba(20, 20, 23, .5);
+  padding: 12px 14px;
+}
+
+.warningHeading {
+  font: 400 10px var(--font-pixel);
+  letter-spacing: .08em;
+  color: var(--yellow);
+}
+
+.warningText {
+  margin: 8px 0 0;
+  font-size: 12px;
+  line-height: 1.6;
+  color: var(--grey-light);
+  text-wrap: pretty;
+}
+
+.bar {
+  height: 18px;
+  background: var(--ink);
+  border: 3px solid var(--ink);
+  box-shadow: inset 0 0 0 2px var(--border-dark);
+  overflow: hidden;
+}
+
+.fill {
+  height: 100%;
+  background: var(--pink);
+  /* Chunky segments so the fill reads as pixel blocks, not a smooth gradient. */
+  background-image: repeating-linear-gradient(
+    to right,
+    var(--pink) 0px,
+    var(--pink) 8px,
+    var(--rose) 8px,
+    var(--rose) 10px
+  );
+}
+
+.barMeta {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  margin-top: 9px;
+  font: 400 8px var(--font-pixel);
+  letter-spacing: .1em;
+}
+
+.step {
+  color: var(--cream);
+}
+
+.pct {
+  color: var(--pink);
+}
+
+.skip {
+  margin-top: 24px;
+  font: 400 8px var(--font-pixel);
+  letter-spacing: .14em;
+  color: var(--grey);
+  animation: bootBlink 1.1s steps(1, end) infinite;
+}
+
+@keyframes bootBlink {
+  0%, 49% { opacity: 1; }
+  50%, 100% { opacity: .25; }
+}
+
+@keyframes bootOut {
+  to { opacity: 0; visibility: hidden; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .skip { animation: none; }
+}
+
+@media (max-width: 480px) {
+  .title { font-size: 22px; }
+  .subtitle { font-size: 9px; }
+}

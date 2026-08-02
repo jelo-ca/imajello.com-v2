@@ -20,6 +20,7 @@ export const initialState: State = {
   discoveries: {},
   charsSeen: [],
   discoveriesOpen: false,
+  roadmapOpen: false,
   chatMessages: [],
   chatInputValue: '',
   chatSending: false,
@@ -112,6 +113,10 @@ export function reducer(state: State, action: Action): State {
       return { ...state, invPhotoFront: state.invPhotoFront === 'first' ? 'second' : 'first' };
     case 'TOGGLE_DISCOVERIES':
       return { ...state, discoveriesOpen: !state.discoveriesOpen };
+    case 'TOGGLE_ROADMAP':
+      return { ...state, roadmapOpen: !state.roadmapOpen };
+    case 'CLOSE_ROADMAP':
+      return { ...state, roadmapOpen: false };
     case 'SET_NAV_HOVER':
       return { ...state, navHover: action.section };
     case 'SET_FAMILIAR_HOVER':
