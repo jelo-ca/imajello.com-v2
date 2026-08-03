@@ -13,10 +13,10 @@
   width: min(1020px, 94vw);
   max-height: 86vh;
   overflow: auto;
-  background: #6d6a72;
-  color: #2b2b30;
-  border: 4px solid #2b2b30;
-  box-shadow: 10px 10px 0 rgba(20, 20, 23, .6);
+  background: var(--grey);
+  color: var(--ink);
+  border: 4px solid var(--ink);
+  box-shadow: 10px 10px 0 rgb(var(--shadow-rgb) / .6);
   animation: dialogIn .22s steps(5) both;
 }
 
@@ -24,8 +24,8 @@
   position: sticky;
   top: 0;
   z-index: 5;
-  background: #6d6a72;
-  border-bottom: 3px solid #2b2b30;
+  background: var(--grey);
+  border-bottom: 3px solid var(--ink);
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -42,7 +42,7 @@
 
 .badge {
   font: 400 9px 'Silkscreen', monospace;
-  color: #f5d9dc;
+  color: var(--cream);
 }
 
 .title {
@@ -52,21 +52,21 @@
 
 .sub {
   font: 400 9px 'Silkscreen', monospace;
-  color: #2b2b30;
+  color: var(--ink);
 }
 
 .closeBtn {
   font: 400 10px 'Silkscreen', monospace;
   background: none;
-  border: 2px solid #2b2b30;
-  color: #2b2b30;
+  border: 2px solid var(--ink);
+  color: var(--ink);
   padding: 5px 10px;
   cursor: pointer;
 }
 @media (hover: hover) {
   .closeBtn:hover {
-    background: #2b2b30;
-    color: #f5d9dc;
+    background: var(--ink);
+    color: var(--cream);
   }
 }
 
@@ -78,8 +78,8 @@
 }
 
 .card {
-  background: #f5d9dc;
-  border: 3px solid #2b2b30;
+  background: var(--cream);
+  border: 3px solid var(--ink);
   display: flex;
   gap: 0;
   flex-wrap: wrap;
@@ -94,23 +94,23 @@
   align-items: center;
   gap: 6px;
   font: 400 10px 'Silkscreen', monospace;
-  background: #2b2b30;
-  color: #ee9aa3;
-  border: 3px solid #2b2b30;
+  background: var(--ink);
+  color: var(--pink);
+  border: 3px solid var(--ink);
   padding: 8px 14px;
   text-decoration: none;
   z-index: 2;
 }
 .repoLink:hover {
-  background: #ee9aa3;
-  color: #2b2b30;
+  background: var(--pink);
+  color: var(--ink);
 }
 
 .shotWrap {
   width: 260px;
   min-height: 180px;
   flex: none;
-  border-right: 3px solid #2b2b30;
+  border-right: 3px solid var(--ink);
   position: relative;
 }
 
@@ -119,8 +119,8 @@
   top: 10px;
   left: 10px;
   font: 400 12px 'Silkscreen', monospace;
-  background: #2b2b30;
-  color: #ee9aa3;
+  background: var(--ink);
+  color: var(--pink);
   padding: 4px 10px;
 }
 
@@ -149,22 +149,22 @@
 
 .statusComplete {
   font: 400 10px 'Silkscreen', monospace;
-  background: #2b2b30;
-  color: #f5d9dc;
+  background: var(--ink);
+  color: var(--cream);
   padding: 4px 10px;
 }
 
 .statusProgress {
   font: 400 10px 'Silkscreen', monospace;
-  background: #ee9aa3;
-  color: #2b2b30;
+  background: var(--pink);
+  color: var(--ink);
   padding: 4px 10px;
   animation: blink 1.6s step-end infinite;
 }
 
 .meta {
   font: 400 10px 'Silkscreen', monospace;
-  color: #6d6a72;
+  color: var(--grey);
 }
 
 .bullets {
@@ -172,7 +172,7 @@
   padding-left: 18px;
   font-size: 13.5px;
   line-height: 1.65;
-  color: #3a3a40;
+  color: var(--ink);
   display: flex;
   flex-direction: column;
   gap: 4px;
@@ -187,12 +187,12 @@
 
 .lootLabel {
   font: 400 9px 'Silkscreen', monospace;
-  color: #2b2b30;
+  color: var(--ink);
 }
 
 .lootChip {
   font: 400 10px 'Silkscreen', monospace;
-  border: 2px solid #2b2b30;
+  border: 2px solid var(--ink);
   padding: 2px 9px;
 }
 
@@ -200,7 +200,7 @@
   .shotWrap {
     width: 100%;
     border-right: none;
-    border-bottom: 3px solid #2b2b30;
+    border-bottom: 3px solid var(--ink);
   }
 
   .info {

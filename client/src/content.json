@@ -200,10 +200,32 @@
       "github": "GITHUB",
       "linkedin": "LINKEDIN",
       "roadmap": "ROADMAP",
+      "settings": "⚙ SETTINGS",
+      "settingsAriaLabel": "Open settings",
       "sfxOn": "SFX ON",
       "sfxOff": "SFX OFF",
       "linksMenuAriaLabel": "Links menu",
       "hamburgerGlyph": "☰"
+    },
+
+    "settings": {
+      "title": "SETTINGS",
+      "sub": "OPTIONS MENU",
+      "closeAriaLabel": "Close settings",
+      "onLabel": "ON",
+      "offLabel": "OFF",
+      "wipLabel": "WIP",
+      "darkMode": { "label": "DARK MODE", "desc": "Swap the page to a night palette. The HUD keeps its dark frame." },
+      "sfx": { "label": "SOUND EFFECTS", "desc": "Menu blips, discovery chimes and the level-up fanfare." },
+      "music": { "label": "MUSIC", "desc": "Chiptune background track. Not written yet — see the roadmap." },
+      "reset": {
+        "label": "RESET DISCOVERIES",
+        "desc": "Clears every unlocked discovery, the chapters you've visited and the XP meter.",
+        "button": "RESET",
+        "confirm": "SURE?"
+      },
+      "resetToast": "PROGRESS RESET",
+      "footer": "Saved to this browser only."
     },
 
     "roadmap": {

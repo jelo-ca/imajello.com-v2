@@ -7,6 +7,14 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Archivo:wght@400;500;600;700&family=Silkscreen:wght@400;700&display=swap" rel="stylesheet">
     <title>Anjoelo Calderon - Software Engineer</title>
+    <script>
+      // Set the theme before first paint so a dark-mode visitor never sees a cream flash.
+      // React re-applies the same attribute once the settings state hydrates.
+      try {
+        var t = localStorage.getItem('imajello-theme');
+        if (t === 'dark') document.documentElement.setAttribute('data-theme', 'dark');
+      } catch (e) { /* localStorage unavailable */ }
+    </script>
   </head>
   <body>
     <div id="root"></div>

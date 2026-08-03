@@ -2,8 +2,10 @@ import { useEffect } from 'react';
 import type { RefObject } from 'react';
 
 const GLYPHS = ['◆', '✦', '●', '＋'];
-const COLORS = ['rgba(43,43,48,.16)', 'rgba(194,95,116,.20)', 'rgba(238,154,163,.50)', 'rgba(43,43,48,.11)'];
-const TRAIL_COLORS = ['#ee9aa3', '#c25f74', '#2b2b30'];
+// Drifting glyphs and cursor trail sit on the page, so the ink-toned ones follow the
+// theme through --on-paper; the pink/rose ones read on either background.
+const COLORS = ['rgb(var(--on-paper-rgb) / .16)', 'rgba(194,95,116,.20)', 'rgba(238,154,163,.50)', 'rgb(var(--on-paper-rgb) / .11)'];
+const TRAIL_COLORS = ['var(--pink)', 'var(--rose)', 'var(--on-paper)'];
 
 interface Particle { el: HTMLSpanElement; x: number; y: number; vx: number; vy: number; up: number; phase: number; amp: number; }
 

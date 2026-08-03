@@ -1,26 +1,17 @@
 import { useState } from 'react';
 import { useGameState } from '../../state/GameStateContext';
-import { useSfx } from '../../hooks/useSfx';
 import { DiscoveryListPanel } from '../shared/DiscoveryListPanel';
 import { ui } from '../../content';
 import styles from './TopBar.module.css';
 
 export function TopBar() {
   const { state, dispatch } = useGameState();
-  const { playNote } = useSfx();
   const [menuOpen, setMenuOpen] = useState(false);
   const tb = ui.topBar;
 
-  const toggleSound = () => {
-    const next = !state.sound;
-    dispatch({ type: 'SET_SOUND', value: next });
-    // Reference toggleSound (lines 1356-1362): only play the confirmation
-    // note + unlock the 'sound' discovery when turning sound ON.
-    if (next) {
-      playNote(660, 0, 0.12, 0.05);
-      dispatch({ type: 'UNLOCK_DISCOVERY', key: 'sound' });
-    }
-  };
+  // SFX moved into the settings panel, which is also where dark mode, music and the
+  // progress reset live — the top bar just opens it.
+  const openSettings = () => dispatch({ type: 'TOGGLE_SETTINGS' });
 
   return (
     <>
@@ -41,18 +32,26 @@ export function TopBar() {
         <button
           data-sfx
           className={styles.chip}
-          onClick={toggleSound}
+          onClick={openSettings}
+          aria-expanded={state.settingsOpen}
+          aria-label={tb.settingsAriaLabel}
         >
-          {state.sound ? tb.sfxOn : tb.sfxOff}
+          {tb.settings}
         </button>
       </div>
 
-      {/* Mobile-only: RESUME/GITHUB/LINKEDIN collapse behind a hamburger menu
+      {/* Mobile-only: RESUME/GITHUB/LINKEDIN/ROADMAP collapse behind a hamburger menu
           below 768px (see .systemButtons/.mobileControls in TopBar.module.css).
-          SFX stays visible since it's a frequent toggle, not a link-out. */}
+          Settings stays visible since it holds the sound toggle. */}
       <div className={styles.mobileControls}>
-        <button data-sfx className={styles.chip} onClick={toggleSound}>
-          {state.sound ? tb.sfxOn : tb.sfxOff}
+        <button
+          data-sfx
+          className={styles.chip}
+          onClick={openSettings}
+          aria-expanded={state.settingsOpen}
+          aria-label={tb.settingsAriaLabel}
+        >
+          {tb.settings}
         </button>
         <div className={styles.menuWrap}>
           <button

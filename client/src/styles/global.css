@@ -1,7 +1,7 @@
 body {
   margin: 0;
-  background: #f5d9dc;
-  color: #2b2b30;
+  background: var(--page);
+  color: var(--on-paper);
   font-family: 'Archivo', system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
   overflow: hidden;
@@ -47,13 +47,13 @@ body {
 }
 
 a {
-  color: #ee9aa3;
+  color: var(--accent-on-paper);
   text-decoration-thickness: 1.5px;
   text-underline-offset: 3px;
 }
 
 a:hover {
-  color: #2b2b30;
+  color: var(--on-paper);
 }
 
 @keyframes toastIn {
@@ -236,6 +236,6 @@ a:hover {
 }
 
 ::selection {
-  background: #ee9aa3;
-  color: #2b2b30;
+  background: var(--pink);
+  color: var(--on-accent);
 }

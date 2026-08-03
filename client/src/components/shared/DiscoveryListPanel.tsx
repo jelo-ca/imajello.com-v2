@@ -30,8 +30,8 @@ export function DiscoveryListPanel() {
                   {DISCOVERIES.filter(d => state.discoveries[d.key]).map(d => (
                     <div key={d.key} className={styles.row}>
                       <span className={styles.icon}>★</span>
-                      <span className={styles.name} style={{ color: '#f5d9dc' }}>{d.name}</span>
-                      <span className={styles.how} style={{ color: '#ee9aa3' }}>{d.how}</span>
+                      <span className={styles.name} style={{ color: 'var(--on-panel)' }}>{d.name}</span>
+                      <span className={styles.how} style={{ color: 'var(--pink)' }}>{d.how}</span>
                     </div>
                   ))}
                 </div>
@@ -42,8 +42,8 @@ export function DiscoveryListPanel() {
               {DISCOVERIES.filter(d => !state.discoveries[d.key]).map(d => (
                 <div key={d.key} className={styles.row}>
                   <span className={styles.icon}>🔒</span>
-                  <span className={styles.name} style={{ color: '#a8a5ac' }}>{d.name}</span>
-                  <span className={styles.how} style={{ color: '#4a4a52' }}>{dp.hiddenPlaceholder}</span>
+                  <span className={styles.name} style={{ color: 'var(--grey-light)' }}>{d.name}</span>
+                  <span className={styles.how} style={{ color: 'var(--border-dark)' }}>{dp.hiddenPlaceholder}</span>
                 </div>
               ))}
             </div>

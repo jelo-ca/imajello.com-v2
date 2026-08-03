@@ -12,7 +12,7 @@
   align-items: center;
   gap: 7px;
   font: 400 9px 'Silkscreen', monospace;
-  background: rgba(43, 43, 48, .94);
+  background: rgb(var(--panel-rgb) / .94);
   color: var(--cream);
   border: 3px solid var(--pink);
   padding: 8px 12px;
@@ -33,14 +33,14 @@
   background: var(--ink);
   color: var(--cream);
   border: 3px solid var(--pink);
-  box-shadow: 6px 6px 0 rgba(20, 20, 23, .5);
+  box-shadow: 6px 6px 0 rgb(var(--shadow-rgb) / .5);
   animation: dropdownIn .16s ease both;
   transform-origin: top left;
 }
 
 .intro {
   padding: 12px 14px;
-  border-bottom: 2px solid #45454c;
+  border-bottom: 2px solid var(--panel-divider);
 }
 .intro p {
   margin: 0;
@@ -67,7 +67,7 @@
   display: flex;
   flex-direction: column;
   gap: 2px;
-  background: #45454c;
+  background: var(--panel-divider);
 }
 
 .row {

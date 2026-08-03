@@ -21,6 +21,11 @@ export interface State {
   discoveriesOpen: boolean;
   // Dev roadmap overlay. Ephemeral — always closed on load.
   roadmapOpen: boolean;
+  settingsOpen: boolean;
+  theme: 'light' | 'dark';
+  // Reserved for the soundtrack that isn't built yet; the settings row is disabled
+  // until there is something to play, so this never leaves its default.
+  music: boolean;
   chatMessages: ChatMessage[];
   chatInputValue: string;
   chatSending: boolean;
@@ -66,6 +71,11 @@ export type Action =
   | { type: 'TOGGLE_DISCOVERIES' }
   | { type: 'TOGGLE_ROADMAP' }
   | { type: 'CLOSE_ROADMAP' }
+  | { type: 'TOGGLE_SETTINGS' }
+  | { type: 'CLOSE_SETTINGS' }
+  | { type: 'SET_THEME'; value: 'light' | 'dark' }
+  | { type: 'SET_MUSIC'; value: boolean }
+  | { type: 'RESET_DISCOVERIES' }
   | { type: 'SET_NAV_HOVER'; section: SectionKey | null }
   | { type: 'SET_FAMILIAR_HOVER'; value: boolean }
   | { type: 'SET_KONAMI_UNLOCKED' }
@@ -84,4 +94,4 @@ export type Action =
   | { type: 'CHAT_SEND_ERROR'; reason: string }
   | { type: 'SET_CHAT_INPUT'; value: string }
   | { type: 'SET_MSG_FIELD'; field: 'msgName' | 'msgEmail' | 'msgBody'; value: string }
-  | { type: 'HYDRATE_PERSISTED'; sound: boolean; visited: SectionKey[]; discoveries: Record<string, boolean> };
+  | { type: 'HYDRATE_PERSISTED'; sound: boolean; visited: SectionKey[]; discoveries: Record<string, boolean>; theme: 'light' | 'dark' };

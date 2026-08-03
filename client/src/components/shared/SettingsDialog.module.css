@@ -1,0 +1,220 @@
+/* Same layer and framing as RoadmapDialog — both are HUD overlays, so they keep the
+   dark game frame in either theme. */
+.backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 300;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  box-sizing: border-box;
+  background: rgb(var(--shadow-rgb) / .72);
+  animation: settingsFade .14s ease both;
+}
+
+.panel {
+  width: min(460px, 100%);
+  max-height: calc(100vh - 48px);
+  overflow: auto;
+  box-sizing: border-box;
+  background: var(--panel);
+  color: var(--on-panel);
+  border: 3px solid var(--pink);
+  box-shadow: 8px 8px 0 rgb(var(--shadow-rgb) / .55);
+  padding: 16px;
+  animation: settingsIn .16s ease both;
+}
+
+.header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  border-bottom: 2px solid var(--border-dark);
+  padding-bottom: 12px;
+}
+
+.title {
+  font: 400 14px var(--font-pixel);
+  letter-spacing: .08em;
+  color: var(--pink);
+}
+
+.sub {
+  margin-top: 6px;
+  font: 400 8px var(--font-pixel);
+  letter-spacing: .12em;
+  color: var(--on-panel-muted);
+}
+
+.closeBtn {
+  flex: none;
+  font: 400 12px var(--font-pixel);
+  background: none;
+  border: 2px solid var(--on-panel);
+  color: var(--on-panel);
+  padding: 4px 9px;
+  cursor: pointer;
+}
+.closeBtn:hover {
+  background: var(--on-panel);
+  color: var(--on-accent);
+}
+
+.rows {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.row,
+.rowDisabled {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  background: var(--ink-dark);
+  border: 2px solid var(--border-dark);
+  padding: 11px 12px;
+}
+
+.rowDisabled {
+  opacity: .55;
+}
+
+.rowText {
+  flex: 1;
+  min-width: 0;
+}
+
+.rowLabel {
+  font: 400 10px var(--font-pixel);
+  letter-spacing: .06em;
+}
+
+.rowDesc {
+  margin-top: 6px;
+  font-size: 11px;
+  line-height: 1.5;
+  color: var(--grey-light);
+  text-wrap: pretty;
+}
+
+.wipTag {
+  font-size: 7px;
+  letter-spacing: .1em;
+  color: var(--yellow);
+  border: 2px solid currentColor;
+  padding: 2px 4px;
+  margin-left: 6px;
+  vertical-align: middle;
+}
+
+/* Every control on the right rail shares one footprint so the column stays even. */
+.toggleOn,
+.toggleOff,
+.toggleDisabled,
+.resetBtn,
+.resetArmed {
+  flex: none;
+  width: 62px;
+  text-align: center;
+  font: 400 9px var(--font-pixel);
+  letter-spacing: .08em;
+  padding: 8px 0;
+  border: 3px solid;
+  cursor: pointer;
+}
+
+.toggleOn {
+  background: var(--pink);
+  border-color: var(--pink);
+  color: var(--on-accent);
+}
+
+.toggleOff {
+  background: none;
+  border-color: var(--border-dark);
+  color: var(--grey-light);
+}
+.toggleOff:hover {
+  border-color: var(--pink);
+  color: var(--pink);
+}
+
+.toggleDisabled {
+  background: none;
+  border-color: var(--border-dark);
+  color: var(--on-panel-muted);
+  cursor: not-allowed;
+}
+
+.resetBtn {
+  background: none;
+  border-color: var(--rose);
+  color: var(--pink);
+}
+.resetBtn:hover {
+  background: var(--rose);
+  color: var(--on-panel);
+}
+
+/* Armed state: the next click actually wipes progress, so it goes solid. */
+.resetArmed {
+  background: var(--yellow);
+  border-color: var(--yellow);
+  color: var(--on-accent);
+}
+
+.footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-top: 14px;
+  padding-top: 12px;
+  border-top: 2px solid var(--border-dark);
+  font: 400 8px var(--font-pixel);
+  letter-spacing: .08em;
+  color: var(--on-panel-muted);
+}
+
+.escHint {
+  flex: none;
+  border: 2px solid var(--border-dark);
+  padding: 3px 6px;
+}
+
+@keyframes settingsFade {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes settingsIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .backdrop, .panel { animation: none; }
+}
+
+@media (max-width: 480px) {
+  .backdrop { padding: 14px; }
+  .panel { padding: 13px; }
+  .title { font-size: 12px; }
+
+  .row,
+  .rowDisabled {
+    gap: 10px;
+  }
+
+  .toggleOn,
+  .toggleOff,
+  .toggleDisabled,
+  .resetBtn,
+  .resetArmed {
+    width: 54px;
+  }
+}

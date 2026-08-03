@@ -67,7 +67,7 @@ export function PlayerBar({ onSummonFamiliar, setPlatformRef }: Props) {
               className={styles.navBtn}
               style={{
                 background: hovering ? 'rgba(238,154,163,.16)' : 'none',
-                borderRight: `3px solid ${visited ? '#ee9aa3' : '#2b2b30'}`,
+                borderRight: `3px solid ${visited ? 'var(--pink)' : 'var(--panel)'}`,
               }}
               onMouseEnter={() => dispatch({ type: 'SET_NAV_HOVER', section: item.section })}
               onMouseLeave={() => dispatch({ type: 'SET_NAV_HOVER', section: null })}

@@ -11,10 +11,10 @@
   width: min(860px, 94vw);
   max-height: 86vh;
   overflow: auto;
-  background: #2b2b30;
-  color: #f5d9dc;
-  border: 4px solid #ee9aa3;
-  box-shadow: 10px 10px 0 rgba(20, 20, 23, .6);
+  background: var(--ink);
+  color: var(--cream);
+  border: 4px solid var(--pink);
+  box-shadow: 10px 10px 0 rgb(var(--shadow-rgb) / .6);
   animation: dialogIn .22s steps(5) both;
 }
 
@@ -22,8 +22,8 @@
   position: sticky;
   top: 0;
   z-index: 5;
-  background: #2b2b30;
-  border-bottom: 3px solid #ee9aa3;
+  background: var(--ink);
+  border-bottom: 3px solid var(--pink);
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -39,7 +39,7 @@
 
 .badge {
   font: 400 9px 'Silkscreen', monospace;
-  color: #c25f74;
+  color: var(--rose);
 }
 
 .title {
@@ -50,15 +50,15 @@
 .closeBtn {
   font: 400 10px 'Silkscreen', monospace;
   background: none;
-  border: 2px solid #f5d9dc;
-  color: #f5d9dc;
+  border: 2px solid var(--cream);
+  color: var(--cream);
   padding: 5px 10px;
   cursor: pointer;
 }
 @media (hover: hover) {
   .closeBtn:hover {
-    background: #f5d9dc;
-    color: #2b2b30;
+    background: var(--cream);
+    color: var(--ink);
   }
 }
 
@@ -87,7 +87,7 @@
 
 .continueTag {
   font: 400 12px 'Silkscreen', monospace;
-  color: #ee9aa3;
+  color: var(--pink);
   margin-bottom: 10px;
   animation: blink 1.4s step-end infinite;
 }
@@ -99,14 +99,14 @@
 }
 
 .accent {
-  color: #ee9aa3;
+  color: var(--pink);
 }
 
 .intro {
   margin: 0;
   font-size: 13px;
   line-height: 1.6;
-  color: #a8a5ac;
+  color: var(--grey-light);
   text-wrap: pretty;
 }
 
@@ -118,25 +118,25 @@
 }
 
 .link {
-  color: #a8a5ac;
+  color: var(--grey-light);
   display: flex;
   align-items: center;
   gap: 8px;
   text-decoration: none;
 }
 .link:hover {
-  color: #ee9aa3;
+  color: var(--pink);
 }
 
 .arrow {
-  color: #ee9aa3;
+  color: var(--pink);
 }
 
 .statusGrid {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 12px;
-  border: 2px dashed #4a4a52;
+  border: 2px dashed var(--border-dark);
   padding: 14px;
   margin-top: 4px;
 }
@@ -144,7 +144,7 @@
 .statusHeading {
   grid-column: 1 / -1;
   font: 400 9px 'Silkscreen', monospace;
-  color: #ee9aa3;
+  color: var(--pink);
   display: flex;
   align-items: center;
   gap: 6px;
@@ -167,10 +167,10 @@
   font: 400 10px 'Silkscreen', monospace;
 }
 .statusItem span:first-child {
-  color: #6d6a72;
+  color: var(--grey);
 }
 .statusItem span:last-child {
-  color: #f5d9dc;
+  color: var(--cream);
 }
 
 /* ---- Right column: form card ---- */
@@ -179,8 +179,8 @@
   display: flex;
   flex-direction: column;
   gap: 10px;
-  background: #232327;
-  border: 2px solid #4a4a52;
+  background: var(--ink-dark);
+  border: 2px solid var(--border-dark);
   padding: 18px;
   box-sizing: border-box;
   height: 100%;
@@ -188,28 +188,28 @@
 
 .formLabel {
   font: 400 9px 'Silkscreen', monospace;
-  color: #ee9aa3;
+  color: var(--pink);
 }
 
 .input {
   font: 400 11px 'Silkscreen', monospace;
-  background: #2b2b30;
-  border: 2px solid #4a4a52;
-  color: #f5d9dc;
+  background: var(--ink);
+  border: 2px solid var(--border-dark);
+  color: var(--cream);
   padding: 11px 12px;
   outline: none;
   box-sizing: border-box;
   width: 100%;
 }
 .input:focus {
-  border-color: #ee9aa3;
+  border-color: var(--pink);
 }
 
 .textarea {
   font: 400 11px 'Silkscreen', monospace;
-  background: #2b2b30;
-  border: 2px solid #4a4a52;
-  color: #f5d9dc;
+  background: var(--ink);
+  border: 2px solid var(--border-dark);
+  color: var(--cream);
   padding: 11px 12px;
   outline: none;
   resize: vertical;
@@ -219,13 +219,13 @@
   min-height: 60px;
 }
 .textarea:focus {
-  border-color: #ee9aa3;
+  border-color: var(--pink);
 }
 
 .sendBtn {
   font: 400 12px 'Silkscreen', monospace;
-  background: #ee9aa3;
-  color: #2b2b30;
+  background: var(--pink);
+  color: var(--ink);
   padding: 14px;
   border: none;
   cursor: pointer;
@@ -233,13 +233,13 @@
   clip-path: polygon(8px 0, calc(100% - 8px) 0, 100% 8px, 100% calc(100% - 8px), calc(100% - 8px) 100%, 8px 100%, 0 calc(100% - 8px), 0 8px);
 }
 .sendBtn:hover {
-  background: #f5d9dc;
-  color: #2b2b30;
+  background: var(--cream);
+  color: var(--ink);
 }
 
 .finePrint {
   font: 400 7px 'Silkscreen', monospace;
-  color: #6d6a72;
+  color: var(--grey);
   line-height: 1.5;
 }
 
@@ -248,12 +248,12 @@
 .footer {
   display: flex;
   justify-content: flex-end;
-  border-top: 2px solid #4a4a52;
+  border-top: 2px solid var(--border-dark);
   padding-top: 14px;
 }
 .footer span {
   font: 400 9px 'Silkscreen', monospace;
-  color: #6d6a72;
+  color: var(--grey);
 }
 
 @media (max-width: 768px) {

@@ -64,7 +64,7 @@
   text-align: left;
   background: var(--ink);
   border: 3px solid var(--pink);
-  box-shadow: 6px 6px 0 rgba(20, 20, 23, .5);
+  box-shadow: 6px 6px 0 rgb(var(--shadow-rgb) / .5);
   padding: 12px 14px;
 }
 

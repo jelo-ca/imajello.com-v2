@@ -18,7 +18,7 @@
 }
 
 .titleAccent {
-  color: #c25f74;
+  color: var(--accent-on-paper);
 }
 
 /* The first name is a button so it can be clicked to swap in the nickname, but it
@@ -34,13 +34,13 @@
   cursor: pointer;
 }
 .firstName:hover {
-  color: #c25f74;
+  color: var(--accent-on-paper);
 }
 
 .eyebrow {
   font: 400 11px 'Silkscreen', monospace;
   letter-spacing: .12em;
-  color: #c25f74;
+  color: var(--accent-on-paper);
   text-align: center;
 }
 
@@ -54,15 +54,15 @@
 
 .arrow {
   font: 400 18px 'Silkscreen', monospace;
-  background: #2b2b30;
-  color: #f5d9dc;
+  background: var(--panel);
+  color: var(--on-panel);
   border: none;
   padding: 12px 16px;
   cursor: pointer;
 }
 .arrow:hover {
-  background: #ee9aa3;
-  color: #2b2b30;
+  background: var(--pink);
+  color: var(--on-accent);
 }
 
 .portraitBox {
@@ -70,12 +70,12 @@
   height: 210px;
   box-sizing: border-box;
   position: relative;
-  background: #2b2b30;
+  background: var(--panel);
   display: flex;
   align-items: flex-end;
   justify-content: center;
   flex: none;
-  border: 3px solid #2b2b30;
+  border: 3px solid var(--panel);
   /* Clips the character-swap slide so portraits appear to move within the
      square rather than flying in/out past its border. */
   overflow: hidden;
@@ -84,7 +84,7 @@
 .scanlines {
   position: absolute;
   inset: 10px;
-  background: repeating-linear-gradient(0deg, transparent 0 6px, rgba(244, 239, 230, .04) 6px 8px);
+  background: repeating-linear-gradient(0deg, transparent 0 6px, rgb(244 239 230 / .04) 6px 8px);
 }
 
 /* Base (outgoing) portrait image: absolutely positioned so it overlays the
@@ -117,7 +117,7 @@
   left: 0;
   right: 0;
   height: 10px;
-  background: radial-gradient(ellipse 45% 100% at 50% 100%, rgba(238, 154, 163, .55), transparent 70%);
+  background: radial-gradient(ellipse 45% 100% at 50% 100%, rgb(238 154 163 / .55), transparent 70%);
 }
 
 .statPanel {
@@ -129,10 +129,10 @@
   flex-direction: column;
   justify-content: center;
   gap: 10px;
-  background: rgba(43, 43, 48, .94);
-  border: 3px solid #2b2b30;
+  background: rgb(var(--panel-rgb) / .94);
+  border: 3px solid var(--panel);
   padding: 14px 16px;
-  color: #f5d9dc;
+  color: var(--on-panel);
 }
 
 .statsHeader {
@@ -144,7 +144,7 @@
 
 .statsLabel {
   font: 400 10px 'Silkscreen', monospace;
-  color: #ee9aa3;
+  color: var(--pink);
 }
 
 .statRow {
@@ -160,26 +160,26 @@
 }
 
 .statMod {
-  color: #ee9aa3;
+  color: var(--pink);
 }
 
 .statTrough {
   height: 10px;
-  background: #1c1c20;
+  background: var(--trough);
   overflow: hidden;
   position: relative;
 }
 
 .statFill {
   height: 100%;
-  background: #ee9aa3;
+  background: var(--pink);
   transition: width .15s steps(4);
 }
 
 .statSegments {
   position: absolute;
   inset: 0;
-  background: repeating-linear-gradient(90deg, transparent 0 16px, #2b2b30 16px 18px);
+  background: repeating-linear-gradient(90deg, transparent 0 16px, var(--panel) 16px 18px);
 }
 
 .nameClassRow {
@@ -191,7 +191,7 @@
 
 .nameClassBox {
   text-align: center;
-  background: #2b2b30;
+  background: var(--panel);
   padding: 6px 18px;
 }
 
@@ -200,42 +200,42 @@
 .mobileArrow {
   display: none;
   font: 400 14px 'Silkscreen', monospace;
-  background: #2b2b30;
-  color: #f5d9dc;
+  background: var(--panel);
+  color: var(--on-panel);
   border: none;
   padding: 8px 12px;
   cursor: pointer;
   flex: none;
 }
 .mobileArrow:hover {
-  background: #ee9aa3;
-  color: #2b2b30;
+  background: var(--pink);
+  color: var(--on-accent);
 }
 
 .charName {
   font: 400 12px 'Silkscreen', monospace;
-  color: #f5d9dc;
+  color: var(--on-panel);
 }
 
 .charClass {
   font: 400 8px 'Silkscreen', monospace;
-  color: #ee9aa3;
+  color: var(--pink);
   margin-top: 2px;
 }
 
 .startBtn {
   font: 400 13px 'Silkscreen', monospace;
   letter-spacing: .06em;
-  background: #2b2b30;
-  color: #f5d9dc;
-  border: 3px solid #2b2b30;
+  background: var(--panel);
+  color: var(--on-panel);
+  border: 3px solid var(--panel);
   padding: 12px 28px;
   cursor: pointer;
 }
 .startBtn:hover {
-  background: #ee9aa3;
-  color: #2b2b30;
-  border-color: #ee9aa3;
+  background: var(--pink);
+  color: var(--on-accent);
+  border-color: var(--pink);
 }
 
 @media (max-width: 768px) {

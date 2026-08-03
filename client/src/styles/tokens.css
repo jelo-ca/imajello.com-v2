@@ -1,4 +1,17 @@
+/* The design has two colour layers:
+   - The PAPER layer — the page background and everything printed on it (dialogs,
+     cards, headings). This is the layer that flips between light and dark mode.
+   - The HUD CHROME layer — chips, the player bar, the stat panel, the platformer.
+     This is the dark game frame and stays dark in both themes; it reads fine over
+     either page colour, and flipping it would turn the HUD into a different design
+     rather than the same design at night.
+
+   Light is the default (no attribute); dark comes from [data-theme='dark'] on <html>,
+   set by the settings panel. Raw palette values below are kept for the handful of
+   places that want a specific pixel colour regardless of theme. */
+
 :root {
+  /* ---- Raw palette (theme-independent) ---- */
   --ink: #2b2b30;
   --ink-dark: #232327;
   --ink-darker: #1c1c20;
@@ -12,7 +25,67 @@
   --yellow: #ffd43b;
   --uci-blue: #0064a4;
   --uci-gold: #ffd200;
+  /* Deep rose used for secondary text printed on a pink fill. */
+  --on-accent-soft: #5a3a41;
+  /* Platformer barrel — artwork colour, not a theme colour. */
+  --barrel: #b5651d;
+
+  /* ---- HUD chrome (same in both themes) ---- */
+  --panel: #2b2b30;
+  /* Triplet form so alpha variants compose: rgb(var(--panel-rgb) / .94). */
+  --panel-rgb: 43 43 48;
+  --panel-divider: #45454c;
+  --trough: #1c1c20;
+  --on-panel: #f5d9dc;
+  --on-panel-rgb: 245 217 220;
+  --on-panel-muted: #6d6a72;
+  --on-accent: #2b2b30;
+  --shadow-rgb: 20 20 23;
+
+  /* ---- Paper layer (flips with the theme) ---- */
+  /* The page itself. Light mode paints it the same cream as the dialogs; dark mode
+     pulls it below the dialog colour so panels still read as raised sheets. */
+  --page: #f5d9dc;
+  --paper: #f5d9dc;
+  --paper-hover: #ffffff;
+  --paper-alt: #f4efe6;
+  --on-paper: #2b2b30;
+  /* Triplet form for the faded-ink washes drawn on paper (keybind legend, scanlines). */
+  --on-paper-rgb: 43 43 48;
+  --scanline: rgb(43 43 48 / .03);
+  --on-paper-body: #3a3a40;
+  --on-paper-soft: #6d6a72;
+  --on-paper-faint: #7d7a84;
+  /* Borders and rules drawn on the paper layer. */
+  --rule: #2b2b30;
+  /* A filled block on paper — active tabs, badges — plus the text that sits on it. */
+  --invert-surface: #2b2b30;
+  --invert-text: #f5d9dc;
+  /* The rose accent reads on cream but goes muddy on a dark page, so it brightens
+     to the pink in dark mode. */
+  --accent-on-paper: #c25f74;
+
   --font-pixel: 'Silkscreen', monospace;
   --font-display: 'Archivo Black', sans-serif;
   --font-body: 'Archivo', system-ui, sans-serif;
+}
+
+:root[data-theme='dark'] {
+  --page: #16161a;
+  --paper: #24242a;
+  --paper-hover: #2e2e36;
+  --paper-alt: #26262c;
+  --on-paper: #f2e2e5;
+  --on-paper-rgb: 242 226 229;
+  --scanline: rgb(242 226 229 / .04);
+  --on-paper-body: #ddd2d5;
+  --on-paper-soft: #a5a1aa;
+  --on-paper-faint: #93909b;
+  /* The chunky 3-4px frames are the whole look, so the dark rule is pushed up to a
+     ~3.9:1 line against the sheet rather than the near-invisible one a literal
+     inversion of the ink border would give. */
+  --rule: #807f8b;
+  --invert-surface: #f2e2e5;
+  --invert-text: #24242a;
+  --accent-on-paper: #ee9aa3;
 }

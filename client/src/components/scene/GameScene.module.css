@@ -10,7 +10,7 @@
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  background: repeating-linear-gradient(0deg, transparent 0 7px, rgba(43, 43, 48, .03) 7px 9px), #f5d9dc;
+  background: repeating-linear-gradient(0deg, transparent 0 7px, var(--scanline) 7px 9px), var(--page);
 }
 
 @media (max-width: 768px) {

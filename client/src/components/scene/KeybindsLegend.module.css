@@ -12,7 +12,7 @@
   display: flex;
   flex-direction: column;
   gap: 9px;
-  color: rgba(43, 43, 48, .32);
+  color: rgb(var(--on-paper-rgb) / .32);
   pointer-events: none;
   align-items: flex-start;
   text-align: left;
@@ -28,7 +28,7 @@
 .heading {
   font: 400 8px 'Silkscreen', monospace;
   letter-spacing: .1em;
-  color: rgba(43, 43, 48, .42);
+  color: rgb(var(--on-paper-rgb) / .42);
 }
 
 .row {
@@ -39,7 +39,7 @@
 
 .keyNarrow {
   font: 400 10px 'Silkscreen', monospace;
-  border: 2px solid rgba(43, 43, 48, .32);
+  border: 2px solid rgb(var(--on-paper-rgb) / .32);
   padding: 3px 7px;
   min-width: 16px;
   text-align: center;
@@ -48,7 +48,7 @@
 
 .keyWide {
   font: 400 10px 'Silkscreen', monospace;
-  border: 2px solid rgba(43, 43, 48, .32);
+  border: 2px solid rgb(var(--on-paper-rgb) / .32);
   padding: 3px 8px;
   min-width: 16px;
   text-align: center;

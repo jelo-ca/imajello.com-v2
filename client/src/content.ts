@@ -99,7 +99,25 @@ export interface ContentShape {
   ui: {
     sections: Record<SectionKey, SectionCopy>;
     misc: { escHint: string; closeGlyph: string };
-    topBar: { resume: string; github: string; linkedin: string; roadmap: string; sfxOn: string; sfxOff: string; linksMenuAriaLabel: string; hamburgerGlyph: string };
+    topBar: {
+      resume: string; github: string; linkedin: string; roadmap: string;
+      settings: string; settingsAriaLabel: string;
+      sfxOn: string; sfxOff: string; linksMenuAriaLabel: string; hamburgerGlyph: string;
+    };
+    settings: {
+      title: string;
+      sub: string;
+      closeAriaLabel: string;
+      onLabel: string;
+      offLabel: string;
+      wipLabel: string;
+      darkMode: { label: string; desc: string };
+      sfx: { label: string; desc: string };
+      music: { label: string; desc: string };
+      reset: { label: string; desc: string; button: string; confirm: string };
+      resetToast: string;
+      footer: string;
+    };
     roadmap: {
       title: string;
       sub: string;

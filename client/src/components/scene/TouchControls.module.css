@@ -34,9 +34,9 @@
   width: 44px;
   height: 44px;
   font: 400 15px 'Silkscreen', monospace;
-  background: rgba(43, 43, 48, .9);
-  color: #f5d9dc;
-  border: 3px solid #2b2b30;
+  background: rgb(var(--panel-rgb) / .9);
+  color: var(--on-panel);
+  border: 3px solid var(--panel);
   cursor: pointer;
   pointer-events: auto;
   touch-action: manipulation;
