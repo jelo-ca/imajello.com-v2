@@ -38,3 +38,10 @@
   border: 2px solid var(--trough);
   box-sizing: border-box;
 }
+
+/* One class per barrel variant so its speed and hopping are readable before it arrives.
+   `classic` needs none — it keeps the base colour. */
+.swift { background: var(--barrel-swift); }
+.lazy { background: var(--barrel-lazy); }
+.hopper { background: var(--barrel-hopper); }
+.wild { background: var(--barrel-wild); }

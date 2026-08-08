@@ -1,6 +1,10 @@
 import { useEffect, useRef, useState } from 'react';
 import type { LevelGeometry, PixelRect } from './platformGeometry';
 import type { MoveKey } from './useHeldKeys';
+import {
+  BARREL_VARIANTS, pickBarrelVariant,
+  type BarrelVariantId, type Difficulty,
+} from './levelGenerator';
 
 export interface Barrel {
   id: number;
@@ -9,6 +13,9 @@ export interface Barrel {
   vx: number;
   vy: number;
   grounded: boolean;
+  // Which barrel this is — drives its colour as well as its speed and hopping, so the
+  // player can read the threat before it reaches them.
+  variant: BarrelVariantId;
   // Jumper barrels hop periodically while rolling.
   jumper: boolean;
   hopTimer: number;
@@ -41,27 +48,32 @@ const CLIMB_SPEED = 150; // px/s
 // Slack on the ladder grab test so standing exactly on a girder still counts as being
 // at the head of the ladder that descends from it.
 const LADDER_GRAB_EPS = 1;
-// Kept below MOVE_SPEED so a barrel chasing you from behind can still be outrun.
+// The base roll speed, kept below MOVE_SPEED so a plain barrel chasing you from behind
+// can still be outrun. Per-level scaling and the faster variants both multiply this, and
+// those deliberately do cross MOVE_SPEED — from level 2 on, some barrels have to be
+// dodged rather than walked away from.
 const BARREL_SPEED = 200; // px/s
-// Randomised so the rhythm can't be memorised; occasionally two roll out together.
-const BARREL_INTERVAL_MIN = 1.1; // seconds
-const BARREL_INTERVAL_MAX = 2.6; // seconds
-const BARREL_PAIR_CHANCE = 0.25;
 // Some barrels hop as they roll, so a single well-timed jump isn't always the answer.
 // Peak ~28px puts a hopping barrel's top around 46px up, still clearable under the
 // player's ~69px jump but only with real timing.
-const BARREL_JUMPER_CHANCE = 0.3;
 const BARREL_HOP_VELOCITY = -320; // px/s, negative = up
 const BARREL_HOP_INTERVAL = 0.9; // seconds between hops while grounded
 
 export const BARREL_SIZE = 18; // px
 
-function randomSpawnDelay(): number {
-  return BARREL_INTERVAL_MIN + Math.random() * (BARREL_INTERVAL_MAX - BARREL_INTERVAL_MIN);
+// Spawn cadence is randomised so the rhythm can't be memorised, and the window itself
+// tightens with the level (see difficultyFor).
+function randomSpawnDelay(d: Difficulty): number {
+  return d.spawnMin + Math.random() * (d.spawnMax - d.spawnMin);
 }
 
 interface Params {
   level: LevelGeometry;
+  // Bumps when the player clears a level. Used only to detect that the run moved on, so
+  // the player and the barrel field are reset onto the new geometry.
+  levelIndex: number;
+  // Barrel speed, spawn cadence and variant mix for the current level.
+  difficulty: Difficulty;
   // Pre-resolved so the climbable region always matches the drawn ladder — see
   // resolveLadderRects in platformGeometry.
   ladders: PixelRect[];
@@ -80,7 +92,8 @@ function overlaps(ax: number, ay: number, aw: number, ah: number, b: PixelRect):
 }
 
 export function useDonkeyKongLoop({
-  level, ladders, floor, paused, status, heldKeys, spriteWidth, spriteHeight, onHit, onWin,
+  level, levelIndex, difficulty, ladders, floor, paused, status, heldKeys,
+  spriteWidth, spriteHeight, onHit, onWin,
 }: Params): DkPose {
   const pRef = useRef({
     x: 0, y: 0, vx: 0, vy: 0,
@@ -90,10 +103,11 @@ export function useDonkeyKongLoop({
   });
   const barrelsRef = useRef<Barrel[]>([]);
   const spawnTimerRef = useRef(0);
-  const nextSpawnRef = useRef(randomSpawnDelay());
+  const nextSpawnRef = useRef(randomSpawnDelay(difficulty));
   const barrelIdRef = useRef(0);
   const hasSpawnedRef = useRef(false);
   const prevStatusRef = useRef(status);
+  const prevLevelRef = useRef(levelIndex);
   const [pose, setPose] = useState<DkPose>({
     x: 0, y: 0, facing: 'right', climbing: false, ready: false, barrels: [],
   });
@@ -116,18 +130,27 @@ export function useDonkeyKongLoop({
     // xOffset trails a paired barrel behind the leader (barrels roll right off the
     // spawn), so the two travel as a close pair rather than overlapping.
     const spawnBarrel = (xOffset: number) => {
+      const variant = pickBarrelVariant(difficulty.weights, Math.random());
+      const v = BARREL_VARIANTS[variant];
       barrelsRef.current.push({
         id: barrelIdRef.current++,
         x: level.barrelSpawn.left + xOffset,
         y: level.barrelSpawn.top,
-        vx: BARREL_SPEED,
+        vx: BARREL_SPEED * difficulty.speedScale * v.speedMul,
         vy: 0,
         grounded: false,
-        jumper: Math.random() < BARREL_JUMPER_CHANCE,
+        variant,
+        jumper: v.jumper,
         // Staggered so jumpers spawned together don't hop in lockstep.
         hopTimer: Math.random() * BARREL_HOP_INTERVAL,
         surfaceTop: null,
       });
+    };
+
+    const resetField = () => {
+      barrelsRef.current = [];
+      spawnTimerRef.current = 0;
+      nextSpawnRef.current = randomSpawnDelay(difficulty);
     };
 
     const publish = (ready: boolean) => {
@@ -156,15 +179,24 @@ export function useDonkeyKongLoop({
         return;
       }
 
+      // A new level means new geometry under a player who is still standing where the old
+      // one left them, and a barrel field aimed at girders that no longer exist. Put both
+      // back to a clean start before the first frame of the new layout is simulated.
+      if (prevLevelRef.current !== levelIndex) {
+        prevLevelRef.current = levelIndex;
+        placePlayer(floor);
+        resetField();
+        publish(true);
+        return;
+      }
+
       // Coming back from a win or game over: reset the run before simulating again.
       if (prevStatusRef.current !== status) {
         const wasFrozen = prevStatusRef.current !== 'climbing';
         prevStatusRef.current = status;
         if (status === 'climbing' && wasFrozen) {
           placePlayer(floor);
-          barrelsRef.current = [];
-          spawnTimerRef.current = 0;
-          nextSpawnRef.current = randomSpawnDelay();
+          resetField();
           publish(true);
           return;
         }
@@ -269,11 +301,11 @@ export function useDonkeyKongLoop({
         // Subtract the interval that was actually waited (not the new random one) so
         // the overshoot carries forward and the cadence doesn't drift late.
         spawnTimerRef.current -= nextSpawnRef.current;
-        nextSpawnRef.current = randomSpawnDelay();
+        nextSpawnRef.current = randomSpawnDelay(difficulty);
         spawnBarrel(0);
         // Sometimes a second barrel rolls out right behind the first, so one barrel
         // going past is no guarantee of a clear gap behind it.
-        if (Math.random() < BARREL_PAIR_CHANCE) spawnBarrel(-BARREL_SIZE * 1.7);
+        if (Math.random() < difficulty.pairChance) spawnBarrel(-BARREL_SIZE * 1.7);
       }
 
       const live: Barrel[] = [];
@@ -282,7 +314,7 @@ export function useDonkeyKongLoop({
           b.hopTimer += dt;
           if (b.hopTimer >= BARREL_HOP_INTERVAL) {
             b.hopTimer = 0;
-            b.vy = BARREL_HOP_VELOCITY;
+            b.vy = BARREL_HOP_VELOCITY * BARREL_VARIANTS[b.variant].hopMul;
             b.grounded = false;
           }
         }
@@ -326,9 +358,7 @@ export function useDonkeyKongLoop({
       if (hit) {
         // Clearing the field and repositioning immediately means the overlap is gone
         // this same frame, so onHit() can't re-fire on the next one.
-        barrelsRef.current = [];
-        spawnTimerRef.current = 0;
-        nextSpawnRef.current = randomSpawnDelay();
+        resetField();
         placePlayer(floor);
         onHit();
       }
@@ -342,7 +372,10 @@ export function useDonkeyKongLoop({
 
     raf = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(raf);
-  }, [level, ladders, floor, paused, status, heldKeys, spriteWidth, spriteHeight, onHit, onWin]);
+  }, [
+    level, levelIndex, difficulty, ladders, floor, paused, status, heldKeys,
+    spriteWidth, spriteHeight, onHit, onWin,
+  ]);
 
   return pose;
 }

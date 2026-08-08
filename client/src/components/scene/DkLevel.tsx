@@ -8,6 +8,8 @@ interface RenderableBarrel {
   id: number;
   x: number;
   y: number;
+  // Names a CSS class in DkLevel.module.css; 'classic' has none and keeps the base colour.
+  variant: string;
 }
 
 interface Props {
@@ -38,7 +40,11 @@ export function DkLevel({ level, ladders, barrels, barrelSize }: Props) {
         {ui.platformer.goalGlyph}
       </div>
       {barrels.map(b => (
-        <div key={b.id} className={styles.barrel} style={{ top: b.y, left: b.x, width: barrelSize, height: barrelSize }} />
+        <div
+          key={b.id}
+          className={`${styles.barrel} ${styles[b.variant] ?? ''}`}
+          style={{ top: b.y, left: b.x, width: barrelSize, height: barrelSize }}
+        />
       ))}
     </>
   );

@@ -24,9 +24,33 @@
   text-align: center;
 }
 
-/* The lives-remaining number, picked out from the surrounding label. */
+/* The lives-remaining / level number, picked out from the surrounding label. */
 .bannerCount {
   color: var(--pink);
+}
+
+/* Second line of the win banner ("NEXT: LEVEL n"), subordinate to the headline. */
+.bannerSub {
+  margin-top: 10px;
+  font-size: 13px;
+  color: var(--on-panel-muted);
+}
+
+/* Run progress, tucked directly under the discoveries chip so it reads as part of the
+   same top-left HUD stack. Kept below that chip's z-index (50) so the discoveries
+   dropdown — which pauses the game anyway — still opens over it rather than under it. */
+.levelChip {
+  position: fixed;
+  top: 58px;
+  left: 18px;
+  z-index: 45;
+  padding: 6px 12px;
+  font: 400 12px 'Silkscreen', monospace;
+  letter-spacing: .1em;
+  color: var(--on-panel);
+  background: rgb(var(--panel-rgb) / .9);
+  border: 2px solid var(--panel-divider);
+  pointer-events: none;
 }
 
 /* The banner itself is click-through; this button has to opt back in. */
@@ -53,5 +77,14 @@
     padding: 14px 22px;
     width: max-content;
     max-width: 86vw;
+  }
+  .bannerSub {
+    font-size: 11px;
+  }
+  .levelChip {
+    top: 54px;
+    left: 18px;
+    font-size: 10px;
+    padding: 5px 9px;
   }
 }

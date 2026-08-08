@@ -7,6 +7,7 @@ import { useLevelGeometry } from '../../hooks/useLevelGeometry';
 import { useHeldKeys } from '../../hooks/useHeldKeys';
 import { useDonkeyKongLoop, BARREL_SIZE } from '../../hooks/useDonkeyKongLoop';
 import { resolveLadderRects } from '../../hooks/platformGeometry';
+import { difficultyFor, randomSeed } from '../../hooks/levelGenerator';
 import { DkLevel } from './DkLevel';
 import { TouchControls } from './TouchControls';
 import styles from './Platformer.module.css';
@@ -28,7 +29,10 @@ export function Platformer({ platformRefs }: Props) {
   const char = CHARS[state.charIdx];
   const paused = state.open != null || state.familiarOpen || state.discoveriesOpen;
   const floor = useFloorRect(platformRefs, [state.open, state.familiarOpen, state.discoveriesOpen]);
-  const level = useLevelGeometry();
+  const level = useLevelGeometry(state.dkLevel, state.dkSeed);
+  // Memoised for the same reason `ladders` is: the physics loop lists it as an effect
+  // dependency, so it has to keep one identity for the whole level.
+  const difficulty = useMemo(() => difficultyFor(state.dkLevel), [state.dkLevel]);
   // Resolved once here and handed to both the physics loop and the renderer, so the
   // climbable region and the drawn ladder are always the same rectangle. Memoised
   // because the loop lists it as an effect dependency.
@@ -43,12 +47,13 @@ export function Platformer({ platformRefs }: Props) {
 
   // 'dead' and 'won' clear themselves after a beat; 'gameover' deliberately does not —
   // it waits for the player to press TRY AGAIN. Play mode is never exited here, ESC
-  // remains the only way out.
+  // remains the only way out. Clearing a level no longer restarts the run: it builds the
+  // next, harder level on a fresh seed and the climb continues.
   useEffect(() => {
     if (state.dkStatus !== 'dead' && state.dkStatus !== 'won') return;
     const dead = state.dkStatus === 'dead';
     const timer = setTimeout(
-      () => dispatch({ type: dead ? 'DK_RESUME' : 'DK_RESTART' }),
+      () => dispatch(dead ? { type: 'DK_RESUME' } : { type: 'DK_NEXT_LEVEL', seed: randomSeed() }),
       dead ? DEATH_PAUSE_MS : WIN_PAUSE_MS,
     );
     return () => clearTimeout(timer);
@@ -56,6 +61,8 @@ export function Platformer({ platformRefs }: Props) {
 
   const pose = useDonkeyKongLoop({
     level,
+    levelIndex: state.dkLevel,
+    difficulty,
     ladders,
     floor,
     paused,
@@ -75,6 +82,11 @@ export function Platformer({ platformRefs }: Props) {
   return (
     <>
       <DkLevel level={level} ladders={ladders} barrels={pose.barrels} barrelSize={BARREL_SIZE} />
+      {/* Which level the run has reached — without it the layout just quietly changes and
+          there's nothing to show the climb is going anywhere. */}
+      <div className={styles.levelChip}>
+        {b.levelLabel} <span className={styles.bannerCount}>{state.dkLevel}</span>
+      </div>
       <img
         src={char.src}
         alt=""
@@ -90,7 +102,16 @@ export function Platformer({ platformRefs }: Props) {
           <span className={styles.bannerCount}>{state.dkLives}</span> {livesWord}
         </div>
       )}
-      {state.dkStatus === 'won' && <div className={styles.banner}>{b.win}</div>}
+      {state.dkStatus === 'won' && (
+        <div className={styles.banner}>
+          {/* The first summit keeps the original "YOU WIN"; after that the run is a
+              climb through levels, so the banner reports the clear and what's next. */}
+          {state.dkLevel === 1 ? b.win : b.levelCleared}
+          <div className={styles.bannerSub}>
+            {b.nextLevel} <span className={styles.bannerCount}>{state.dkLevel + 1}</span>
+          </div>
+        </div>
+      )}
       {state.dkStatus === 'gameover' && (
         <div className={styles.banner}>
           {b.gameOver}
@@ -98,7 +119,7 @@ export function Platformer({ platformRefs }: Props) {
             type="button"
             data-sfx
             className={styles.tryAgain}
-            onClick={() => dispatch({ type: 'DK_RESTART' })}
+            onClick={() => dispatch({ type: 'DK_RESTART', seed: randomSeed() })}
           >
             {b.tryAgain}
           </button>

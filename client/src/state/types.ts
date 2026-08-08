@@ -47,6 +47,12 @@ export interface State {
   // 'dead' is the brief pause after losing a life while lives remain, so the player gets
   // told what happened before being dropped back at the bottom.
   dkStatus: 'climbing' | 'dead' | 'won' | 'gameover';
+  // 1-based. Level 1 is the hand-authored layout; every level above it is generated from
+  // (dkSeed, dkLevel) and gets taller, gappier and faster — see levelGenerator.
+  dkLevel: number;
+  // Fixed for the whole run so a resize re-derives the same level rather than reshuffling
+  // it mid-climb, and re-rolled on each new run so no two runs get the same ladder.
+  dkSeed: number;
   // Ephemeral, session-only counter — incremented exactly once by OPEN_SECTION when
   // a live dispatch (never HYDRATE_PERSISTED) first brings visited.length to 4, so
   // App.tsx can schedule the delayed "LEVEL UP" toast/fanfare without misfiring on
@@ -80,14 +86,19 @@ export type Action =
   | { type: 'SET_FAMILIAR_HOVER'; value: boolean }
   | { type: 'SET_KONAMI_UNLOCKED' }
   | { type: 'TOGGLE_NICKNAME' }
-  | { type: 'START_PLATFORMER' }
+  // `seed` is rolled at the dispatch site rather than in the reducer, which stays pure.
+  | { type: 'START_PLATFORMER'; seed: number }
   | { type: 'STOP_PLATFORMER' }
   | { type: 'DK_HIT' }
   | { type: 'DK_WIN' }
   // Resume the current run after a non-fatal death — lives are left as they are.
   | { type: 'DK_RESUME' }
-  // Start a fresh run: lives back to full. Used by the game-over "try again" button.
-  | { type: 'DK_RESTART' }
+  // Won the level: build the next, harder one. Lives carry over, plus one back as the
+  // reward for clearing.
+  | { type: 'DK_NEXT_LEVEL'; seed: number }
+  // Start a fresh run: back to level 1 with lives full. Used by the game-over "try
+  // again" button.
+  | { type: 'DK_RESTART'; seed: number }
   | { type: 'SET_TOAST'; text: string | null }
   | { type: 'CHAT_SEND_START'; text: string }
   | { type: 'CHAT_SEND_SUCCESS'; reply: string }

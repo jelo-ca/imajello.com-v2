@@ -14,6 +14,7 @@ import { BootScreen } from './components/shared/BootScreen';
 import { RoadmapDialog } from './components/shared/RoadmapDialog';
 import { SettingsDialog } from './components/shared/SettingsDialog';
 import { ui } from './content';
+import { randomSeed } from './hooks/levelGenerator';
 import styles from './App.module.css';
 
 const SECTION_KEYS: Record<string, 'journey' | 'quests' | 'experience' | 'hobbies' | 'contact'> = {
@@ -59,7 +60,7 @@ export default function App() {
         // because the game itself no longer binds it — up doubles as jump in play.
         if ((e.key === ' ' || e.key === 'Spacebar') && !state.familiarOpen) {
           e.preventDefault();
-          dispatch({ type: 'START_PLATFORMER' });
+          dispatch({ type: 'START_PLATFORMER', seed: randomSeed() });
           return;
         }
       }

@@ -1,5 +1,5 @@
-import { content } from '../content';
 import type { PlatformRectSpec, LevelSpec } from '../content';
+import { generateLevelSpec } from './levelGenerator';
 
 // All level geometry is authored in content.json as viewport percentages and converted
 // to pixels here, so the rectangles DkLevel draws and the ones the physics loop collides
@@ -39,9 +39,13 @@ function goalSquareRect(spec: PlatformRectSpec, vw: number, vh: number): PixelRe
   return { top: spec.top * vh, left: spec.left * vw, width: side, height: side };
 }
 
-export function levelSpec(): LevelSpec {
+// Level 1 hands back the authored layout untouched; everything above it is generated
+// from (seed, level) — see levelGenerator. The seed lives in game state so the layout is
+// stable for the whole run: this is re-called on every resize, and a level that
+// reshuffled itself when the window changed size would be unplayable.
+export function levelSpec(level: number, seed: number): LevelSpec {
   const isMobile = window.innerWidth <= MOBILE_BREAKPOINT;
-  return isMobile ? content.ui.platformer.levelMobile : content.ui.platformer.level;
+  return generateLevelSpec(level, seed, isMobile, window.innerWidth / 100, window.innerHeight / 100);
 }
 
 // A ladder runs from the girder it stands on down to whatever surface is next below it.
@@ -69,8 +73,8 @@ export function resolveLadderRects(level: LevelGeometry, floor: PixelRect | null
   });
 }
 
-export function levelPixelGeometry(): LevelGeometry {
-  const spec = levelSpec();
+export function levelPixelGeometry(level: number, seed: number): LevelGeometry {
+  const spec = levelSpec(level, seed);
   const vw = window.innerWidth / 100;
   const vh = window.innerHeight / 100;
   return {

@@ -2,6 +2,7 @@ import type { State, Action } from './types';
 import { CHARS } from '../data/chars';
 import { DISCOVERIES, CHAT_QUESTION_LIMIT } from '../data/discoveries';
 import { ui } from '../content';
+import { randomSeed } from '../hooks/levelGenerator';
 
 export const initialState: State = {
   open: null,
@@ -39,6 +40,8 @@ export const initialState: State = {
   playing: false,
   dkLives: ui.platformer.maxLives,
   dkStatus: 'climbing',
+  dkLevel: 1,
+  dkSeed: randomSeed(),
   levelUpTrigger: 0,
 };
 
@@ -154,7 +157,15 @@ export function reducer(state: State, action: Action): State {
       return unlockDiscovery({ ...state, nicknameOn: !state.nicknameOn }, 'nickname');
     case 'START_PLATFORMER':
       // Every run starts clean, so a previous game-over or win never leaks into the next.
-      return { ...state, playing: true, dkLives: ui.platformer.maxLives, dkStatus: 'climbing' };
+      // A fresh seed means the generated levels differ from the last run's.
+      return {
+        ...state,
+        playing: true,
+        dkLives: ui.platformer.maxLives,
+        dkStatus: 'climbing',
+        dkLevel: 1,
+        dkSeed: action.seed,
+      };
     case 'STOP_PLATFORMER':
       return { ...state, playing: false };
     case 'DK_HIT': {
@@ -180,8 +191,27 @@ export function reducer(state: State, action: Action): State {
     case 'DK_RESUME':
       // Carry on the same run — only the death pause ends here, lives stay as they are.
       return state.dkStatus === 'dead' ? { ...state, dkStatus: 'climbing' } : state;
+    case 'DK_NEXT_LEVEL':
+      // Only ever advances out of a win, so a stray dispatch can't skip a level. The
+      // extra life (capped at the maximum) is the reward for clearing — without it a run
+      // can only ever get shorter, and the levels above 3 are hard enough that a full
+      // clear on the last life would end the run immediately afterwards.
+      if (state.dkStatus !== 'won') return state;
+      return {
+        ...state,
+        dkLevel: state.dkLevel + 1,
+        dkSeed: action.seed,
+        dkLives: Math.min(ui.platformer.maxLives, state.dkLives + 1),
+        dkStatus: 'climbing',
+      };
     case 'DK_RESTART':
-      return { ...state, dkLives: ui.platformer.maxLives, dkStatus: 'climbing' };
+      return {
+        ...state,
+        dkLives: ui.platformer.maxLives,
+        dkStatus: 'climbing',
+        dkLevel: 1,
+        dkSeed: action.seed,
+      };
     case 'SET_TOAST':
       return { ...state, toast: action.text };
     case 'CHAT_SEND_START':

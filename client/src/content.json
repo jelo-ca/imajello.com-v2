@@ -438,6 +438,9 @@
       "goalGlyph": "🏆",
       "banners": {
         "win": "YOU WIN",
+        "levelCleared": "LEVEL CLEARED",
+        "nextLevel": "NEXT: LEVEL",
+        "levelLabel": "LVL",
         "gameOver": "GAME OVER",
         "lifeSingular": "LIFE LEFT",
         "lifePlural": "LIVES LEFT",

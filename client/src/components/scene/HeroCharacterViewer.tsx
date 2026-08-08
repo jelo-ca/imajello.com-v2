@@ -4,6 +4,7 @@ import { useGameState } from '../../state/GameStateContext';
 import { useSfx } from '../../hooks/useSfx';
 import { CHARS } from '../../data/chars';
 import { ui } from '../../content';
+import { randomSeed } from '../../hooks/levelGenerator';
 import styles from './HeroCharacterViewer.module.css';
 
 // Minimum horizontal drag distance (px) to count as a swipe, below which
@@ -24,7 +25,7 @@ export function HeroCharacterViewer() {
 
   const goPrev = () => { tick(); dispatch({ type: 'PREV_CHAR' }); };
   const goNext = () => { tick(); dispatch({ type: 'NEXT_CHAR' }); };
-  const handleStart = () => { tick(); dispatch({ type: 'START_PLATFORMER' }); };
+  const handleStart = () => { tick(); dispatch({ type: 'START_PLATFORMER', seed: randomSeed() }); };
 
   // Mobile replaces the ◀/▶ buttons with a swipe gesture on the portrait/stats row
   // (buttons are hidden via CSS below 768px — see HeroCharacterViewer.module.css .arrow).
