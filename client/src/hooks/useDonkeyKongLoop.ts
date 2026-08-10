@@ -18,6 +18,10 @@ export interface Barrel {
   variant: BarrelVariantId;
   // Jumper barrels hop periodically while rolling.
   jumper: boolean;
+  // Whether this barrel clears holes in a girder instead of dropping through them. Rolled
+  // per barrel from difficulty.gapJumpChance, so from level 3 on a gap is a gamble rather
+  // than a guaranteed shelter.
+  gapJumper: boolean;
   hopTimer: number;
   // `top` of the surface this barrel last came to rest on, or null before its first
   // landing. The cascade's direction flip fires only when a barrel arrives on a
@@ -91,6 +95,49 @@ function overlaps(ax: number, ay: number, aw: number, ah: number, b: PixelRect):
   return ax < b.left + b.width && ax + aw > b.left && ay < b.top + b.height && ay + ah > b.top;
 }
 
+// The steepest launch a barrel will use to clear a hole. Anything that would need a higher
+// arc than this drops through instead — which is mostly what happens to the slow barrels,
+// since the arc is solved from the barrel's own speed and a slow crossing needs a long
+// hang time. Capping it also keeps a hop from ever reaching the girder row above.
+const BARREL_GAP_HOP_MAX = 470; // px/s
+// Added to the crossing distance so the barrel lands past the far lip, not on top of it.
+const BARREL_GAP_HOP_MARGIN = 10; // px
+
+// A barrel rolling at a hole in its own girder hops it rather than falling through, so a
+// gap can't be used as a safe pocket to wait out the cascade. Returns the launch velocity,
+// or null when the barrel should just keep rolling — it isn't at an edge yet, the edge is
+// the end of the row (where dropping to the next row is the whole point of the cascade),
+// or the crossing would need a steeper arc than BARREL_GAP_HOP_MAX.
+function gapHopVelocity(b: Barrel, surfaces: PixelRect[], dt: number): number | null {
+  const speed = Math.abs(b.vx);
+  if (speed < 1) return null;
+  const dir = Math.sign(b.vx);
+  const row = surfaces.filter(s => s.top === b.surfaceTop);
+  const here = row.find(s => b.x + BARREL_SIZE > s.left && b.x < s.left + s.width);
+  if (!here) return null;
+
+  const edge = dir > 0 ? here.left + here.width : here.left;
+  const lead = dir > 0 ? b.x + BARREL_SIZE : b.x;
+  // Fire on the frame the barrel would otherwise roll off the edge.
+  if ((edge - lead) * dir > speed * dt + 2) return null;
+
+  // Nearest piece of the same girder beyond the edge. None means end of the row.
+  let far: number | null = null;
+  for (const s of row) {
+    if (s === here) continue;
+    const near = dir > 0 ? s.left : s.left + s.width;
+    if ((near - edge) * dir <= 0) continue;
+    if (far === null || (near - far) * dir < 0) far = near;
+  }
+  if (far === null) return null;
+
+  const crossing = Math.abs(far - edge) + BARREL_SIZE + BARREL_GAP_HOP_MARGIN;
+  // Time to cross at the barrel's current speed, then the launch that stays airborne
+  // exactly that long: v = g * t / 2.
+  const v = (GRAVITY * (crossing / speed)) / 2;
+  return v > BARREL_GAP_HOP_MAX ? null : -v;
+}
+
 export function useDonkeyKongLoop({
   level, levelIndex, difficulty, ladders, floor, paused, status, heldKeys,
   spriteWidth, spriteHeight, onHit, onWin,
@@ -141,6 +188,7 @@ export function useDonkeyKongLoop({
         grounded: false,
         variant,
         jumper: v.jumper,
+        gapJumper: Math.random() < difficulty.gapJumpChance,
         // Staggered so jumpers spawned together don't hop in lockstep.
         hopTimer: Math.random() * BARREL_HOP_INTERVAL,
         surfaceTop: null,
@@ -315,6 +363,13 @@ export function useDonkeyKongLoop({
           if (b.hopTimer >= BARREL_HOP_INTERVAL) {
             b.hopTimer = 0;
             b.vy = BARREL_HOP_VELOCITY * BARREL_VARIANTS[b.variant].hopMul;
+            b.grounded = false;
+          }
+        }
+        if (b.gapJumper && b.grounded && b.surfaceTop !== null) {
+          const hop = gapHopVelocity(b, surfaces, dt);
+          if (hop !== null) {
+            b.vy = hop;
             b.grounded = false;
           }
         }

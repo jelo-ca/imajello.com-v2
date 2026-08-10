@@ -20,9 +20,11 @@ export const MAX_ROWS = 5;
 // climbed. Rows are dropped rather than squeezed below this.
 const MIN_ROW_GAP_PX = 84;
 // Narrow enough to clear with a running jump (~122px of travel), wide enough to fall
-// through if you walk off it.
+// through if you walk off it. The upper bound is also what keeps the barrel gap-hop
+// honest: at 70px even the slowest barrel that hops at all clears with margin, and its
+// arc peaks below the player's jump height, so a hopping barrel is always jumpable.
 const GAP_MIN_PX = 46;
-const GAP_MAX_PX = 78;
+const GAP_MAX_PX = 70;
 // Standing room that has to survive on either side of a gap.
 const MIN_SEGMENT_PX = 96;
 // Room kept solid around a ladder column so you can always step on and off it.
@@ -72,15 +74,16 @@ export const BARREL_VARIANTS: Record<BarrelVariantId, BarrelVariant> = {
 
 type Weights = [BarrelVariantId, number][];
 
-// Level 1's mix is exactly the old behaviour — plain barrels with a 30% chance of a
-// hopper — so the first level plays the way it always did. Later tiers dilute the plain
-// barrel in favour of the ones that break a memorised dodge.
+// One new idea per level rather than all of them at once. Level 1 is exactly the old
+// behaviour (plain barrels, 30% hoppers). Level 2 introduces the fast barrel and nothing
+// else. The slow barrel arrives at 3 and the fast hopper at 4, by which point the player
+// has learned to read the colours.
 const VARIANT_TIERS: { upTo: number; weights: Weights }[] = [
   { upTo: 1, weights: [['classic', 70], ['hopper', 30]] },
-  { upTo: 2, weights: [['classic', 50], ['hopper', 25], ['swift', 15], ['lazy', 10]] },
-  { upTo: 3, weights: [['classic', 38], ['hopper', 25], ['swift', 22], ['lazy', 10], ['wild', 5]] },
-  { upTo: 5, weights: [['classic', 28], ['hopper', 24], ['swift', 26], ['lazy', 8], ['wild', 14]] },
-  { upTo: Infinity, weights: [['classic', 18], ['hopper', 24], ['swift', 30], ['lazy', 6], ['wild', 22]] },
+  { upTo: 2, weights: [['classic', 55], ['hopper', 25], ['swift', 20]] },
+  { upTo: 3, weights: [['classic', 42], ['hopper', 24], ['swift', 24], ['lazy', 10]] },
+  { upTo: 5, weights: [['classic', 30], ['hopper', 24], ['swift', 26], ['lazy', 8], ['wild', 12]] },
+  { upTo: Infinity, weights: [['classic', 20], ['hopper', 24], ['swift', 30], ['lazy', 6], ['wild', 20]] },
 ];
 
 export interface Difficulty {
@@ -88,6 +91,11 @@ export interface Difficulty {
   spawnMin: number;
   spawnMax: number;
   pairChance: number;
+  // Odds that a given barrel hops a hole in the girder instead of dropping through it.
+  // Barrels that always fall through would make every gap a safe pocket to wait in, so on
+  // the level gaps are introduced every barrel clears them; from level 3 it becomes a coin
+  // toss you have to watch, which is what makes a gap worth thinking about.
+  gapJumpChance: number;
   weights: Weights;
 }
 
@@ -96,14 +104,14 @@ export interface Difficulty {
 // who keeps winning ends up at a hard but finite ceiling rather than an impossible one.
 export function difficultyFor(level: number): Difficulty {
   const step = Math.max(0, level - 1);
-  const pace = 1 + 0.09 * step;
-  const tier = VARIANT_TIERS.find(t => level <= t.upTo) ?? VARIANT_TIERS[VARIANT_TIERS.length - 1];
+  const pace = 1 + 0.07 * step;
   return {
-    speedScale: Math.min(1.55, 1 + 0.07 * step),
-    spawnMin: Math.max(0.5, 1.1 / pace),
-    spawnMax: Math.max(1.1, 2.6 / pace),
-    pairChance: Math.min(0.6, 0.25 + 0.05 * step),
-    weights: tier.weights,
+    speedScale: Math.min(1.5, 1 + 0.05 * step),
+    spawnMin: Math.max(0.55, 1.1 / pace),
+    spawnMax: Math.max(1.2, 2.6 / pace),
+    pairChance: Math.min(0.55, 0.25 + 0.04 * step),
+    gapJumpChance: level <= 2 ? 1 : Math.max(0.55, 0.85 - 0.15 * (level - 2)),
+    weights: (VARIANT_TIERS.find(t => level <= t.upTo) ?? VARIANT_TIERS[VARIANT_TIERS.length - 1]).weights,
   };
 }
 
@@ -163,6 +171,42 @@ function cutGaps(row: Span, count: number, blocked: Span[], rng: () => number): 
     if (!placed) break;
   }
   return segments;
+}
+
+// Gaps are budgeted for the whole map, not per row, so level 2 is the authored level with
+// a single hole punched in it rather than a hole in every girder. Indexed by level; levels
+// past the table sit at the cap.
+const GAP_BUDGET = [0, 0, 1, 2, 4, 6, 8];
+const GAP_BUDGET_MAX = 9;
+// However rich the budget gets, one girder never turns into more holes than girder.
+const MAX_GAPS_PER_ROW = 3;
+
+function gapBudget(level: number): number {
+  return level < GAP_BUDGET.length ? GAP_BUDGET[level] : GAP_BUDGET_MAX;
+}
+
+// Spreads the map's gap budget over its rows: shuffled round-robin, so a budget of 1 lands
+// on a random row and a bigger budget spreads out instead of gutting one girder.
+function shareGaps(budget: number, rows: number, rng: () => number): number[] {
+  const order = Array.from({ length: rows }, (_, i) => i);
+  for (let i = order.length - 1; i > 0; i--) {
+    const j = Math.floor(rng() * (i + 1));
+    [order[i], order[j]] = [order[j], order[i]];
+  }
+  const counts = new Array<number>(rows).fill(0);
+  let left = budget;
+  while (left > 0) {
+    const before = left;
+    for (const i of order) {
+      if (left === 0) break;
+      if (counts[i] >= MAX_GAPS_PER_ROW) continue;
+      counts[i] += 1;
+      left -= 1;
+    }
+    // Every row is full — the rest of the budget has nowhere to go.
+    if (left === before) break;
+  }
+  return counts;
 }
 
 // Rows grow to MAX_ROWS as the level climbs, but only as far as MIN_ROW_GAP_PX allows on
@@ -284,13 +328,13 @@ export function generateLevelSpec(
     b: Math.max((spawnLeftVw + 12) * vwPx, (base.goal.left + goalSideVw) * vwPx + 20),
   });
 
-  const gapsPerRow = Math.min(3, Math.floor(level / 2));
+  const gapCounts = shareGaps(gapBudget(level), rows, rng);
   const girders: PlatformRectSpec[] = [];
   for (let i = 0; i < rows; i++) {
     const row = plan[i];
     const segments = cutGaps(
       { a: row.leftVw * vwPx, b: (row.leftVw + row.widthVw) * vwPx },
-      gapsPerRow,
+      gapCounts[i],
       blocked[i],
       rng,
     );
