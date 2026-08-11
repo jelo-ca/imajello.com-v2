@@ -10,6 +10,9 @@ interface RenderableBarrel {
   y: number;
   // Names a CSS class in DkLevel.module.css; 'classic' has none and keeps the base colour.
   variant: string;
+  // Seconds left on the barrel's telegraph. Above zero it's still parked at the spawn
+  // point and harmless, and it's drawn differently so that reads without knowing the rule.
+  arming: number;
 }
 
 interface Props {
@@ -42,7 +45,7 @@ export function DkLevel({ level, ladders, barrels, barrelSize }: Props) {
       {barrels.map(b => (
         <div
           key={b.id}
-          className={`${styles.barrel} ${styles[b.variant] ?? ''}`}
+          className={`${styles.barrel} ${styles[b.variant] ?? ''} ${b.arming > 0 ? styles.arming : ''}`}
           style={{ top: b.y, left: b.x, width: barrelSize, height: barrelSize }}
         />
       ))}

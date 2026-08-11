@@ -200,6 +200,8 @@
       "github": "GITHUB",
       "linkedin": "LINKEDIN",
       "roadmap": "ROADMAP",
+      "leaderboard": "🏆 SCORES",
+      "leaderboardAriaLabel": "Open the high score board",
       "settings": "⚙ SETTINGS",
       "settingsAriaLabel": "Open settings",
       "sfxOn": "SFX ON",
@@ -226,6 +228,46 @@
       },
       "resetToast": "PROGRESS RESET",
       "footer": "Saved to this browser only."
+    },
+
+    "leaderboard": {
+      "title": "HIGH SCORES",
+      "sub": "TOWER RECORDS",
+      "intro": "Ranked by how high you climbed, then by how fast you got there.",
+      "closeAriaLabel": "Close the high score board",
+      "loading": "READING THE BOARD…",
+      "loadError": "Couldn't reach the board.",
+      "retry": "RETRY",
+      "empty": "No runs on the board yet. Climb and claim the top slot.",
+      "columns": {
+        "rank": "#",
+        "name": "CLIMBER",
+        "company": "GUILD",
+        "level": "LVL",
+        "time": "TIME"
+      },
+      "emptyCell": "—",
+      "runHeading": "RUN OVER",
+      "runLevelLabel": "REACHED",
+      "runTimeLabel": "TIME",
+      "form": {
+        "heading": "CLAIM YOUR RUN",
+        "displayName": "DISPLAY NAME",
+        "firstName": "FIRST NAME",
+        "lastName": "LAST NAME",
+        "company": "COMPANY",
+        "optional": "optional",
+        "displayNamePlaceholder": "How the board shows you",
+        "submit": "SUBMIT SCORE",
+        "submitting": "SAVING…",
+        "skip": "SKIP",
+        "nameRequired": "Enter a display name of at least 2 characters.",
+        "submitFailed": "Couldn't save your score."
+      },
+      "placedPrefix": "YOU PLACED",
+      "unplaced": "Score saved — it didn't crack the board this time.",
+      "viewBoard": "VIEW BOARD",
+      "footer": "Scores are reported by the browser, so treat the board as bragging rights, not gospel."
     },
 
     "roadmap": {

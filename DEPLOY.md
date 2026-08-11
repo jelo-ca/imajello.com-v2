@@ -7,6 +7,12 @@
 5. Point nginx at the Node process (default port 3000) as a reverse proxy, terminate TLS there with certbot for your domain.
 6. To update: `git pull`, `npm run build`, `pm2 restart imajello`.
 
+## Leaderboard scores
+Arcade scores are written to `server/data/leaderboard.json`, created on first submission.
+It's gitignored, so it survives `git pull` and `pm2 restart` but is **not** in the repo —
+a fresh clone onto a new box starts with an empty board. Back it up with the rest of the
+VPS if the scores matter.
+
 ## Supplying real assets later
 - Photos: drop files into `client/public/photos/` and set the `src` prop on the relevant `ImageSlot` usage (World Map: `WorldMapDialog.tsx`; Battle Log: `data/projects.ts`'s `imageSrc` field; Inventory: `InventoryDialog.tsx`'s gallery `ImageSlot`s).
 - Resume: replace `client/public/Anjoelo_Calderon_Resume.pdf` with the real file (same filename, no code change needed).

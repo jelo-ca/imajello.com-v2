@@ -23,6 +23,11 @@ export interface Barrel {
   // than a guaranteed shelter.
   gapJumper: boolean;
   hopTimer: number;
+  // Seconds left before this barrel goes live. While above zero it hangs at the spawn
+  // point: no gravity, no movement, and no collision with the player. Gives the player a
+  // beat to read the colour and the count of what's about to roll, so a barrel can never
+  // appear and kill in the same breath.
+  arming: number;
   // `top` of the surface this barrel last came to rest on, or null before its first
   // landing. The cascade's direction flip fires only when a barrel arrives on a
   // *different* surface than it was resting on — i.e. an actual row-to-row step. Both
@@ -41,6 +46,10 @@ export interface DkPose {
   // Callers must not render the sprite while this is false.
   ready: boolean;
   barrels: Barrel[];
+  // How long the current run has been climbing for. Advances only during live play, so
+  // time spent in a dialog, on a death pause or on the level-cleared banner is not
+  // counted — a leaderboard time has to mean the same thing for everyone.
+  elapsedMs: number;
 }
 
 const GRAVITY = 1800; // px/s^2
@@ -64,6 +73,9 @@ const BARREL_HOP_VELOCITY = -320; // px/s, negative = up
 const BARREL_HOP_INTERVAL = 0.9; // seconds between hops while grounded
 
 export const BARREL_SIZE = 18; // px
+// How long a barrel is telegraphed at the spawn point before it starts rolling. Long
+// enough to notice and plan around, short enough that it doesn't slow the cascade down.
+const BARREL_ARM_TIME = 1.0; // seconds
 
 // Spawn cadence is randomised so the rhythm can't be memorised, and the window itself
 // tightens with the level (see difficultyFor).
@@ -87,7 +99,9 @@ interface Params {
   heldKeys: React.RefObject<Set<MoveKey>>;
   spriteWidth: number;
   spriteHeight: number;
-  onHit: () => void;
+  // Given the run's elapsed time so the reducer can record it when the hit is the fatal
+  // one; the clock lives in here, so the dispatch site can't read it any other way.
+  onHit: (elapsedMs: number) => void;
   onWin: () => void;
 }
 
@@ -155,8 +169,11 @@ export function useDonkeyKongLoop({
   const hasSpawnedRef = useRef(false);
   const prevStatusRef = useRef(status);
   const prevLevelRef = useRef(levelIndex);
+  // Milliseconds of live play in the current run. Carries across levels — the score is
+  // how fast the whole climb went, not the current level.
+  const elapsedRef = useRef(0);
   const [pose, setPose] = useState<DkPose>({
-    x: 0, y: 0, facing: 'right', climbing: false, ready: false, barrels: [],
+    x: 0, y: 0, facing: 'right', climbing: false, ready: false, barrels: [], elapsedMs: 0,
   });
 
   useEffect(() => {
@@ -191,6 +208,9 @@ export function useDonkeyKongLoop({
         gapJumper: Math.random() < difficulty.gapJumpChance,
         // Staggered so jumpers spawned together don't hop in lockstep.
         hopTimer: Math.random() * BARREL_HOP_INTERVAL,
+        // Velocity is assigned up front but goes unused until the telegraph expires, so a
+        // paired spawn arms on the same clock and the two go live together.
+        arming: BARREL_ARM_TIME,
         surfaceTop: null,
       });
     };
@@ -207,6 +227,7 @@ export function useDonkeyKongLoop({
         x: p.x, y: p.y, facing: p.facing, climbing: p.climbing, ready,
         // Copied so React sees a new array each frame; barrelsRef holds the live objects.
         barrels: barrelsRef.current.map(b => ({ ...b })),
+        elapsedMs: elapsedRef.current,
       });
     };
 
@@ -223,6 +244,7 @@ export function useDonkeyKongLoop({
       if (!hasSpawnedRef.current) {
         placePlayer(floor);
         hasSpawnedRef.current = true;
+        elapsedRef.current = 0;
         publish(true);
         return;
       }
@@ -240,9 +262,14 @@ export function useDonkeyKongLoop({
 
       // Coming back from a win or game over: reset the run before simulating again.
       if (prevStatusRef.current !== status) {
-        const wasFrozen = prevStatusRef.current !== 'climbing';
+        const prev = prevStatusRef.current;
+        const wasFrozen = prev !== 'climbing';
         prevStatusRef.current = status;
         if (status === 'climbing' && wasFrozen) {
+          // Leaving game over is the one transition that starts a new run (DK_RESTART);
+          // coming back from a death pause or a cleared level continues the current one,
+          // so only the former puts the clock back to zero.
+          if (prev === 'gameover') elapsedRef.current = 0;
           placePlayer(floor);
           resetField();
           publish(true);
@@ -252,6 +279,9 @@ export function useDonkeyKongLoop({
 
       // Frozen while the win / game-over banner is up.
       if (status !== 'climbing') return;
+
+      // Past every early return, so this only counts frames of live, unpaused play.
+      elapsedRef.current += dt * 1000;
 
       const surfaces: PixelRect[] = [floor, ...level.girders];
       const keys = heldKeys.current;
@@ -358,6 +388,13 @@ export function useDonkeyKongLoop({
 
       const live: Barrel[] = [];
       for (const b of barrelsRef.current) {
+        // Telegraphed but not yet live: hold position and skip the whole simulation —
+        // gravity, movement, landing and the off-screen cull all wait for it to arm.
+        if (b.arming > 0) {
+          b.arming -= dt;
+          live.push(b);
+          continue;
+        }
         if (b.jumper && b.grounded) {
           b.hopTimer += dt;
           if (b.hopTimer >= BARREL_HOP_INTERVAL) {
@@ -407,7 +444,9 @@ export function useDonkeyKongLoop({
       }
       barrelsRef.current = live;
 
-      const hit = live.some(b => overlaps(p.x, p.y, spriteWidth, spriteHeight, {
+      // An arming barrel is scenery — the whole point of the telegraph is that standing
+      // under the spawn while one appears can't cost a life.
+      const hit = live.some(b => b.arming <= 0 && overlaps(p.x, p.y, spriteWidth, spriteHeight, {
         top: b.y, left: b.x, width: BARREL_SIZE, height: BARREL_SIZE,
       }));
       if (hit) {
@@ -415,7 +454,7 @@ export function useDonkeyKongLoop({
         // this same frame, so onHit() can't re-fire on the next one.
         resetField();
         placePlayer(floor);
-        onHit();
+        onHit(elapsedRef.current);
       }
 
       if (overlaps(p.x, p.y, spriteWidth, spriteHeight, level.goal)) {

@@ -42,6 +42,8 @@ export const initialState: State = {
   dkStatus: 'climbing',
   dkLevel: 1,
   dkSeed: randomSeed(),
+  dkRunMs: 0,
+  leaderboardOpen: false,
   levelUpTrigger: 0,
 };
 
@@ -127,6 +129,10 @@ export function reducer(state: State, action: Action): State {
       return { ...state, settingsOpen: !state.settingsOpen };
     case 'CLOSE_SETTINGS':
       return { ...state, settingsOpen: false };
+    case 'OPEN_LEADERBOARD':
+      return { ...state, leaderboardOpen: true };
+    case 'CLOSE_LEADERBOARD':
+      return { ...state, leaderboardOpen: false };
     case 'SET_THEME':
       return { ...state, theme: action.value };
     case 'SET_MUSIC':
@@ -165,6 +171,7 @@ export function reducer(state: State, action: Action): State {
         dkStatus: 'climbing',
         dkLevel: 1,
         dkSeed: action.seed,
+        dkRunMs: 0,
       };
     case 'STOP_PLATFORMER':
       return { ...state, playing: false };
@@ -176,7 +183,9 @@ export function reducer(state: State, action: Action): State {
       if (state.dkStatus !== 'climbing') return state;
       const dkLives = state.dkLives - 1;
       return dkLives <= 0
-        ? { ...state, dkLives: 0, dkStatus: 'gameover' }
+        // The run is over, so freeze its time here — this is the number the leaderboard
+        // form submits alongside dkLevel.
+        ? { ...state, dkLives: 0, dkStatus: 'gameover', dkRunMs: action.elapsedMs }
         // Pause on 'dead' so the player is shown how many lives are left before the
         // climb resumes; DK_RESUME puts them back to 'climbing' without refilling lives.
         : { ...state, dkLives, dkStatus: 'dead' };
@@ -211,6 +220,7 @@ export function reducer(state: State, action: Action): State {
         dkStatus: 'climbing',
         dkLevel: 1,
         dkSeed: action.seed,
+        dkRunMs: 0,
       };
     case 'SET_TOAST':
       return { ...state, toast: action.text };

@@ -39,6 +39,25 @@
   box-sizing: border-box;
 }
 
+/* The telegraph: a barrel that has spawned but isn't rolling yet. Faded and pulsing with
+   a ring around it, so "there, but not live yet" reads at a glance. The variant colour
+   still shows through, which is the point — the pause exists so the player can read which
+   barrel is coming before it moves. */
+.arming {
+  opacity: .55;
+  animation: barrel-arming .5s ease-in-out infinite alternate;
+}
+
+@keyframes barrel-arming {
+  from { transform: scale(.82); box-shadow: 0 0 0 0 rgb(var(--shadow-rgb) / .5); }
+  to { transform: scale(1); box-shadow: 0 0 0 5px rgb(var(--shadow-rgb) / 0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  /* Keep the fade, drop the pulse — the telegraph still reads, it just holds still. */
+  .arming { animation: none; }
+}
+
 /* One class per barrel variant so its speed and hopping are readable before it arrives.
    `classic` needs none — it keeps the base colour. */
 .swift { background: var(--barrel-swift); }

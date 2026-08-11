@@ -8,6 +8,7 @@ import { useHeldKeys } from '../../hooks/useHeldKeys';
 import { useDonkeyKongLoop, BARREL_SIZE } from '../../hooks/useDonkeyKongLoop';
 import { resolveLadderRects } from '../../hooks/platformGeometry';
 import { difficultyFor, randomSeed } from '../../hooks/levelGenerator';
+import { formatRunTime } from '../../api/leaderboard';
 import { DkLevel } from './DkLevel';
 import { TouchControls } from './TouchControls';
 import styles from './Platformer.module.css';
@@ -27,7 +28,10 @@ interface Props {
 export function Platformer({ platformRefs }: Props) {
   const { state, dispatch } = useGameState();
   const char = CHARS[state.charIdx];
-  const paused = state.open != null || state.familiarOpen || state.discoveriesOpen;
+  // The leaderboard is a full overlay you can open mid-climb, so it has to freeze the
+  // game with the rest of them — reading the board should never cost a life or inflate a
+  // time.
+  const paused = state.open != null || state.familiarOpen || state.discoveriesOpen || state.leaderboardOpen;
   const floor = useFloorRect(platformRefs, [state.open, state.familiarOpen, state.discoveriesOpen]);
   const level = useLevelGeometry(state.dkLevel, state.dkSeed);
   // Memoised for the same reason `ladders` is: the physics loop lists it as an effect
@@ -42,7 +46,10 @@ export function Platformer({ platformRefs }: Props) {
   // dispatch's identity is stable (React guarantees it for useReducer), so these stay
   // stable too. That matters: useDonkeyKongLoop lists them as effect dependencies and
   // calls setPose every frame, so unstable callbacks would rebuild the rAF loop 60x/sec.
-  const onHit = useCallback(() => dispatch({ type: 'DK_HIT' }), [dispatch]);
+  const onHit = useCallback(
+    (elapsedMs: number) => dispatch({ type: 'DK_HIT', elapsedMs }),
+    [dispatch],
+  );
   const onWin = useCallback(() => dispatch({ type: 'DK_WIN' }), [dispatch]);
 
   // 'dead' and 'won' clear themselves after a beat; 'gameover' deliberately does not —
@@ -87,6 +94,9 @@ export function Platformer({ platformRefs }: Props) {
       <div className={styles.levelChip}>
         {b.levelLabel} <span className={styles.bannerCount}>{state.dkLevel}</span>
       </div>
+      {/* The run clock, visible because it's half the leaderboard score — a time you only
+          find out about after dying isn't something you can play towards. */}
+      <div className={styles.timeChip}>{formatRunTime(pose.elapsedMs)}</div>
       <img
         src={char.src}
         alt=""
@@ -115,14 +125,29 @@ export function Platformer({ platformRefs }: Props) {
       {state.dkStatus === 'gameover' && (
         <div className={styles.banner}>
           {b.gameOver}
-          <button
-            type="button"
-            data-sfx
-            className={styles.tryAgain}
-            onClick={() => dispatch({ type: 'DK_RESTART', seed: randomSeed() })}
-          >
-            {b.tryAgain}
-          </button>
+          <div className={styles.bannerSub}>
+            {b.levelLabel} {state.dkLevel} · {formatRunTime(state.dkRunMs)}
+          </div>
+          <div className={styles.bannerActions}>
+            {/* The board carries the submit form, so claiming a run and browsing past runs
+                are the same button — no second form to keep in step with this one. */}
+            <button
+              type="button"
+              data-sfx
+              className={styles.submitScore}
+              onClick={() => dispatch({ type: 'OPEN_LEADERBOARD' })}
+            >
+              {ui.leaderboard.form.submit}
+            </button>
+            <button
+              type="button"
+              data-sfx
+              className={styles.tryAgain}
+              onClick={() => dispatch({ type: 'DK_RESTART', seed: randomSeed() })}
+            >
+              {b.tryAgain}
+            </button>
+          </div>
         </div>
       )}
       <TouchControls onPress={press} onRelease={release} />

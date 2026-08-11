@@ -26,6 +26,15 @@ export function TopBar() {
         >
           {tb.roadmap}
         </button>
+        <button
+          data-sfx
+          className={styles.chip}
+          onClick={() => dispatch({ type: 'OPEN_LEADERBOARD' })}
+          aria-expanded={state.leaderboardOpen}
+          aria-label={tb.leaderboardAriaLabel}
+        >
+          {tb.leaderboard}
+        </button>
         <a href="/Anjoelo_Calderon_Resume.pdf" target="_blank" rel="noreferrer" data-sfx className={styles.chip}>{tb.resume}</a>
         <a href="https://github.com/jelo-ca" target="_blank" rel="noreferrer" data-sfx className={styles.chip}>{tb.github}</a>
         <a href="https://linkedin.com/in/anjoelo-calderon" target="_blank" rel="noreferrer" data-sfx className={styles.chip}>{tb.linkedin}</a>
@@ -71,6 +80,13 @@ export function TopBar() {
                 onClick={() => { setMenuOpen(false); dispatch({ type: 'TOGGLE_ROADMAP' }); }}
               >
                 {tb.roadmap}
+              </button>
+              <button
+                data-sfx
+                className={styles.menuItem}
+                onClick={() => { setMenuOpen(false); dispatch({ type: 'OPEN_LEADERBOARD' }); }}
+              >
+                {tb.leaderboard}
               </button>
               <a href="/Anjoelo_Calderon_Resume.pdf" target="_blank" rel="noreferrer" data-sfx className={styles.menuItem}>{tb.resume}</a>
               <a href="https://github.com/jelo-ca" target="_blank" rel="noreferrer" data-sfx className={styles.menuItem}>{tb.github}</a>

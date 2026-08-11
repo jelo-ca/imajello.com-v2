@@ -3,6 +3,7 @@ import express from 'express';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { handleChat } from './chat.js';
+import { handleGetLeaderboard, handlePostScore } from './leaderboard.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 dotenv.config({ path: path.resolve(__dirname, '../.env') });
@@ -14,6 +15,8 @@ app.set('trust proxy', 1);
 
 app.use(express.json());
 app.post('/api/chat', handleChat);
+app.get('/api/leaderboard', handleGetLeaderboard);
+app.post('/api/leaderboard', handlePostScore);
 
 const clientDist = path.resolve(__dirname, '../../client/dist');
 app.use(express.static(clientDist));

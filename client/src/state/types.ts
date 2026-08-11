@@ -53,6 +53,11 @@ export interface State {
   // Fixed for the whole run so a resize re-derives the same level rather than reshuffling
   // it mid-climb, and re-rolled on each new run so no two runs get the same ladder.
   dkSeed: number;
+  // Live play time of the run that just ended, in milliseconds, captured by the fatal
+  // DK_HIT. Together with dkLevel it is the score the leaderboard form submits.
+  dkRunMs: number;
+  // Arcade leaderboard overlay. Ephemeral like roadmapOpen — always closed on load.
+  leaderboardOpen: boolean;
   // Ephemeral, session-only counter — incremented exactly once by OPEN_SECTION when
   // a live dispatch (never HYDRATE_PERSISTED) first brings visited.length to 4, so
   // App.tsx can schedule the delayed "LEVEL UP" toast/fanfare without misfiring on
@@ -79,6 +84,8 @@ export type Action =
   | { type: 'CLOSE_ROADMAP' }
   | { type: 'TOGGLE_SETTINGS' }
   | { type: 'CLOSE_SETTINGS' }
+  | { type: 'OPEN_LEADERBOARD' }
+  | { type: 'CLOSE_LEADERBOARD' }
   | { type: 'SET_THEME'; value: 'light' | 'dark' }
   | { type: 'SET_MUSIC'; value: boolean }
   | { type: 'RESET_DISCOVERIES' }
@@ -89,7 +96,9 @@ export type Action =
   // `seed` is rolled at the dispatch site rather than in the reducer, which stays pure.
   | { type: 'START_PLATFORMER'; seed: number }
   | { type: 'STOP_PLATFORMER' }
-  | { type: 'DK_HIT' }
+  // `elapsedMs` is read from the physics loop at the dispatch site, the same way `seed`
+  // is rolled there — the reducer has no clock of its own and stays pure.
+  | { type: 'DK_HIT'; elapsedMs: number }
   | { type: 'DK_WIN' }
   // Resume the current run after a non-fatal death — lives are left as they are.
   | { type: 'DK_RESUME' }

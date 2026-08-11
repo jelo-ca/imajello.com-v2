@@ -101,6 +101,7 @@ export interface ContentShape {
     misc: { escHint: string; closeGlyph: string };
     topBar: {
       resume: string; github: string; linkedin: string; roadmap: string;
+      leaderboard: string; leaderboardAriaLabel: string;
       settings: string; settingsAriaLabel: string;
       sfxOn: string; sfxOff: string; linksMenuAriaLabel: string; hamburgerGlyph: string;
     };
@@ -116,6 +117,39 @@ export interface ContentShape {
       music: { label: string; desc: string };
       reset: { label: string; desc: string; button: string; confirm: string };
       resetToast: string;
+      footer: string;
+    };
+    leaderboard: {
+      title: string;
+      sub: string;
+      intro: string;
+      closeAriaLabel: string;
+      loading: string;
+      loadError: string;
+      retry: string;
+      empty: string;
+      columns: { rank: string; name: string; company: string; level: string; time: string };
+      emptyCell: string;
+      runHeading: string;
+      runLevelLabel: string;
+      runTimeLabel: string;
+      form: {
+        heading: string;
+        displayName: string;
+        firstName: string;
+        lastName: string;
+        company: string;
+        optional: string;
+        displayNamePlaceholder: string;
+        submit: string;
+        submitting: string;
+        skip: string;
+        nameRequired: string;
+        submitFailed: string;
+      };
+      placedPrefix: string;
+      unplaced: string;
+      viewBoard: string;
       footer: string;
     };
     roadmap: {

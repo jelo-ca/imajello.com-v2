@@ -13,6 +13,7 @@ import { RotateNotice } from './components/shared/RotateNotice';
 import { BootScreen } from './components/shared/BootScreen';
 import { RoadmapDialog } from './components/shared/RoadmapDialog';
 import { SettingsDialog } from './components/shared/SettingsDialog';
+import { LeaderboardDialog } from './components/shared/LeaderboardDialog';
 import { ui } from './content';
 import { randomSeed } from './hooks/levelGenerator';
 import styles from './App.module.css';
@@ -48,6 +49,12 @@ export default function App() {
         if (e.key === 'Escape') dispatch({ type: 'CLOSE_SETTINGS' });
         return;
       }
+      // Same treatment, and it matters more here: without the early return, ESC over the
+      // board would also stop the climb behind it, throwing away the run being claimed.
+      if (state.leaderboardOpen) {
+        if (e.key === 'Escape') dispatch({ type: 'CLOSE_LEADERBOARD' });
+        return;
+      }
       if (e.key === 'Escape' && state.discoveriesOpen) { dispatch({ type: 'TOGGLE_DISCOVERIES' }); return; }
       if (e.key === 'Escape' && state.open) { dispatch({ type: 'CLOSE_SECTION' }); return; }
       if (e.key === 'Escape' && state.familiarOpen) { dispatch({ type: 'CLOSE_FAMILIAR' }); return; }
@@ -73,7 +80,7 @@ export default function App() {
     };
     window.addEventListener('keydown', onKeyDown);
     return () => window.removeEventListener('keydown', onKeyDown);
-  }, [state.roadmapOpen, state.settingsOpen, state.discoveriesOpen, state.open, state.familiarOpen, state.playing, dispatch, trackKonami, toggleFamiliar]);
+  }, [state.roadmapOpen, state.settingsOpen, state.leaderboardOpen, state.discoveriesOpen, state.open, state.familiarOpen, state.playing, dispatch, trackKonami, toggleFamiliar]);
 
   useEffect(() => {
     const onHover = (e: MouseEvent) => {
@@ -116,6 +123,7 @@ export default function App() {
       <KonamiOverlay trigger={konamiTrigger} />
       <RoadmapDialog />
       <SettingsDialog />
+      <LeaderboardDialog />
       <BootScreen />
       {/* Last child so it stacks over everything; its own media query decides whether
           it's visible at all. */}

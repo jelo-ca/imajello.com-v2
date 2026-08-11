@@ -53,22 +53,60 @@
   pointer-events: none;
 }
 
-/* The banner itself is click-through; this button has to opt back in. */
-.tryAgain {
-  display: block;
-  margin: 14px auto 0;
+/* The run clock, stacked under the level chip and sharing its framing so the two read as
+   one HUD group. Tabular figures keep the digits from jittering as the tenths tick over. */
+.timeChip {
+  position: fixed;
+  top: 94px;
+  left: 18px;
+  z-index: 45;
+  padding: 6px 12px;
+  font: 400 12px 'Silkscreen', monospace;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: .1em;
+  color: var(--on-panel-muted);
+  background: rgb(var(--panel-rgb) / .9);
+  border: 2px solid var(--panel-divider);
+  pointer-events: none;
+}
+
+.bannerActions {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  margin-top: 14px;
+}
+
+/* The banner itself is click-through; these buttons have to opt back in. */
+.tryAgain,
+.submitScore {
   pointer-events: auto;
   cursor: pointer;
   font: 400 13px 'Silkscreen', monospace;
   letter-spacing: .08em;
+  padding: 9px 20px;
+  border: 3px solid;
+}
+
+.tryAgain {
   color: var(--on-accent);
   background: var(--pink);
-  border: 3px solid var(--pink);
-  padding: 9px 20px;
+  border-color: var(--pink);
 }
 .tryAgain:hover {
   color: var(--pink);
   background: var(--panel);
+}
+
+/* Outlined against the solid TRY AGAIN, so the primary action stays the obvious one. */
+.submitScore {
+  color: var(--yellow);
+  background: none;
+  border-color: var(--yellow);
+}
+.submitScore:hover {
+  color: var(--on-accent);
+  background: var(--yellow);
 }
 
 @media (max-width: 768px) {
@@ -86,5 +124,15 @@
     left: 18px;
     font-size: 10px;
     padding: 5px 9px;
+  }
+  .timeChip {
+    top: 84px;
+    left: 18px;
+    font-size: 10px;
+    padding: 5px 9px;
+  }
+  /* Two full-width buttons stacked — side by side they get too narrow to hit reliably. */
+  .bannerActions {
+    flex-direction: column;
   }
 }
