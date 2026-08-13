@@ -118,9 +118,13 @@ export async function handlePostScore(req: Request, res: Response) {
     return;
   }
 
-  const displayName = cleanString(body.displayName, 20);
-  if (displayName.length < 2) {
-    res.status(400).json({ error: 'display name must be at least 2 characters' });
+  // Three letters, cabinet style — the board's CLIMBER column is sized and styled for
+  // exactly that. The 20-character cap stays on cleanString rather than dropping to 3 so
+  // an over-long name is rejected outright instead of being truncated to its first three
+  // letters and quietly accepted as something the player never typed.
+  const displayName = cleanString(body.displayName, 20).toUpperCase();
+  if (!/^[A-Z]{3}$/.test(displayName)) {
+    res.status(400).json({ error: 'display name must be three letters A-Z' });
     return;
   }
 

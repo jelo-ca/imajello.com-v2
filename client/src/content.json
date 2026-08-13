@@ -174,7 +174,7 @@
       "AI-assisted scheduler converting natural-language requests into structured, confidence-scored tasks through a multi-agent Gemini pipeline (Parser → Temporal → Normalization → Validation).",
       "RAG chatbot grounded in live task context, answering scheduling questions via Gemini 2.0 Flash with a FastAPI backend and Streamlit UI.",
       "Built a 3-tier evaluation harness (baseline vs. few-shot, adversarial robustness, context sensitivity) — few-shot prompting scored 96.7% vs. 88.3% baseline across 12 test cases." ], "loot": ["PYTHON", "FASTAPI", "GEMINI", "RAG"] },
-    { "id": "studyguild", "repoUrl": "https://github.com/jelo-ca/study-guild", "imageId": "proj-studyguild", "imagePlaceholder": "screenshot: Study Guild", "rank": "A", "title": "Study Guild", "status": "in-progress", "statusLabel": "◆ IN PROGRESS", "meta": "PERSONAL · DEC 2025 – PRESENT", "bullets": [
+    { "id": "studyguild", "repoUrl": "https://github.com/jelo-ca/study-guild", "imageId": "proj-studyguild", "imageSrc": "/project_thumbnails/studyguild.png", "imagePlaceholder": "screenshot: Study Guild", "rank": "A", "title": "Study Guild", "status": "in-progress", "statusLabel": "◆ IN PROGRESS", "meta": "PERSONAL · DEC 2025 – PRESENT", "bullets": [
       "Gamified multi-agent AI study tool generating in-scope study guides and quizzes from class modules and notes.",
       "Database design that lets collected modules improve AI-generated quiz specialization per user." ], "loot": ["REACT", "RAG", "SUPABASE"] },
     { "id": "scantry", "repoUrl": "https://github.com/jelo-ca/scantry", "imageId": "proj-scantry", "imagePlaceholder": "screenshot: Scantry", "rank": "A", "title": "Scantry", "status": "in-progress", "statusLabel": "◆ IN PROGRESS", "meta": "HACK YOUR SUMMER · JUL 2026 – PRESENT", "bullets": [
@@ -252,16 +252,22 @@
       "runTimeLabel": "TIME",
       "form": {
         "heading": "CLAIM YOUR RUN",
-        "displayName": "DISPLAY NAME",
+        "displayName": "INITIALS",
         "firstName": "FIRST NAME",
         "lastName": "LAST NAME",
         "company": "COMPANY",
         "optional": "optional",
-        "displayNamePlaceholder": "How the board shows you",
+        "initialsHint": "↑↓ LETTER · ←→ MOVE · OR TYPE",
+        "initialsAriaLabel": "Your three initials",
+        "slotAriaLabel": "Letter {n} of 3",
+        "letterUpAriaLabel": "Next letter",
+        "letterDownAriaLabel": "Previous letter",
+        "previewHeading": "ON THE BOARD",
+        "previewRank": "#?",
         "submit": "SUBMIT SCORE",
         "submitting": "SAVING…",
         "skip": "SKIP",
-        "nameRequired": "Enter a display name of at least 2 characters.",
+        "nameRequired": "Enter three letters.",
         "submitFailed": "Couldn't save your score."
       },
       "placedPrefix": "YOU PLACED",

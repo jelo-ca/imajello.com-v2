@@ -5,6 +5,7 @@ import {
   EMPTY_IDENTITY, fetchLeaderboard, formatRunTime, loadIdentity, saveIdentity, submitScore,
   type Identity, type LeaderboardEntry,
 } from '../../api/leaderboard';
+import { InitialsEntry } from './InitialsEntry';
 import styles from './LeaderboardDialog.module.css';
 
 // The board fetch and the submit form are both transient view state with no other
@@ -70,7 +71,10 @@ export function LeaderboardDialog() {
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (submitting) return;
-    if (identity.displayName.trim().length < 2) {
+    // The reel can't produce anything else, so this only fires if a hand-edited
+    // localStorage entry got past normalizeInitials — better to fail at the form than to
+    // send it and read the server's rejection back.
+    if (!/^[A-Z]{3}$/.test(identity.displayName)) {
       setSubmitError(lb.form.nameRequired);
       return;
     }
@@ -144,18 +148,22 @@ export function LeaderboardDialog() {
             </div>
 
             <form className={styles.form} onSubmit={onSubmit}>
-              <div className={`${styles.field} ${styles.fieldWide}`}>
-                <label className={styles.label} htmlFor="lb-display-name">{lb.form.displayName}</label>
-                <input
-                  id="lb-display-name"
-                  className={styles.input}
+              <div className={styles.initialsBlock}>
+                <div className={styles.label}>{lb.form.displayName}</div>
+                <InitialsEntry
                   value={identity.displayName}
-                  onChange={e => setField('displayName', e.target.value)}
-                  placeholder={lb.form.displayNamePlaceholder}
-                  maxLength={20}
-                  autoComplete="nickname"
-                  required
+                  onChange={next => setField('displayName', next)}
+                  disabled={submitting}
                 />
+                {/* The board hides real names, so what the player is actually publishing is
+                    these three letters and their company. Showing that as a board row means
+                    they see the result before they commit to it. */}
+                <div className={styles.previewHeading}>{lb.form.previewHeading}</div>
+                <div className={styles.previewRow}>
+                  <span className={styles.previewRank}>{lb.form.previewRank}</span>
+                  <span className={styles.previewName}>{identity.displayName}</span>
+                  <span className={styles.previewCompany}>{cell(identity.company.trim())}</span>
+                </div>
               </div>
               <div className={styles.field}>
                 <label className={styles.label} htmlFor="lb-first-name">

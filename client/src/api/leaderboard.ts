@@ -82,8 +82,16 @@ export interface Identity {
   company: string;
 }
 
+// The reel can only represent three A-Z letters, so anything else has to be coerced before
+// it reaches the component — including the longer nickname a returning player may already
+// have cached from the previous free-text form.
+export function normalizeInitials(value: string): string {
+  const letters = value.toUpperCase().replace(/[^A-Z]/g, '').slice(0, 3);
+  return letters.padEnd(3, 'A');
+}
+
 export const EMPTY_IDENTITY: Identity = {
-  displayName: '', firstName: '', lastName: '', company: '',
+  displayName: 'AAA', firstName: '', lastName: '', company: '',
 };
 
 export function loadIdentity(): Identity {
@@ -92,7 +100,7 @@ export function loadIdentity(): Identity {
     if (!raw) return EMPTY_IDENTITY;
     const parsed = JSON.parse(raw) as Partial<Identity>;
     return {
-      displayName: parsed.displayName ?? '',
+      displayName: normalizeInitials(parsed.displayName ?? ''),
       firstName: parsed.firstName ?? '',
       lastName: parsed.lastName ?? '',
       company: parsed.company ?? '',

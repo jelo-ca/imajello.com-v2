@@ -140,7 +140,13 @@ export interface ContentShape {
         lastName: string;
         company: string;
         optional: string;
-        displayNamePlaceholder: string;
+        initialsHint: string;
+        initialsAriaLabel: string;
+        slotAriaLabel: string;
+        letterUpAriaLabel: string;
+        letterDownAriaLabel: string;
+        previewHeading: string;
+        previewRank: string;
         submit: string;
         submitting: string;
         skip: string;

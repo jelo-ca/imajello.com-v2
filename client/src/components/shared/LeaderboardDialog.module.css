@@ -115,10 +115,61 @@
   margin-top: 12px;
 }
 
-/* Display name is the one required field and the one the board actually shows, so it
-   gets the full width and sits above the optional pair. */
 .fieldWide {
   grid-column: 1 / -1;
+}
+
+/* The initials reel is the one required field and the only one the board shows, so it
+   takes the full width and far more height than the optional fields below it. The size
+   difference is what says which one matters — no extra labelling needed. */
+.initialsBlock {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 9px;
+  padding: 4px 0 12px;
+  border-bottom: 2px solid var(--border-dark);
+  margin-bottom: 3px;
+}
+
+.previewHeading {
+  margin-top: 3px;
+  font: 400 7px var(--font-pixel);
+  letter-spacing: .12em;
+  color: var(--on-panel-muted);
+}
+
+/* Mirrors the real table's rank/climber/guild cells so the mock reads as a board row
+   rather than as another form field. */
+.previewRow {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 14px;
+  width: 100%;
+  background: var(--panel);
+  border: 2px solid var(--border-dark);
+  padding: 8px 12px;
+  box-sizing: border-box;
+  font-size: 12px;
+}
+
+.previewRank {
+  font: 400 10px var(--font-pixel);
+  color: var(--on-panel-muted);
+}
+
+.previewName {
+  font: 400 13px var(--font-pixel);
+  letter-spacing: .1em;
+  color: var(--yellow);
+}
+
+.previewCompany {
+  color: var(--grey-light);
+  min-width: 0;
+  word-break: break-word;
 }
 
 .field {

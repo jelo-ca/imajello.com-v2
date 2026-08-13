@@ -1,0 +1,108 @@
+/* The three-letter reel. Sized to be the loudest thing in the claim form — it is the one
+   required field and the only one the public board shows. */
+
+.wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 9px;
+}
+
+.reels {
+  display: flex;
+  justify-content: center;
+  gap: 14px;
+  padding: 4px;
+}
+/* The group carries the only tab stop, so its focus ring is the one the player sees. */
+.reels:focus {
+  outline: none;
+}
+.reels:focus-visible {
+  outline: 2px solid var(--yellow);
+  outline-offset: 3px;
+}
+
+.slot {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+
+.chevron {
+  font: 400 10px var(--font-pixel);
+  line-height: 1;
+  background: none;
+  border: none;
+  color: var(--on-panel-muted);
+  padding: 4px 8px;
+  cursor: pointer;
+}
+.chevron:hover:not(:disabled) {
+  color: var(--yellow);
+}
+.chevron:disabled {
+  opacity: .4;
+  cursor: default;
+}
+
+/* One step either side of the current letter, so three boxes read as a reel mid-turn
+   rather than as three dropdowns. */
+.ghost {
+  font: 400 12px var(--font-pixel);
+  line-height: 1;
+  color: var(--on-panel-muted);
+  opacity: .4;
+  pointer-events: none;
+}
+
+.letter {
+  font: 400 34px var(--font-pixel);
+  line-height: 1;
+  background: var(--panel);
+  border: 3px solid var(--border-dark);
+  color: var(--on-panel);
+  width: 58px;
+  padding: 10px 0;
+  cursor: pointer;
+}
+
+.letterActive {
+  border-color: var(--yellow);
+  color: var(--yellow);
+  animation: reelPulse 1s steps(2, end) infinite;
+}
+
+.letter:disabled {
+  opacity: .55;
+  cursor: default;
+  animation: none;
+}
+
+.hint {
+  font: 400 7px var(--font-pixel);
+  letter-spacing: .1em;
+  color: var(--on-panel-muted);
+  text-align: center;
+}
+
+/* Two-step so it blinks like a cabinet caret rather than breathing like a web element. */
+@keyframes reelPulse {
+  from { box-shadow: inset 0 -4px 0 var(--yellow); }
+  to { box-shadow: inset 0 -4px 0 transparent; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .letterActive {
+    animation: none;
+    box-shadow: inset 0 -4px 0 var(--yellow);
+  }
+}
+
+/* Three 34px glyphs still fit a narrow phone, so the reel keeps its row — only the gaps
+   and the letter boxes come in. */
+@media (max-width: 480px) {
+  .reels { gap: 9px; }
+  .letter { font-size: 28px; width: 48px; }
+}
