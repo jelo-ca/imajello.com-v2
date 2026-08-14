@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { useGameState } from '../../state/GameStateContext';
 import { ui } from '../../content';
 import {
-  EMPTY_IDENTITY, fetchLeaderboard, formatRunTime, loadIdentity, saveIdentity, submitScore,
+  EMPTY_IDENTITY, INITIALS_PATTERN, fetchLeaderboard, formatRunTime, submitScore,
   type Identity, type LeaderboardEntry,
 } from '../../api/leaderboard';
 import { InitialsEntry } from './InitialsEntry';
@@ -47,7 +47,9 @@ export function LeaderboardDialog() {
   // stale list is worse than a short spinner.
   useEffect(() => {
     if (!state.leaderboardOpen) return;
-    setIdentity(loadIdentity());
+    // Every open starts from AAA with the optional fields blank — nothing carries over from
+    // the last run or the last player at this keyboard.
+    setIdentity(EMPTY_IDENTITY);
     setSubmitError(null);
     void load();
   }, [state.leaderboardOpen, load]);
@@ -71,10 +73,10 @@ export function LeaderboardDialog() {
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (submitting) return;
-    // The reel can't produce anything else, so this only fires if a hand-edited
-    // localStorage entry got past normalizeInitials — better to fail at the form than to
-    // send it and read the server's rejection back.
-    if (!/^[A-Z]{3}$/.test(identity.displayName)) {
+    // The reel can't produce anything else, so this is a belt-and-braces guard against the
+    // value being set from somewhere other than the reel — better to fail at the form than
+    // to send it and read the server's rejection back.
+    if (!INITIALS_PATTERN.test(identity.displayName)) {
       setSubmitError(lb.form.nameRequired);
       return;
     }
@@ -89,9 +91,6 @@ export function LeaderboardDialog() {
         level: state.dkLevel,
         timeMs: Math.round(state.dkRunMs),
       });
-      // Only cached once the server accepted it, so a rejected name isn't the one that
-      // prefills the next run's form.
-      saveIdentity(identity);
       setEntries(result.entries);
       setPlacedRank(result.rank);
       setMyEntryId(result.entry.id);

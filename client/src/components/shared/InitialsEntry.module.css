@@ -1,5 +1,5 @@
-/* The three-letter reel. Sized to be the loudest thing in the claim form — it is the one
-   required field and the only one the public board shows. */
+/* The five-letter name reel. Sized to be the loudest thing in the claim form — it is the
+   one required field and the only one the public board shows. */
 
 .wrap {
   display: flex;
@@ -11,7 +11,7 @@
 .reels {
   display: flex;
   justify-content: center;
-  gap: 14px;
+  gap: 10px;
   padding: 4px;
 }
 /* The group carries the only tab stop, so its focus ring is the one the player sees. */
@@ -58,13 +58,13 @@
 }
 
 .letter {
-  font: 400 34px var(--font-pixel);
+  font: 400 30px var(--font-pixel);
   line-height: 1;
   background: var(--panel);
   border: 3px solid var(--border-dark);
   color: var(--on-panel);
-  width: 58px;
-  padding: 10px 0;
+  width: 52px;
+  padding: 9px 0;
   cursor: pointer;
 }
 
@@ -100,9 +100,11 @@
   }
 }
 
-/* Three 34px glyphs still fit a narrow phone, so the reel keeps its row — only the gaps
-   and the letter boxes come in. */
+/* Five reels have to stay on one row to read as a name, so the boxes and gaps shrink
+   instead of wrapping. At 320px this comes to 5x38 + 4x5 = 210px inside a ~266px panel. */
 @media (max-width: 480px) {
-  .reels { gap: 9px; }
-  .letter { font-size: 28px; width: 48px; }
+  .reels { gap: 5px; }
+  .letter { font-size: 22px; width: 38px; padding: 7px 0; }
+  .chevron { padding: 4px 6px; }
+  .hint { font-size: 6px; letter-spacing: .06em; }
 }

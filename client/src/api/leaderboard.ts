@@ -70,11 +70,9 @@ export function formatRunTime(ms: number): string {
   return `${minutes}:${String(seconds).padStart(2, '0')}.${tenths}`;
 }
 
-// The submitter's own details, so a second run doesn't make them type their name again.
-// Names only — scores live on the server, and there is nothing here worth reconciling if
-// the two ever disagree.
-const IDENTITY_KEY = 'imajello-leaderboard-identity';
-
+// What the claim form collects. Nothing here is persisted: every run starts the form from
+// scratch, the way a cabinet resets to AAA for the next player rather than remembering who
+// was standing there last.
 export interface Identity {
   displayName: string;
   firstName: string;
@@ -82,38 +80,14 @@ export interface Identity {
   company: string;
 }
 
-// The reel can only represent three A-Z letters, so anything else has to be coerced before
-// it reaches the component — including the longer nickname a returning player may already
-// have cached from the previous free-text form.
-export function normalizeInitials(value: string): string {
-  const letters = value.toUpperCase().replace(/[^A-Z]/g, '').slice(0, 3);
-  return letters.padEnd(3, 'A');
-}
+// How many letters the name reel holds. The server enforces the same count independently
+// (it can't import this), so the two have to be changed together.
+export const INITIALS_LENGTH = 5;
 
+export const INITIALS_PATTERN = new RegExp(`^[A-Z]{${INITIALS_LENGTH}}$`);
+
+// All A's rather than an empty string: the reel is always exactly INITIALS_LENGTH A-Z
+// letters, so there is no blank state for it to start from.
 export const EMPTY_IDENTITY: Identity = {
-  displayName: 'AAA', firstName: '', lastName: '', company: '',
+  displayName: 'A'.repeat(INITIALS_LENGTH), firstName: '', lastName: '', company: '',
 };
-
-export function loadIdentity(): Identity {
-  try {
-    const raw = localStorage.getItem(IDENTITY_KEY);
-    if (!raw) return EMPTY_IDENTITY;
-    const parsed = JSON.parse(raw) as Partial<Identity>;
-    return {
-      displayName: normalizeInitials(parsed.displayName ?? ''),
-      firstName: parsed.firstName ?? '',
-      lastName: parsed.lastName ?? '',
-      company: parsed.company ?? '',
-    };
-  } catch {
-    // Private browsing, or a stored value that isn't JSON any more. Either way an empty
-    // form is a fine outcome — this is a convenience, not state anything depends on.
-    return EMPTY_IDENTITY;
-  }
-}
-
-export function saveIdentity(identity: Identity): void {
-  try {
-    localStorage.setItem(IDENTITY_KEY, JSON.stringify(identity));
-  } catch { /* ignore */ }
-}

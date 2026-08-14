@@ -2,16 +2,17 @@ import { useEffect, useRef, useState } from 'react';
 import { ui } from '../../content';
 import styles from './InitialsEntry.module.css';
 
-// A cabinet-style three-letter name entry. Presentation plus one piece of state (which
-// reel is turning) — it knows nothing about scores, submission or the board, so the value
-// it produces is always exactly three A-Z characters and nothing else has to guard it.
+// A cabinet-style name entry. Presentation plus one piece of state (which reel is turning)
+// — it knows nothing about scores, submission or the board, so the value it produces is
+// always the same length it was given, every character A-Z, and nothing else has to guard
+// it. The reel count comes from the value's length rather than a constant of its own, so
+// INITIALS_LENGTH is the only place the size is decided.
 export interface InitialsEntryProps {
   value: string;
   onChange: (next: string) => void;
   disabled?: boolean;
 }
 
-const SLOTS = [0, 1, 2] as const;
 const A = 'A'.charCodeAt(0);
 
 // Wrapping in both directions is what makes it read as a reel rather than a bounded list:
@@ -23,6 +24,7 @@ function step(letter: string, delta: number): string {
 
 export function InitialsEntry({ value, onChange, disabled = false }: InitialsEntryProps) {
   const copy = ui.leaderboard.form;
+  const count = value.length;
   const [slot, setSlot] = useState(0);
   const groupRef = useRef<HTMLDivElement>(null);
 
@@ -52,9 +54,9 @@ export function InitialsEntry({ value, onChange, disabled = false }: InitialsEnt
     focusGroup();
   };
 
-  // One handler for the whole group rather than one per slot: three reels are a single
-  // dial, so they share a single tab stop. Keydown bubbling means this still fires when
-  // focus has landed on one of the chevron buttons after a click.
+  // One handler for the whole group rather than one per slot: the reels are a single dial,
+  // so they share a single tab stop. Keydown bubbling means this still fires when focus has
+  // landed on one of the chevron buttons after a click.
   const onKeyDown = (e: React.KeyboardEvent) => {
     if (disabled) return;
     switch (e.key) {
@@ -65,20 +67,20 @@ export function InitialsEntry({ value, onChange, disabled = false }: InitialsEnt
         turn(slot, -1);
         break;
       case 'ArrowLeft':
-        setSlot((slot + 2) % 3);
+        setSlot((slot + count - 1) % count);
         break;
       case 'ArrowRight':
-        setSlot((slot + 1) % 3);
+        setSlot((slot + 1) % count);
         break;
       default: {
         // Typing beats scrolling for anyone on a keyboard, so a letter sets the slot and
-        // moves on. It stops at the third rather than wrapping — typing a fourth letter
-        // should overwrite the last one, not silently clobber the first.
+        // moves on. It stops at the last reel rather than wrapping — typing one letter too
+        // many should overwrite the end, not silently clobber the start.
         if (e.key.length !== 1) return;
         const letter = e.key.toUpperCase();
         if (letter < 'A' || letter > 'Z') return;
         setLetter(slot, letter);
-        setSlot(Math.min(slot + 1, 2));
+        setSlot(Math.min(slot + 1, count - 1));
         break;
       }
     }
@@ -98,7 +100,7 @@ export function InitialsEntry({ value, onChange, disabled = false }: InitialsEnt
         tabIndex={disabled ? -1 : 0}
         onKeyDown={onKeyDown}
       >
-        {SLOTS.map(index => {
+        {Array.from({ length: count }, (_, index) => {
           const letter = value[index];
           const active = index === slot;
           return (
@@ -124,7 +126,9 @@ export function InitialsEntry({ value, onChange, disabled = false }: InitialsEnt
                 className={`${styles.letter} ${active ? styles.letterActive : ''}`}
                 disabled={disabled}
                 tabIndex={-1}
-                aria-label={copy.slotAriaLabel.replace('{n}', String(index + 1))}
+                aria-label={copy.slotAriaLabel
+                  .replace('{n}', String(index + 1))
+                  .replace('{of}', String(count))}
                 onClick={() => selectSlot(index)}
               >
                 {letter}

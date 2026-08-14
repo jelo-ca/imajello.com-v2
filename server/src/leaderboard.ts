@@ -118,13 +118,14 @@ export async function handlePostScore(req: Request, res: Response) {
     return;
   }
 
-  // Three letters, cabinet style — the board's CLIMBER column is sized and styled for
-  // exactly that. The 20-character cap stays on cleanString rather than dropping to 3 so
-  // an over-long name is rejected outright instead of being truncated to its first three
-  // letters and quietly accepted as something the player never typed.
+  // Five letters, cabinet style — the board's CLIMBER column is sized and styled for
+  // exactly that. Mirrors INITIALS_LENGTH on the client, which can't be imported across
+  // the workspace boundary, so the two have to be changed together. The 20-character cap
+  // stays on cleanString rather than dropping to 5 so an over-long name is rejected
+  // outright instead of being truncated and quietly accepted as something never typed.
   const displayName = cleanString(body.displayName, 20).toUpperCase();
-  if (!/^[A-Z]{3}$/.test(displayName)) {
-    res.status(400).json({ error: 'display name must be three letters A-Z' });
+  if (!/^[A-Z]{5}$/.test(displayName)) {
+    res.status(400).json({ error: 'display name must be five letters A-Z' });
     return;
   }
 
