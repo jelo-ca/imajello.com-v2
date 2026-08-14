@@ -2,11 +2,13 @@
 // helpers the dialog needs. Kept out of the component so the dialog stays presentation
 // plus local state, and so the shape of an entry is stated once.
 
+// A row as the server hands it out. First and last name are deliberately absent: they are
+// collected on submission and kept server-side, and the board endpoint never returns them
+// to anyone. Their absence here is the client-side half of that guarantee — nothing in the
+// UI can render a real name, because no real name ever arrives.
 export interface LeaderboardEntry {
   id: string;
   displayName: string;
-  firstName: string;
-  lastName: string;
   company: string;
   level: number;
   timeMs: number;

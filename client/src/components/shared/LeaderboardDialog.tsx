@@ -252,8 +252,8 @@ export function LeaderboardDialog() {
                 </tr>
               </thead>
               <tbody>
-                {/* Real names are collected but deliberately not rendered — the board is a
-                    public page, and display name plus company is all it needs to say. */}
+                {/* Real names never reach the client at all — the server strips them from
+                    every response, so there is nothing here to accidentally render. */}
                 {entries.map((entry, index) => (
                   <tr key={entry.id} className={entry.id === myEntryId ? styles.mine : undefined}>
                     <td className={`${styles.rank} ${index < 3 ? styles.rankTop : ''}`}>{index + 1}</td>

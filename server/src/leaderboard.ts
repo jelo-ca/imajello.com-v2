@@ -22,6 +22,19 @@ export interface Entry {
   createdAt: string;
 }
 
+// What leaves the server. Real names are collected so Anjoelo knows who actually played,
+// but they are nobody else's business: the board is an unauthenticated public endpoint, so
+// anything included here is readable by anyone who can curl it. Hiding a field in the UI is
+// not privacy — it has to be dropped from the payload, which is what this type forces.
+export type PublicEntry = Omit<Entry, 'firstName' | 'lastName'>;
+
+// The single exit point for entry data. Every response builds its rows through this, so a
+// field added to Entry later cannot reach the wire by being forgotten about.
+function toPublicEntry(entry: Entry): PublicEntry {
+  const { firstName: _firstName, lastName: _lastName, ...pub } = entry;
+  return pub;
+}
+
 // How many rows survive in the file, and how many the client is ever shown. Keeping the
 // file larger than the visible board means a run that just misses the top 20 isn't lost
 // the moment someone above it is beaten and removed.
@@ -108,7 +121,7 @@ function cleanString(value: unknown, maxLength: number): string {
 export async function handleGetLeaderboard(_req: Request, res: Response) {
   const entries = await readEntries();
   entries.sort(compareEntries);
-  res.json({ entries: entries.slice(0, MAX_RETURNED) });
+  res.json({ entries: entries.slice(0, MAX_RETURNED).map(toPublicEntry) });
 }
 
 export async function handlePostScore(req: Request, res: Response) {
@@ -172,10 +185,13 @@ export async function handlePostScore(req: Request, res: Response) {
     // null means the run didn't even make the stored 100, which the client reports as
     // saved-but-unplaced rather than pretending it ranked.
     const index = entries.findIndex(e => e.id === entry.id);
+    // The submitter's own row goes back projected too. They typed the names, so echoing
+    // them would leak nothing — but the client has no use for them, and keeping one
+    // unprojected path around is how the next change reintroduces the leak.
     res.json({
-      entry,
+      entry: toPublicEntry(entry),
       rank: index === -1 ? null : index + 1,
-      entries: entries.slice(0, MAX_RETURNED),
+      entries: entries.slice(0, MAX_RETURNED).map(toPublicEntry),
     });
   } catch (err) {
     const reason = err instanceof Error ? err.message : 'could not save score';
