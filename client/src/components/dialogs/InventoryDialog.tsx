@@ -61,7 +61,7 @@ export function InventoryDialog({ onClose }: { onClose: () => void }) {
                 }}
                 onClick={swap}
               >
-                <ImageSlot placeholder={activeItem.photos[0].placeholder} />
+                <ImageSlot src={activeItem.photos[0].src} placeholder={activeItem.photos[0].placeholder} />
               </div>
               <div
                 data-sfx
@@ -74,7 +74,7 @@ export function InventoryDialog({ onClose }: { onClose: () => void }) {
                 }}
                 onClick={swap}
               >
-                <ImageSlot placeholder={activeItem.photos[1].placeholder} />
+                <ImageSlot src={activeItem.photos[1].src} placeholder={activeItem.photos[1].placeholder} />
               </div>
             </div>
             <div>

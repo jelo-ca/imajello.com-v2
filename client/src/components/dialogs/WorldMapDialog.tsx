@@ -23,7 +23,11 @@ export function WorldMapDialog({ onClose }: { onClose: () => void }) {
                 <span className={stop.current ? styles.statusNow : styles.statusCleared}>{stop.statusLabel}</span>
               </div>
               <div className={styles.photoBox}>
-                <ImageSlot placeholder={`${ui.worldMap.photoPrefix} ${stop.title}`} fit="contain" />
+                <ImageSlot
+                  src={stop.imageSrc}
+                  placeholder={`${ui.worldMap.photoPrefix} ${stop.title}`}
+                  fit="contain"
+                />
               </div>
               <div className={stop.current ? styles.cardTitleCurrent : styles.cardTitle}>{stop.title}</div>
               <p className={stop.current ? styles.bodyCurrent : styles.bodyText}>{stop.body}</p>

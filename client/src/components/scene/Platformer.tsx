@@ -104,7 +104,10 @@ export function Platformer({ platformRefs }: Props) {
         style={{
           width: SPRITE_WIDTH,
           height: SPRITE_HEIGHT,
-          transform: `translate3d(${pose.x}px, ${pose.y}px, 0) scaleX(${pose.facing === 'left' ? -1 : 1})`,
+          // Current class sprites are front-facing portraits, so horizontal flip
+          // reads as moonwalking. Re-enable scaleX from pose.facing once side-view
+          // walk frames land (see roadmap UPDATED SPRITES).
+          transform: `translate3d(${pose.x}px, ${pose.y}px, 0)`,
         }}
       />
       {state.dkStatus === 'dead' && (

@@ -341,9 +341,13 @@ export function useDonkeyKongLoop({
       } else {
         const movingLeft = keys.has('left');
         const movingRight = keys.has('right');
-        p.vx = movingLeft ? -MOVE_SPEED : movingRight ? MOVE_SPEED : 0;
-        if (movingLeft) p.facing = 'left';
-        if (movingRight) p.facing = 'right';
+        // Prefer a single direction when both keys are held so velocity and facing
+        // can't disagree (that reads as moonwalking / running backwards).
+        p.vx = movingLeft && !movingRight ? -MOVE_SPEED
+          : movingRight && !movingLeft ? MOVE_SPEED
+          : 0;
+        if (p.vx < 0) p.facing = 'left';
+        else if (p.vx > 0) p.facing = 'right';
         // Reaching this branch means we're not climbing, so up is free to mean jump.
         // 'jump' itself is still bound for the on-screen touch button.
         if ((keys.has('jump') || keys.has('up')) && p.grounded) {

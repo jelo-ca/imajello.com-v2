@@ -12,6 +12,8 @@ export interface JourneyStop {
   current: boolean;
   title: string;
   body: string;
+  /** Optional photo under /photos/journey/… — falls back to ImageSlot placeholder. */
+  imageSrc?: string;
 }
 
 export interface Job { dateRange: string; title: string; org: string; bullets: string[]; skills?: string[]; }
@@ -37,7 +39,12 @@ export interface RoadmapItem {
   desc: string;
 }
 
-export interface InvPhoto { id: string; placeholder: string; }
+export interface InvPhoto {
+  id: string;
+  placeholder: string;
+  /** Optional photo under /photos/inventory/… — falls back to ImageSlot placeholder. */
+  src?: string;
+}
 export interface InvItem { key: string; icon: string; tag: string; label: string; desc: string; photos: InvPhoto[]; }
 
 export interface Project {
