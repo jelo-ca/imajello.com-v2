@@ -3,7 +3,7 @@ import express from 'express';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { handleChat } from './chat.js';
-import { handleGetLeaderboard, handlePostScore } from './leaderboard.js';
+import { handleGetLeaderboard, handlePostScore, logLeaderboardPath } from './leaderboard.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 dotenv.config({ path: path.resolve(__dirname, '../.env') });
@@ -29,4 +29,5 @@ app.get('*', (_req, res) => {
 
 app.listen(PORT, () => {
   console.log(`Server listening on :${PORT}`);
+  logLeaderboardPath();
 });

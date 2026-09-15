@@ -14,8 +14,20 @@ const DEFAULT_DATA_DIR = path.resolve(__dirname, '../data');
 
 function dataFilePath(): { dir: string; file: string } {
   const fromEnv = process.env.LEADERBOARD_DATA_DIR?.trim();
-  const dir = fromEnv ? path.resolve(fromEnv) : DEFAULT_DATA_DIR;
+  // Absolute paths (leading /) win. Relative ones (e.g. ../imajello-data) resolve from
+  // process.cwd(), which on Hostinger is usually the nodejs/ app root — so a sibling
+  // folder next to nodejs/ is "../imajello-data", not "imajello-data".
+  const dir = fromEnv
+    ? path.isAbsolute(fromEnv) ? path.normalize(fromEnv) : path.resolve(process.cwd(), fromEnv)
+    : DEFAULT_DATA_DIR;
   return { dir, file: path.join(dir, 'leaderboard.json') };
+}
+
+/** Call once at boot so Hostinger logs show where scores will land. */
+export function logLeaderboardPath(): void {
+  const { dir, file } = dataFilePath();
+  console.log(`[leaderboard] data dir: ${dir}`);
+  console.log(`[leaderboard] data file: ${file}`);
 }
 
 export interface Entry {

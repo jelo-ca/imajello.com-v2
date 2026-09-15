@@ -21,13 +21,17 @@ sudo mkdir -p /var/lib/imajello
 sudo chown -R $(whoami) /var/lib/imajello
 ```
 
-Then in `server/.env` (this file is not overwritten by git):
+Then in Environment variables (hPanel → Website Dashboard → Environment variables):
 
 ```
-LEADERBOARD_DATA_DIR=/var/lib/imajello
+LEADERBOARD_DATA_DIR=../imajello-data
 ```
 
-Restart with `pm2 restart imajello`. After that, redeploys leave the board alone.
+Use that relative form on Hostinger Node apps — `cwd` is the `nodejs/` folder, so `../imajello-data` is the sibling you created. Absolute paths also work if they start with `/` and match the File Manager breadcrumb exactly (e.g. `/home/u123/domains/yourdomain.com/imajello-data`). Do **not** use bare `imajello-data` — that writes *inside* `nodejs/` and gets wiped on the next push.
+
+After redeploy, check the deployment / runtime logs for:
+`[leaderboard] data dir: ...`
+That line is the path the server is actually using.
 
 ### That file holds personal data
 Submitters can optionally give a real first and last name. Those are stored in
