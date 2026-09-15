@@ -8,10 +8,26 @@
 6. To update: `git pull`, `npm run build`, `pm2 restart imajello`.
 
 ## Leaderboard scores
-Arcade scores are written to `server/data/leaderboard.json`, created on first submission.
-It's gitignored, so it survives `git pull` and `pm2 restart` but is **not** in the repo —
-a fresh clone onto a new box starts with an empty board. Back it up with the rest of the
-VPS if the scores matter.
+Arcade scores are written to `leaderboard.json` inside `LEADERBOARD_DATA_DIR` (default:
+`server/data/`). The file is gitignored and created on first submission.
+
+**Hostinger / clean redeploys:** if each push replaces the app folder, scores in
+`server/data/` get wiped. Put the board outside the deploy tree:
+
+```bash
+sudo mkdir -p /var/lib/imajello
+# If you already have scores in the old location, move them once:
+# sudo mv /path/to/repo/server/data/leaderboard.json /var/lib/imajello/
+sudo chown -R $(whoami) /var/lib/imajello
+```
+
+Then in `server/.env` (this file is not overwritten by git):
+
+```
+LEADERBOARD_DATA_DIR=/var/lib/imajello
+```
+
+Restart with `pm2 restart imajello`. After that, redeploys leave the board alone.
 
 ### That file holds personal data
 Submitters can optionally give a real first and last name. Those are stored in

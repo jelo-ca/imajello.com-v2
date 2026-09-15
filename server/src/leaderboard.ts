@@ -6,10 +6,17 @@ import { randomUUID } from 'node:crypto';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
-// Lives outside src/ and dist/ so a rebuild never wipes it. Created on demand — there is
-// no seed file to ship, and an empty board is a valid starting state.
-const DATA_DIR = path.resolve(__dirname, '../data');
-const DATA_FILE = path.join(DATA_DIR, 'leaderboard.json');
+// Default lives next to the server package (outside src/ and dist/) so a rebuild never
+// wipes it. On Hostinger, set LEADERBOARD_DATA_DIR to a path *outside* the deploy folder
+// (e.g. /var/lib/imajello) so clean redeploys can't delete the board. Resolved lazily so
+// dotenv in index.ts has already loaded before the first read/write.
+const DEFAULT_DATA_DIR = path.resolve(__dirname, '../data');
+
+function dataFilePath(): { dir: string; file: string } {
+  const fromEnv = process.env.LEADERBOARD_DATA_DIR?.trim();
+  const dir = fromEnv ? path.resolve(fromEnv) : DEFAULT_DATA_DIR;
+  return { dir, file: path.join(dir, 'leaderboard.json') };
+}
 
 export interface Entry {
   id: string;
@@ -77,7 +84,7 @@ function compareEntries(a: Entry, b: Entry): number {
 
 async function readEntries(): Promise<Entry[]> {
   try {
-    const raw = await fs.readFile(DATA_FILE, 'utf8');
+    const raw = await fs.readFile(dataFilePath().file, 'utf8');
     const parsed = JSON.parse(raw) as { entries?: unknown };
     if (!Array.isArray(parsed.entries)) return [];
     return parsed.entries as Entry[];
@@ -102,12 +109,13 @@ function enqueue<T>(job: () => Promise<T>): Promise<T> {
 }
 
 async function writeEntries(entries: Entry[]): Promise<void> {
-  await fs.mkdir(DATA_DIR, { recursive: true });
+  const { dir, file } = dataFilePath();
+  await fs.mkdir(dir, { recursive: true });
   // Write-then-rename: rename is atomic on the same filesystem, so a crash mid-write
   // leaves the previous good file in place rather than a truncated one.
-  const tmp = `${DATA_FILE}.${process.pid}.tmp`;
+  const tmp = `${file}.${process.pid}.tmp`;
   await fs.writeFile(tmp, JSON.stringify({ entries }, null, 2), 'utf8');
-  await fs.rename(tmp, DATA_FILE);
+  await fs.rename(tmp, file);
 }
 
 // Control characters would survive JSON round-tripping and render as invisible junk in
