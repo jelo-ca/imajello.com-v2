@@ -104,10 +104,8 @@ export function Platformer({ platformRefs }: Props) {
         style={{
           width: SPRITE_WIDTH,
           height: SPRITE_HEIGHT,
-          // Current class sprites are front-facing portraits, so horizontal flip
-          // reads as moonwalking. Re-enable scaleX from pose.facing once side-view
-          // walk frames land (see roadmap UPDATED SPRITES).
-          transform: `translate3d(${pose.x}px, ${pose.y}px, 0)`,
+          // Art faces left by default — flip when moving right (was inverted before).
+          transform: `translate3d(${pose.x}px, ${pose.y}px, 0) scaleX(${pose.facing === 'right' ? -1 : 1})`,
         }}
       />
       {state.dkStatus === 'dead' && (
