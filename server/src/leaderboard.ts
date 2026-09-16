@@ -1,25 +1,11 @@
 import type { Request, Response } from 'express';
 import fs from 'node:fs/promises';
 import path from 'node:path';
-import { fileURLToPath } from 'node:url';
 import { randomUUID } from 'node:crypto';
-
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
-
-// Default lives next to the server package (outside src/ and dist/) so a rebuild never
-// wipes it. On Hostinger, set LEADERBOARD_DATA_DIR to a path *outside* the deploy folder
-// (e.g. /var/lib/imajello) so clean redeploys can't delete the board. Resolved lazily so
-// dotenv in index.ts has already loaded before the first read/write.
-const DEFAULT_DATA_DIR = path.resolve(__dirname, '../data');
+import { resolveDataDir } from './dataDir.js';
 
 function dataFilePath(): { dir: string; file: string } {
-  const fromEnv = process.env.LEADERBOARD_DATA_DIR?.trim();
-  // Absolute paths (leading /) win. Relative ones (e.g. ../imajello-data) resolve from
-  // process.cwd(), which on Hostinger is usually the nodejs/ app root — so a sibling
-  // folder next to nodejs/ is "../imajello-data", not "imajello-data".
-  const dir = fromEnv
-    ? path.isAbsolute(fromEnv) ? path.normalize(fromEnv) : path.resolve(process.cwd(), fromEnv)
-    : DEFAULT_DATA_DIR;
+  const dir = resolveDataDir();
   return { dir, file: path.join(dir, 'leaderboard.json') };
 }
 

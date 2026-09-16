@@ -2,6 +2,7 @@ import raw from './content.json';
 
 export type SectionKey = 'journey' | 'quests' | 'experience' | 'hobbies' | 'contact';
 
+
 export interface CharStat { name: string; mod: string; w: string; }
 export interface Char { src: string; name: string; cls: string; stats: CharStat[]; }
 
@@ -270,5 +271,20 @@ export interface ContentShape {
   };
 }
 
-export const content = raw as ContentShape;
+declare global {
+  interface Window {
+    // Injected by the Express server from the persistent data-dir content.json so Hostinger
+    // File Manager edits apply on refresh without rebuilding the client bundle.
+    __IMAJELLO_CONTENT__?: ContentShape;
+  }
+}
+
+function resolveContent(): ContentShape {
+  if (typeof window !== 'undefined' && window.__IMAJELLO_CONTENT__) {
+    return window.__IMAJELLO_CONTENT__;
+  }
+  return raw as ContentShape;
+}
+
+export const content = resolveContent();
 export const ui = content.ui;

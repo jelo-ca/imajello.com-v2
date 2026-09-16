@@ -7,18 +7,15 @@
 5. Point nginx at the Node process (default port 3000) as a reverse proxy, terminate TLS there with certbot for your domain.
 6. To update: `git pull`, `npm run build`, `pm2 restart imajello`.
 
-## Leaderboard scores
-Arcade scores are written to `leaderboard.json` inside `LEADERBOARD_DATA_DIR` (default:
-`server/data/`). The file is gitignored and created on first submission.
+## Persistent data (scores + site copy)
+Arcade scores (`leaderboard.json`) and editable site copy (`content.json`) both live in
+`LEADERBOARD_DATA_DIR` / `DATA_DIR` (default: `server/data/`).
 
-**Hostinger / clean redeploys:** if each push replaces the app folder, scores in
-`server/data/` get wiped. Put the board outside the deploy tree:
+**Hostinger / clean redeploys:** if each push replaces the app folder, put the data
+outside the deploy tree:
 
 ```bash
-sudo mkdir -p /var/lib/imajello
-# If you already have scores in the old location, move them once:
-# sudo mv /path/to/repo/server/data/leaderboard.json /var/lib/imajello/
-sudo chown -R $(whoami) /var/lib/imajello
+# File Manager: create imajello-data next to the nodejs/ folder
 ```
 
 Then in Environment variables (hPanel → Website Dashboard → Environment variables):
@@ -27,13 +24,19 @@ Then in Environment variables (hPanel → Website Dashboard → Environment vari
 LEADERBOARD_DATA_DIR=../imajello-data
 ```
 
-Use that relative form on Hostinger Node apps — `cwd` is the `nodejs/` folder, so `../imajello-data` is the sibling you created. Absolute paths also work if they start with `/` and match the File Manager breadcrumb exactly (e.g. `/home/u123/domains/yourdomain.com/imajello-data`). Do **not** use bare `imajello-data` — that writes *inside* `nodejs/` and gets wiped on the next push.
+Use that relative form on Hostinger Node apps — `cwd` is the `nodejs/` folder, so
+`../imajello-data` is the sibling you created. Absolute paths also work if they start
+with `/` and match the File Manager breadcrumb exactly.
 
-After redeploy, check the deployment / runtime logs for:
+On first boot the server copies `client/src/content.json` into that folder if missing.
+After that, edit **`imajello-data/content.json`** in File Manager and hard-refresh the
+site — no rebuild needed. Delete that file to re-seed from the next deploy’s copy.
+
+After redeploy, check runtime logs for:
 `[leaderboard] data dir: ...`
-That line is the path the server is actually using.
+`[content] data file: ...`
 
-### That file holds personal data
+### Leaderboard personal data
 Submitters can optionally give a real first and last name. Those are stored in
 `leaderboard.json` and are **never** returned by the API — `GET /api/leaderboard` and the
 `POST` response both go through `toPublicEntry()`, which drops them, so the public board
