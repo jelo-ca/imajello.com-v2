@@ -224,7 +224,9 @@ export function useDonkeyKongLoop({
     const publish = (ready: boolean) => {
       const p = pRef.current;
       setPose({
-        x: p.x, y: p.y, facing: p.facing, climbing: p.climbing, ready,
+        // Render on whole pixels so the fixed-size pixel sprite doesn't shimmer as the
+        // rAF loop advances in fractional positions.
+        x: Math.round(p.x), y: Math.round(p.y), facing: p.facing, climbing: p.climbing, ready,
         // Copied so React sees a new array each frame; barrelsRef holds the live objects.
         barrels: barrelsRef.current.map(b => ({ ...b })),
         elapsedMs: elapsedRef.current,
