@@ -3,7 +3,7 @@ import express from 'express';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { handleChat } from './chat.js';
-import { handleGetLeaderboard, handlePostScore, logLeaderboardPath } from './leaderboard.js';
+import { handleGetLeaderboard, handlePostScore, logLeaderboardPath, probeLeaderboardStorage } from './leaderboard.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 dotenv.config({ path: path.resolve(__dirname, '../.env') });
@@ -21,7 +21,10 @@ app.post('/api/leaderboard', handlePostScore);
 const clientDist = path.resolve(__dirname, '../../client/dist');
 app.use(express.static(clientDist));
 
-app.get('/health', (_req, res) => res.json({ ok: true }));
+app.get('/health', async (_req, res) => {
+  const leaderboard = await probeLeaderboardStorage();
+  res.json({ ok: true, leaderboard });
+});
 
 app.get('*', (_req, res) => {
   res.sendFile(path.join(clientDist, 'index.html'));

@@ -130,6 +130,43 @@ async function writeEntries(entries: Entry[]): Promise<void> {
   await fs.rename(tmp, file);
 }
 
+/** Probe used by /health so Hostinger File Manager guessing isn't required. */
+export async function probeLeaderboardStorage(): Promise<{
+  cwd: string;
+  env: string | null;
+  dir: string;
+  file: string;
+  writable: boolean;
+  error: string | null;
+  entryCount: number;
+}> {
+  const { dir, file } = dataFilePath();
+  const result = {
+    cwd: process.cwd(),
+    env: process.env.LEADERBOARD_DATA_DIR?.trim() || null,
+    dir,
+    file,
+    writable: false,
+    error: null as string | null,
+    entryCount: 0,
+  };
+  try {
+    await fs.mkdir(dir, { recursive: true });
+    const probe = path.join(dir, `.write-probe.${process.pid}`);
+    await fs.writeFile(probe, 'ok', 'utf8');
+    await fs.unlink(probe);
+    result.writable = true;
+  } catch (err) {
+    result.error = err instanceof Error ? err.message : String(err);
+  }
+  try {
+    result.entryCount = (await readEntries()).length;
+  } catch {
+    // ignore — entryCount stays 0
+  }
+  return result;
+}
+
 // Control characters would survive JSON round-tripping and render as invisible junk in
 // the board, so they come out here rather than at render time.
 function cleanString(value: unknown, maxLength: number): string {
