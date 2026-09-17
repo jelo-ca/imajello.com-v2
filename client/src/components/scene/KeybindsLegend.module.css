@@ -37,8 +37,9 @@
   .legend,
   .legend.playing {
     top: auto;
-    bottom: 112px;
-    max-height: min(42vh, calc(100dvh - 130px));
+    /* Desktop PlayerBar is ~130–145px tall; 112px left the keybind stack under it. */
+    bottom: max(152px, 22vh);
+    max-height: min(36vh, calc(100dvh - 180px));
     gap: 5px;
   }
 
