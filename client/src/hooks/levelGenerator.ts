@@ -1,5 +1,6 @@
 import { content } from '../content';
 import type { LevelSpec, PlatformRectSpec } from '../content';
+import { minRowGapPx } from './gamePhysics';
 
 // Procedural levels for the climb. Level 1 is the hand-authored layout from content.json
 // and is returned untouched; every level after it is generated here, getting taller,
@@ -16,9 +17,9 @@ import type { LevelSpec, PlatformRectSpec } from '../content';
 // ---- tuning ----
 
 export const MAX_ROWS = 5;
-// Must stay above the player's ~69px jump peak, or a row could be jumped instead of
-// climbed. Rows are dropped rather than squeezed below this.
-const MIN_ROW_GAP_PX = 84;
+// Must stay above the scaled jump peak + player height, or a jump from below can clip a
+// barrel on the row above (and could clear the girder itself). Rows are dropped rather
+// than squeezed below this — see minRowGapPx in gamePhysics.
 // Narrow enough to clear with a running jump (~122px of travel), wide enough to fall
 // through if you walk off it. The upper bound is also what keeps the barrel gap-hop
 // honest: at 70px even the slowest barrel that hops at all clears with margin, and its
@@ -213,7 +214,8 @@ function shareGaps(budget: number, rows: number, rng: () => number): number[] {
 // the current viewport — on a short window the count is walked back down rather than
 // packing the rows close enough to jump between.
 function rowPlan(level: number, spanVh: number, maxSpacingVh: number, vhPx: number) {
-  const minSpacingVh = MIN_ROW_GAP_PX / vhPx;
+  // minRowGapPx scales with viewport height so it stays clear of the scaled jump peak.
+  const minSpacingVh = minRowGapPx() / vhPx;
   let rows = Math.min(MAX_ROWS, 2 + Math.ceil(level / 2));
   let spacingVh = Math.min(maxSpacingVh, spanVh / (rows - 1));
   while (rows > 3 && spacingVh < minSpacingVh) {

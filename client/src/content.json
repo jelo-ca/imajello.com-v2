@@ -496,31 +496,31 @@
       },
       "level": {
         "girders": [
-          { "top": 72, "left": 0, "width": 80, "height": 1.5 },
-          { "top": 52, "left": 20, "width": 80, "height": 1.5 },
-          { "top": 32, "left": 0, "width": 80, "height": 1.5 }
+          { "top": 74, "left": 0, "width": 80, "height": 1.5 },
+          { "top": 50, "left": 20, "width": 80, "height": 1.5 },
+          { "top": 26, "left": 0, "width": 80, "height": 1.5 }
         ],
         "ladders": [
-          { "top": 72, "left": 60, "width": 2.2, "height": 18 },
-          { "top": 52, "left": 30, "width": 2.2, "height": 20 },
-          { "top": 32, "left": 65, "width": 2.2, "height": 20 }
+          { "top": 74, "left": 60, "width": 2.2, "height": 18 },
+          { "top": 50, "left": 30, "width": 2.2, "height": 20 },
+          { "top": 26, "left": 65, "width": 2.2, "height": 20 }
         ],
-        "goal": { "top": 26, "left": 4, "width": 7, "height": 6 },
-        "barrelSpawn": { "top": 28, "left": 16 }
+        "goal": { "top": 20, "left": 4, "width": 7, "height": 6 },
+        "barrelSpawn": { "top": 22, "left": 16 }
       },
       "levelMobile": {
         "girders": [
-          { "top": 70, "left": 0, "width": 78, "height": 1.4 },
-          { "top": 52, "left": 22, "width": 78, "height": 1.4 },
-          { "top": 34, "left": 0, "width": 78, "height": 1.4 }
+          { "top": 72, "left": 0, "width": 78, "height": 1.4 },
+          { "top": 50, "left": 22, "width": 78, "height": 1.4 },
+          { "top": 28, "left": 0, "width": 78, "height": 1.4 }
         ],
         "ladders": [
-          { "top": 70, "left": 55, "width": 5, "height": 22 },
-          { "top": 52, "left": 30, "width": 5, "height": 18 },
-          { "top": 34, "left": 55, "width": 5, "height": 18 }
+          { "top": 72, "left": 55, "width": 5, "height": 22 },
+          { "top": 50, "left": 30, "width": 5, "height": 18 },
+          { "top": 28, "left": 55, "width": 5, "height": 18 }
         ],
-        "goal": { "top": 27, "left": 4, "width": 14, "height": 7 },
-        "barrelSpawn": { "top": 30, "left": 26 }
+        "goal": { "top": 21, "left": 4, "width": 14, "height": 7 },
+        "barrelSpawn": { "top": 24, "left": 26 }
       },
       "controls": {
         "leftGlyph": "◀",

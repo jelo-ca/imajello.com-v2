@@ -5,6 +5,19 @@ import {
   BARREL_VARIANTS, pickBarrelVariant,
   type BarrelVariantId, type Difficulty,
 } from './levelGenerator';
+import {
+  BARREL_SIZE,
+  BASE_BARREL_GAP_HOP_MAX,
+  BASE_BARREL_HOP_VELOCITY,
+  BASE_BARREL_SPEED,
+  BASE_CLIMB_SPEED,
+  BASE_GRAVITY,
+  BASE_JUMP_VELOCITY,
+  BASE_MOVE_SPEED,
+  physicsScale,
+} from './gamePhysics';
+
+export { BARREL_SIZE };
 
 export interface Barrel {
   id: number;
@@ -52,27 +65,10 @@ export interface DkPose {
   elapsedMs: number;
 }
 
-const GRAVITY = 1800; // px/s^2
-const MOVE_SPEED = 220; // px/s
-// Peak height ~69px: enough to clear a barrel, deliberately NOT enough to clear the
-// ~20vh gap between girder rows. Ladders are the only way up, as in the original.
-const JUMP_VELOCITY = -500; // px/s, negative = up
-const CLIMB_SPEED = 150; // px/s
 // Slack on the ladder grab test so standing exactly on a girder still counts as being
 // at the head of the ladder that descends from it.
 const LADDER_GRAB_EPS = 1;
-// The base roll speed, kept below MOVE_SPEED so a plain barrel chasing you from behind
-// can still be outrun. Per-level scaling and the faster variants both multiply this, and
-// those deliberately do cross MOVE_SPEED — from level 2 on, some barrels have to be
-// dodged rather than walked away from.
-const BARREL_SPEED = 200; // px/s
-// Some barrels hop as they roll, so a single well-timed jump isn't always the answer.
-// Peak ~28px puts a hopping barrel's top around 46px up, still clearable under the
-// player's ~69px jump but only with real timing.
-const BARREL_HOP_VELOCITY = -320; // px/s, negative = up
 const BARREL_HOP_INTERVAL = 0.9; // seconds between hops while grounded
-
-export const BARREL_SIZE = 18; // px
 // How long a barrel is telegraphed at the spawn point before it starts rolling. Long
 // enough to notice and plan around, short enough that it doesn't slow the cascade down.
 const BARREL_ARM_TIME = 1.0; // seconds
@@ -109,11 +105,6 @@ function overlaps(ax: number, ay: number, aw: number, ah: number, b: PixelRect):
   return ax < b.left + b.width && ax + aw > b.left && ay < b.top + b.height && ay + ah > b.top;
 }
 
-// The steepest launch a barrel will use to clear a hole. Anything that would need a higher
-// arc than this drops through instead — which is mostly what happens to the slow barrels,
-// since the arc is solved from the barrel's own speed and a slow crossing needs a long
-// hang time. Capping it also keeps a hop from ever reaching the girder row above.
-const BARREL_GAP_HOP_MAX = 470; // px/s
 // Added to the crossing distance so the barrel lands past the far lip, not on top of it.
 const BARREL_GAP_HOP_MARGIN = 10; // px
 
@@ -121,8 +112,14 @@ const BARREL_GAP_HOP_MARGIN = 10; // px
 // gap can't be used as a safe pocket to wait out the cascade. Returns the launch velocity,
 // or null when the barrel should just keep rolling — it isn't at an edge yet, the edge is
 // the end of the row (where dropping to the next row is the whole point of the cascade),
-// or the crossing would need a steeper arc than BARREL_GAP_HOP_MAX.
-function gapHopVelocity(b: Barrel, surfaces: PixelRect[], dt: number): number | null {
+// or the crossing would need a steeper arc than the scaled hop cap.
+function gapHopVelocity(
+  b: Barrel,
+  surfaces: PixelRect[],
+  dt: number,
+  gravity: number,
+  hopMax: number,
+): number | null {
   const speed = Math.abs(b.vx);
   if (speed < 1) return null;
   const dir = Math.sign(b.vx);
@@ -148,8 +145,8 @@ function gapHopVelocity(b: Barrel, surfaces: PixelRect[], dt: number): number | 
   const crossing = Math.abs(far - edge) + BARREL_SIZE + BARREL_GAP_HOP_MARGIN;
   // Time to cross at the barrel's current speed, then the launch that stays airborne
   // exactly that long: v = g * t / 2.
-  const v = (GRAVITY * (crossing / speed)) / 2;
-  return v > BARREL_GAP_HOP_MAX ? null : -v;
+  const v = (gravity * (crossing / speed)) / 2;
+  return v > hopMax ? null : -v;
 }
 
 export function useDonkeyKongLoop({
@@ -194,13 +191,14 @@ export function useDonkeyKongLoop({
     // xOffset trails a paired barrel behind the leader (barrels roll right off the
     // spawn), so the two travel as a close pair rather than overlapping.
     const spawnBarrel = (xOffset: number) => {
+      const { x: sx } = physicsScale();
       const variant = pickBarrelVariant(difficulty.weights, Math.random());
       const v = BARREL_VARIANTS[variant];
       barrelsRef.current.push({
         id: barrelIdRef.current++,
         x: level.barrelSpawn.left + xOffset,
         y: level.barrelSpawn.top,
-        vx: BARREL_SPEED * difficulty.speedScale * v.speedMul,
+        vx: BASE_BARREL_SPEED * sx * difficulty.speedScale * v.speedMul,
         vy: 0,
         grounded: false,
         variant,
@@ -242,6 +240,13 @@ export function useDonkeyKongLoop({
       if (!floor) return;
 
       const p = pRef.current;
+      const { x: sx, y: sy } = physicsScale();
+      const moveSpeed = BASE_MOVE_SPEED * sx;
+      const climbSpeed = BASE_CLIMB_SPEED * sy;
+      const jumpVelocity = BASE_JUMP_VELOCITY * sy;
+      const gravity = BASE_GRAVITY * sy;
+      const barrelHopVelocity = BASE_BARREL_HOP_VELOCITY * sy;
+      const barrelGapHopMax = BASE_BARREL_GAP_HOP_MAX * sy;
 
       if (!hasSpawnedRef.current) {
         placePlayer(floor);
@@ -327,7 +332,7 @@ export function useDonkeyKongLoop({
       if (p.climbing && ladder) {
         const bottom = ladder.top + ladder.height;
         const dir = keys.has('up') ? -1 : keys.has('down') ? 1 : 0;
-        p.y += dir * CLIMB_SPEED * dt;
+        p.y += dir * climbSpeed * dt;
         // Hold the sprite centred on the rungs so it can't drift off sideways mid-climb.
         p.x = ladder.left + ladder.width / 2 - spriteWidth / 2;
         p.vy = 0;
@@ -345,19 +350,19 @@ export function useDonkeyKongLoop({
         const movingRight = keys.has('right');
         // Prefer a single direction when both keys are held so velocity and facing
         // can't disagree (that reads as moonwalking / running backwards).
-        p.vx = movingLeft && !movingRight ? -MOVE_SPEED
-          : movingRight && !movingLeft ? MOVE_SPEED
+        p.vx = movingLeft && !movingRight ? -moveSpeed
+          : movingRight && !movingLeft ? moveSpeed
           : 0;
         if (p.vx < 0) p.facing = 'left';
         else if (p.vx > 0) p.facing = 'right';
         // Reaching this branch means we're not climbing, so up is free to mean jump.
         // 'jump' itself is still bound for the on-screen touch button.
         if ((keys.has('jump') || keys.has('up')) && p.grounded) {
-          p.vy = JUMP_VELOCITY;
+          p.vy = jumpVelocity;
           p.grounded = false;
         }
 
-        p.vy += GRAVITY * dt;
+        p.vy += gravity * dt;
         const prevBottom = p.y + spriteHeight;
         p.x += p.vx * dt;
         p.y += p.vy * dt;
@@ -405,18 +410,18 @@ export function useDonkeyKongLoop({
           b.hopTimer += dt;
           if (b.hopTimer >= BARREL_HOP_INTERVAL) {
             b.hopTimer = 0;
-            b.vy = BARREL_HOP_VELOCITY * BARREL_VARIANTS[b.variant].hopMul;
+            b.vy = barrelHopVelocity * BARREL_VARIANTS[b.variant].hopMul;
             b.grounded = false;
           }
         }
         if (b.gapJumper && b.grounded && b.surfaceTop !== null) {
-          const hop = gapHopVelocity(b, surfaces, dt);
+          const hop = gapHopVelocity(b, surfaces, dt, gravity, barrelGapHopMax);
           if (hop !== null) {
             b.vy = hop;
             b.grounded = false;
           }
         }
-        b.vy += GRAVITY * dt;
+        b.vy += gravity * dt;
         const bPrevBottom = b.y + BARREL_SIZE;
         b.x += b.vx * dt;
         b.y += b.vy * dt;
