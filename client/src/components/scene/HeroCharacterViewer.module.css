@@ -237,6 +237,25 @@
   color: var(--on-accent);
   border-color: var(--pink);
 }
+.startBtn:disabled {
+  opacity: .45;
+  cursor: not-allowed;
+}
+.startBtn:disabled:hover {
+  background: var(--panel);
+  color: var(--on-panel);
+  border-color: var(--panel);
+}
+
+.startHint {
+  margin: 0;
+  max-width: 36ch;
+  text-align: center;
+  font: 400 9px 'Silkscreen', monospace;
+  letter-spacing: .06em;
+  line-height: 1.45;
+  color: rgb(var(--on-paper-rgb) / .45);
+}
 
 @media (max-width: 768px) {
   .portraitBox,

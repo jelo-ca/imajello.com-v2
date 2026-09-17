@@ -1,0 +1,44 @@
+.overlay {
+  display: none;
+}
+
+/* Too short to keep row gaps above the jump / barrel-clearance floor. Portrait phones
+   at ≥560 CSS px (iPhone SE and up) stay playable; landscape phones use RotateNotice. */
+@media (max-height: 559px) {
+  .overlay {
+    position: fixed;
+    inset: 0;
+    /* Under RotateNotice (500) so landscape phones keep the rotate message on top. */
+    z-index: 490;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    padding: 20px;
+    box-sizing: border-box;
+    text-align: center;
+    background: var(--panel);
+    color: var(--on-panel);
+  }
+}
+
+.glyph {
+  font-size: 34px;
+  line-height: 1;
+}
+
+.heading {
+  font: 400 13px 'Silkscreen', monospace;
+  letter-spacing: .12em;
+  color: var(--pink);
+}
+
+.text {
+  margin: 0;
+  max-width: 36ch;
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--grey-light);
+  text-wrap: pretty;
+}

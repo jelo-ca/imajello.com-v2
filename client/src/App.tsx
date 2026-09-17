@@ -10,12 +10,14 @@ import { Toast } from './components/shared/Toast';
 import { KonamiOverlay } from './components/shared/KonamiOverlay';
 import { MobileNotice } from './components/shared/MobileNotice';
 import { RotateNotice } from './components/shared/RotateNotice';
+import { PlaySizeNotice } from './components/shared/PlaySizeNotice';
 import { BootScreen } from './components/shared/BootScreen';
 import { RoadmapDialog } from './components/shared/RoadmapDialog';
 import { SettingsDialog } from './components/shared/SettingsDialog';
 import { LeaderboardDialog } from './components/shared/LeaderboardDialog';
 import { ui } from './content';
 import { randomSeed } from './hooks/levelGenerator';
+import { isPlayViewportOk } from './hooks/usePlayViewport';
 import styles from './App.module.css';
 
 const SECTION_KEYS: Record<string, 'journey' | 'quests' | 'experience' | 'hobbies' | 'contact'> = {
@@ -67,6 +69,7 @@ export default function App() {
         // because the game itself no longer binds it — up doubles as jump in play.
         if ((e.key === ' ' || e.key === 'Spacebar') && !state.familiarOpen) {
           e.preventDefault();
+          if (!isPlayViewportOk()) return;
           dispatch({ type: 'START_PLATFORMER', seed: randomSeed() });
           return;
         }
@@ -125,6 +128,7 @@ export default function App() {
       <SettingsDialog />
       <LeaderboardDialog />
       <BootScreen />
+      <PlaySizeNotice />
       {/* Last child so it stacks over everything; its own media query decides whether
           it's visible at all. */}
       <RotateNotice />

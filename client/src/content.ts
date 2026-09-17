@@ -241,6 +241,7 @@ export interface ContentShape {
     imageSlot: { comingSoon: string };
     toast: { discoveredLabel: string; levelUp: string };
     rotateNotice: { glyph: string; heading: string; text: string };
+    playSizeNotice?: { glyph: string; heading: string; text: string };
     mobileNotice: { text: string; dismissAriaLabel: string };
     boot: {
       title: string;

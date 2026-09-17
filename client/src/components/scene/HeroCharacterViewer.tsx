@@ -5,6 +5,7 @@ import { useSfx } from '../../hooks/useSfx';
 import { CHARS } from '../../data/chars';
 import { ui } from '../../content';
 import { randomSeed } from '../../hooks/levelGenerator';
+import { usePlayViewportOk } from '../../hooks/usePlayViewport';
 import styles from './HeroCharacterViewer.module.css';
 
 // Minimum horizontal drag distance (px) to count as a swipe, below which
@@ -14,6 +15,7 @@ const SWIPE_THRESHOLD = 40;
 export function HeroCharacterViewer() {
   const { state, dispatch } = useGameState();
   const { tick } = useSfx();
+  const playOk = usePlayViewportOk();
   const char = CHARS[state.charIdx];
   const prevChar = state.charPrevIdx != null ? CHARS[state.charPrevIdx] : null;
 
@@ -25,7 +27,11 @@ export function HeroCharacterViewer() {
 
   const goPrev = () => { tick(); dispatch({ type: 'PREV_CHAR' }); };
   const goNext = () => { tick(); dispatch({ type: 'NEXT_CHAR' }); };
-  const handleStart = () => { tick(); dispatch({ type: 'START_PLATFORMER', seed: randomSeed() }); };
+  const handleStart = () => {
+    if (!playOk) return;
+    tick();
+    dispatch({ type: 'START_PLATFORMER', seed: randomSeed() });
+  };
 
   // Mobile replaces the ◀/▶ buttons with a swipe gesture on the portrait/stats row
   // (buttons are hidden via CSS below 768px — see HeroCharacterViewer.module.css .arrow).
@@ -124,7 +130,21 @@ export function HeroCharacterViewer() {
         <button data-sfx className={styles.mobileArrow} onClick={goNext} aria-label={ui.hero.nextAriaLabel}>▶</button>
       </div>
 
-      <button data-sfx className={styles.startBtn} onClick={handleStart}>{ui.hero.startBtn}</button>
+      <button
+        data-sfx
+        className={styles.startBtn}
+        onClick={handleStart}
+        disabled={!playOk}
+        title={playOk ? undefined : (ui.playSizeNotice?.heading ?? 'WINDOW TOO SMALL')}
+      >
+        {ui.hero.startBtn}
+      </button>
+      {!playOk && (
+        <p className={styles.startHint}>
+          {ui.playSizeNotice?.text
+            ?? 'The climb needs a taller view — stretch this window or switch to a larger screen. Phones work in portrait.'}
+        </p>
+      )}
     </div>
   );
 }

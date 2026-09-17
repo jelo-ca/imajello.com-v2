@@ -455,6 +455,12 @@
       "text": "This site is built for portrait. Turn your phone upright to carry on."
     },
 
+    "playSizeNotice": {
+      "glyph": "⬜",
+      "heading": "WINDOW TOO SMALL",
+      "text": "The climb needs a taller view — stretch this window or switch to a larger screen. Phones work in portrait."
+    },
+
     "mobileNotice": {
       "text": "Best experienced on desktop — some features are simplified on mobile.",
       "dismissAriaLabel": "Dismiss"

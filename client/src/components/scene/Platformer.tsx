@@ -9,6 +9,7 @@ import { useDonkeyKongLoop, BARREL_SIZE } from '../../hooks/useDonkeyKongLoop';
 import { resolveLadderRects } from '../../hooks/platformGeometry';
 import { difficultyFor, randomSeed } from '../../hooks/levelGenerator';
 import { formatRunTime } from '../../api/leaderboard';
+import { usePlayViewportOk } from '../../hooks/usePlayViewport';
 import { DkLevel } from './DkLevel';
 import { TouchControls } from './TouchControls';
 import styles from './Platformer.module.css';
@@ -28,10 +29,11 @@ interface Props {
 export function Platformer({ platformRefs }: Props) {
   const { state, dispatch } = useGameState();
   const char = CHARS[state.charIdx];
+  const playOk = usePlayViewportOk();
   // The leaderboard is a full overlay you can open mid-climb, so it has to freeze the
   // game with the rest of them — reading the board should never cost a life or inflate a
-  // time.
-  const paused = state.open != null || state.familiarOpen || state.discoveriesOpen || state.leaderboardOpen;
+  // time. Undersized viewports pause too so barrels don't keep rolling under the notice.
+  const paused = state.open != null || state.familiarOpen || state.discoveriesOpen || state.leaderboardOpen || !playOk;
   const floor = useFloorRect(platformRefs, [state.open, state.familiarOpen, state.discoveriesOpen]);
   const level = useLevelGeometry(state.dkLevel, state.dkSeed);
   // Memoised for the same reason `ladders` is: the physics loop lists it as an effect
