@@ -26,7 +26,7 @@ export function WorldMapDialog({ onClose }: { onClose: () => void }) {
                 <ImageSlot
                   src={stop.imageSrc}
                   placeholder={`${ui.worldMap.photoPrefix} ${stop.title}`}
-                  fit="contain"
+                  fit="cover"
                 />
               </div>
               <div className={stop.current ? styles.cardTitleCurrent : styles.cardTitle}>{stop.title}</div>
