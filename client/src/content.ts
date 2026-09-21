@@ -25,7 +25,12 @@ export interface TimelineBar {
   title: string;
   titleSize: number;
   org?: string;
-  top: number; left: number; width: number; height: number;
+  /** Inclusive start as YYYY-MM or YYYY-MM-DD. */
+  start: string;
+  /** Inclusive end as YYYY-MM or YYYY-MM-DD, or null while ongoing. */
+  end: string | null;
+  left: number;
+  width: number;
   padding: string;
   variant: 'education-pink' | 'education-uci' | 'main' | 'side';
 }
@@ -205,7 +210,10 @@ export interface ContentShape {
       intro: string;
       futureLabel: string;
       legend: { main: string; side: string; eduPink: string; eduUci: string };
-      yearLabels: Array<{ top: number; text: string; now?: boolean }>;
+      nowLabel: string;
+      trackHeight: number;
+      futurePadMonths: number;
+      minBarHeight: number;
     };
     contact: {
       continueTag: string;

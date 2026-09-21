@@ -1,8 +1,8 @@
+import { useMemo } from 'react';
 import { TIMELINE_BARS } from '../../data/quests';
 import { ui } from '../../content';
+import { layoutTimeline } from '../../hooks/timelineLayout';
 import styles from './TimelineTab.module.css';
-
-const YEAR_LABELS = ui.timeline.yearLabels;
 
 const VARIANT_CLASS: Record<string, string> = {
   'education-pink': styles.barEducationPink,
@@ -24,6 +24,12 @@ function Legend() {
 }
 
 export function TimelineTab() {
+  // Rebuild from the clock whenever this tab mounts (opening Quest Log / switching tabs).
+  const { trackHeight, labels, bars } = useMemo(
+    () => layoutTimeline(TIMELINE_BARS, new Date()),
+    [],
+  );
+
   return (
     <div className={styles.wrap}>
       <div className={styles.introRow}>
@@ -32,21 +38,27 @@ export function TimelineTab() {
       </div>
       <div className={styles.chartScroll}>
         <div className={styles.chartRow}>
-          <div className={styles.axis}>
-            {YEAR_LABELS.map(y => (
-              <div key={y.text} className={y.now ? styles.axisLabelNow : styles.axisLabel} style={{ top: y.top }}>{y.text}</div>
+          <div className={styles.axis} style={{ height: trackHeight }}>
+            {labels.map(y => (
+              <div
+                key={`${y.text}-${Math.round(y.top)}`}
+                className={y.now ? styles.axisLabelNow : styles.axisLabel}
+                style={{ top: y.top }}
+              >
+                {y.text}
+              </div>
             ))}
           </div>
-          <div className={styles.track}>
+          <div className={styles.track} style={{ height: trackHeight }}>
             <div className={styles.futureLabel}>{ui.timeline.futureLabel}</div>
-            {YEAR_LABELS.map(y => (
+            {labels.map(y => (
               <div
-                key={y.text}
+                key={`grid-${y.text}-${Math.round(y.top)}`}
                 className={y.now ? styles.gridlineNow : styles.gridline}
                 style={{ top: y.top }}
               />
             ))}
-            {TIMELINE_BARS.map((bar, i) => (
+            {bars.map((bar, i) => (
               <div
                 key={i}
                 className={VARIANT_CLASS[bar.variant]}

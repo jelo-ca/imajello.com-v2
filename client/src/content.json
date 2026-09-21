@@ -67,7 +67,7 @@
 
   "quests": {
     "main": [
-      { "dateRange": "MAR 2025 – PRESENT", "title": "Software Engineering Intern", "org": "Unimode AI · Fremont, CA", "bullets": [
+      { "dateRange": "MAR 2026 – AUG 2026", "title": "Software Engineering Intern", "org": "Unimode AI · Fremont, CA", "bullets": [
         "Semantic search API over 1.3M+ indexed records — cut p95 latency from 700ms to 200ms.",
         "Automated onboarding pipeline — demo setup from ~3 days to under 4 hours.",
         "Multi-agent adapter normalizing client schemas — hours of manual mapping to seconds." ] },
@@ -85,28 +85,33 @@
       { "dateRange": "JUN 2024 – MAR 2026", "title": "STEM Teacher", "org": "Young Gates · Milpitas, CA", "bullets": [
         "Delivered 20+ hands-on workshops in programming, game dev, drones, and 3D design." ] },
       { "dateRange": "FEB 2026 – JUN 2026", "title": "STEM Tutor", "org": "MESA De Anza · Cupertino, CA", "bullets": [
-        "Embedded in-class tutor, working alongside instructors on real-time problem-solving; mentored underrepresented students in STEM." ] }
+        "Embedded in-class tutor, working alongside instructors on real-time problem-solving; mentored underrepresented students in STEM." ] },
+      { "dateRange": "JUN 2026", "title": "Open Source Contributor", "org": "DCS Simulation Engine · Georgia Tech", "bullets": [
+        "Built the project's first frontend test suite (Vitest, React Testing Library) for a React UI with zero prior coverage.",
+        "Designed a controllable mock WebSocket enabling behavioral tests of the session state machine with no live server.",
+        "Added a CI gate via GitHub Actions; upstream PR merged." ], "skills": ["VITEST", "REACT", "CI"] }
     ],
     "achievements": [
       { "icon": "🏆 GUILD MASTER", "title": "Club President, Game Dev Club", "desc": "Grew from 5 founding members to an online community of 200+." },
       { "icon": "🏆 JAM DIRECTOR ×2", "title": "Two annual game jams", "desc": "145 → 300 participants, 69 submissions, 4 industry sponsors." },
       { "icon": "🏆 EXPO FOUNDER", "title": "Co-Founder & Director, De Anza Expo", "desc": "Built a student tech showcase from scratch — logistics, sponsors, and a funding plan for the long haul." },
-      { "icon": "🏆 SCHOLAR", "title": "AS-T CS · GPA 3.74", "desc": "De Anza College, March 2026 — Magna Cum Laude in CS and Math. C++, data structures, x86 assembly, SQL." }
+      { "icon": "🏆 SCHOLAR", "title": "AS-T CS · GPA 3.75", "desc": "De Anza College, June 2026 — Magna Cum Laude in CS and Math. C++, data structures, x86 assembly, SQL." }
     ],
     "education": [
-      { "title": "UC Irvine — B.S. Computer Science", "meta": "2026 – Present · Irvine, CA" },
-      { "title": "De Anza College — AS-T Computer Science", "meta": "GPA 3.74 · March 2026 · Cupertino, CA" }
+      { "title": "UC Irvine — B.S. Computer Science", "meta": "Sep 2026 – Present · Expected Jun 2028 · Irvine, CA" },
+      { "title": "De Anza College — AS-T Computer Science", "meta": "GPA 3.75 · Jan 2023 – Jun 2026 · Cupertino, CA" }
     ],
     "timelineBars": [
-      { "tag": "EDUCATION", "title": "AS-T CS", "titleSize": 11, "org": "De Anza College", "top": 184, "left": 14, "width": 118, "height": 532, "padding": "8px", "variant": "education-pink" },
-      { "title": "UC Irvine · Sept 2026 →", "titleSize": 9, "top": 44, "left": 14, "width": 118, "height": 46, "padding": "0 8px", "variant": "education-uci" },
-      { "tag": "MAIN", "title": "SWE Intern", "titleSize": 10, "org": "Unimode AI", "top": 128, "left": 138, "width": 84, "height": 224, "padding": "8px 6px", "variant": "main" },
-      { "title": "Pfizer Extern", "titleSize": 9.5, "top": 184, "left": 228, "width": 74, "height": 28, "padding": "2px 6px", "variant": "main" },
-      { "tag": "SIDE", "title": "PlanPal", "titleSize": 9.5, "top": 227, "left": 228, "width": 74, "height": 42, "padding": "4px 6px", "variant": "side" },
-      { "tag": "SIDE", "title": "STEM Teacher", "titleSize": 11, "org": "Young Gates", "top": 184, "left": 308, "width": 88, "height": 294, "padding": "8px", "variant": "side" },
-      { "tag": "SIDE", "title": "STEM TA", "titleSize": 10.5, "top": 184, "left": 402, "width": 88, "height": 84, "padding": "6px 8px", "variant": "side" },
-      { "tag": "SIDE", "title": "STEM Tutor", "titleSize": 10, "top": 142, "left": 496, "width": 88, "height": 56, "padding": "5px 8px", "variant": "side" },
-      { "tag": "SIDE", "title": "Asst. Restaurant Manager", "titleSize": 11, "org": "Country Gourmet", "top": 478, "left": 308, "width": 88, "height": 448, "padding": "8px", "variant": "side" }
+      { "tag": "EDUCATION", "title": "AS-T CS", "titleSize": 11, "org": "De Anza College", "start": "2023-01-09", "end": "2026-06-19", "left": 14, "width": 118, "padding": "8px", "variant": "education-pink" },
+      { "title": "UC Irvine · Sep 2026 →", "titleSize": 9, "start": "2026-09-25", "end": null, "left": 14, "width": 118, "padding": "0 8px", "variant": "education-uci" },
+      { "tag": "MAIN", "title": "SWE Intern", "titleSize": 10, "org": "Unimode AI", "start": "2026-03-01", "end": "2026-08-31", "left": 138, "width": 84, "padding": "8px 6px", "variant": "main" },
+      { "title": "Pfizer Extern", "titleSize": 9.5, "start": "2026-01-05", "end": "2026-03-27", "left": 228, "width": 74, "padding": "2px 6px", "variant": "main" },
+      { "tag": "SIDE", "title": "PlanPal", "titleSize": 9.5, "start": "2026-02-01", "end": "2026-05-31", "left": 228, "width": 74, "padding": "4px 6px", "variant": "side" },
+      { "tag": "SIDE", "title": "DCS / GaTech", "titleSize": 9.5, "org": "Open Source", "start": "2026-06-01", "end": "2026-06-30", "left": 228, "width": 74, "padding": "4px 6px", "variant": "side" },
+      { "tag": "SIDE", "title": "STEM Teacher", "titleSize": 11, "org": "Young Gates", "start": "2024-06-01", "end": "2026-03-31", "left": 308, "width": 88, "padding": "8px", "variant": "side" },
+      { "tag": "SIDE", "title": "STEM TA", "titleSize": 10.5, "start": "2025-09-22", "end": "2026-03-20", "left": 402, "width": 88, "padding": "6px 8px", "variant": "side" },
+      { "tag": "SIDE", "title": "STEM Tutor", "titleSize": 10, "start": "2026-02-01", "end": "2026-06-12", "left": 496, "width": 88, "padding": "5px 8px", "variant": "side" },
+      { "tag": "SIDE", "title": "Asst. Restaurant Manager", "titleSize": 11, "org": "Country Gourmet", "start": "2021-10-01", "end": "2024-06-30", "left": 308, "width": 88, "padding": "8px", "variant": "side" }
     ]
   },
 
@@ -166,19 +171,10 @@
   },
 
   "projects": [
-    { "id": "pfizer", "repoUrl": "https://github.com/jelo-ca/pharma_rag", "imageId": "proj-pfizer", "imagePlaceholder": "screenshot: pipeline / demo", "rank": "S", "title": "AI/ML Extern — Pfizer", "status": "complete", "statusLabel": "✓ QUEST COMPLETE", "meta": "VIA EXTERN · JAN–MAR 2026 · REMOTE", "bullets": [
+    { "id": "pfizer", "repoUrl": "https://github.com/jelo-ca/pharma_rag", "imageId": "proj-pfizer", "imagePlaceholder": "screenshot: pipeline / demo", "rank": "S", "title": "Pharma RAG", "status": "complete", "statusLabel": "✓ QUEST COMPLETE", "meta": "VIA EXTERN · PFIZER · JAN–MAR 2026 · REMOTE", "bullets": [
       "Document pipeline extracting structured data from scanned pharma PDFs with Tesseract, PaddleOCR, and frontier LLMs.",
       "Multi-agent RAG system with LlamaIndex for semantic search over unstructured regulatory documents.",
-      "Regression harness — 20+ factual-retrieval and hallucination queries across 500+ documents." ], "loot": ["PYTHON", "LLAMAINDEX", "TESSERACT", "PADDLEOCR"] },
-    { "id": "scheduler", "repoUrl": "https://github.com/jelo-ca/agentic-task-scheduler", "imageId": "proj-scheduler", "imageSrc": "/sprites/planpal-thumb.png", "imagePlaceholder": "screenshot: PlanPal", "rank": "S", "title": "PlanPal", "status": "complete", "statusLabel": "✓ QUEST COMPLETE", "meta": "CODEPATH · SPRING 2026", "bullets": [
-      "AI-assisted scheduler converting natural-language requests into structured, confidence-scored tasks through a multi-agent Gemini pipeline (Parser → Temporal → Normalization → Validation).",
-      "RAG chatbot grounded in live task context, answering scheduling questions via Gemini 2.0 Flash with a FastAPI backend and Streamlit UI.",
-      "Built a 3-tier evaluation harness (baseline vs. few-shot, adversarial robustness, context sensitivity) — few-shot prompting scored 96.7% vs. 88.3% baseline across 12 test cases." ], "loot": ["PYTHON", "FASTAPI", "GEMINI", "RAG"] },
-    { "id": "studyguild", "repoUrl": "https://github.com/jelo-ca/study-guild", "imageId": "proj-studyguild", "imageSrc": "/project_thumbnails/studyguild.png", "imagePlaceholder": "screenshot: Study Guild", "rank": "A", "title": "Study Guild", "status": "in-progress", "statusLabel": "◆ IN PROGRESS", "meta": "PERSONAL · DEC 2025 – PRESENT", "bullets": [
-      "Gamified multi-agent AI study tool generating in-scope study guides and quizzes from class modules and notes.",
-      "Database design that lets collected modules improve AI-generated quiz specialization per user." ], "loot": ["REACT", "RAG", "SUPABASE"] },
-    { "id": "scantry", "repoUrl": "https://github.com/jelo-ca/scantry", "imageId": "proj-scantry", "imagePlaceholder": "screenshot: Scantry", "rank": "A", "title": "Scantry", "status": "in-progress", "statusLabel": "◆ IN PROGRESS", "meta": "HACK YOUR SUMMER · JUL 2026 – PRESENT", "bullets": [
-      "Building a grocery inventory tracking system using Raspberry Pi and open-source Grocy." ], "loot": ["RASPBERRY PI", "GROCY"] }
+      "Regression harness — 20+ factual-retrieval and hallucination queries across 500+ documents." ], "loot": ["PYTHON", "LLAMAINDEX", "TESSERACT", "PADDLEOCR"] }
   ],
 
   "ui": {
@@ -379,15 +375,10 @@
         "eduPink": "Education (De Anza)",
         "eduUci": "Education (UCI)"
       },
-      "yearLabels": [
-        { "top": 44, "text": "2027" },
-        { "top": 128, "text": "NOW", "now": true },
-        { "top": 212, "text": "2026" },
-        { "top": 380, "text": "2025" },
-        { "top": 548, "text": "2024" },
-        { "top": 716, "text": "2023" },
-        { "top": 884, "text": "2022" }
-      ]
+      "nowLabel": "NOW",
+      "trackHeight": 950,
+      "futurePadMonths": 9,
+      "minBarHeight": 28
     },
 
     "contact": {

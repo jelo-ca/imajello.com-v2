@@ -82,7 +82,6 @@
   width: 50px;
   flex: none;
   position: relative;
-  height: 950px;
 }
 
 .axisLabel,
@@ -105,7 +104,6 @@
 .track {
   flex: 1;
   position: relative;
-  height: 950px;
   border-left: 3px solid var(--rule);
   padding-left: 14px;
 }

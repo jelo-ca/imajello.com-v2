@@ -60,13 +60,32 @@ function mergeAssetPaths(persistent: unknown, seed: unknown): { data: unknown; c
   }
 
   const seedProjects = Array.isArray(seed.projects) ? seed.projects : [];
-  const outProjects = Array.isArray(out.projects) ? out.projects : [];
-  for (const proj of outProjects) {
-    if (!isObj(proj) || typeof proj.id !== 'string') continue;
-    const fromSeed = seedProjects.find(p => isObj(p) && p.id === proj.id);
-    if (!isObj(fromSeed)) continue;
-    if (typeof fromSeed.imageSrc === 'string' && proj.imageSrc !== fromSeed.imageSrc) {
-      proj.imageSrc = fromSeed.imageSrc;
+  // Projects list is deploy-owned (add/remove in repo). Keep Hostinger text edits from
+  // applying to which cards show — replace the array wholesale from the seed.
+  if (JSON.stringify(out.projects) !== JSON.stringify(seedProjects)) {
+    out.projects = structuredClone(seedProjects);
+    changed = true;
+  }
+
+  const seedQuests = isObj(seed.quests) ? seed.quests : null;
+  const outQuests = isObj(out.quests) ? out.quests : null;
+  if (seedQuests && outQuests) {
+    for (const key of ['timelineBars', 'main', 'side', 'education', 'achievements'] as const) {
+      const seedVal = seedQuests[key];
+      if (!Array.isArray(seedVal)) continue;
+      if (JSON.stringify(outQuests[key]) !== JSON.stringify(seedVal)) {
+        outQuests[key] = structuredClone(seedVal);
+        changed = true;
+      }
+    }
+  }
+
+  // Timeline layout knobs (track height, NOW label, etc.) are deploy-owned too.
+  const seedUi = isObj(seed.ui) ? seed.ui : null;
+  const outUi = isObj(out.ui) ? out.ui : null;
+  if (seedUi && outUi && isObj(seedUi.timeline) && isObj(outUi.timeline)) {
+    if (JSON.stringify(outUi.timeline) !== JSON.stringify(seedUi.timeline)) {
+      outUi.timeline = structuredClone(seedUi.timeline);
       changed = true;
     }
   }
