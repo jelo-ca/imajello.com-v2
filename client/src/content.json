@@ -103,7 +103,7 @@
     ],
     "timelineBars": [
       { "tag": "EDUCATION", "title": "AS-T CS", "titleSize": 11, "org": "De Anza College", "start": "2023-01-09", "end": "2026-06-19", "left": 14, "width": 118, "padding": "8px", "variant": "education-pink" },
-      { "title": "UC Irvine · Sep 2026 →", "titleSize": 9, "start": "2026-09-25", "end": null, "left": 14, "width": 118, "padding": "0 8px", "variant": "education-uci" },
+      { "title": "UC Irvine · Sep 2026 →", "titleSize": 9, "start": "2026-09-01", "end": null, "left": 14, "width": 118, "padding": "0 8px", "variant": "education-uci" },
       { "tag": "MAIN", "title": "SWE Intern", "titleSize": 10, "org": "Unimode AI", "start": "2026-03-01", "end": "2026-08-31", "left": 138, "width": 84, "padding": "8px 6px", "variant": "main" },
       { "title": "Pfizer Extern", "titleSize": 9.5, "start": "2026-01-05", "end": "2026-03-27", "left": 228, "width": 74, "padding": "2px 6px", "variant": "main" },
       { "tag": "SIDE", "title": "PlanPal", "titleSize": 9.5, "start": "2026-02-01", "end": "2026-05-31", "left": 228, "width": 74, "padding": "4px 6px", "variant": "side" },
@@ -111,7 +111,7 @@
       { "tag": "SIDE", "title": "STEM Teacher", "titleSize": 11, "org": "Young Gates", "start": "2024-06-01", "end": "2026-03-31", "left": 308, "width": 88, "padding": "8px", "variant": "side" },
       { "tag": "SIDE", "title": "STEM TA", "titleSize": 10.5, "start": "2025-09-22", "end": "2026-03-20", "left": 402, "width": 88, "padding": "6px 8px", "variant": "side" },
       { "tag": "SIDE", "title": "STEM Tutor", "titleSize": 10, "start": "2026-02-01", "end": "2026-06-12", "left": 496, "width": 88, "padding": "5px 8px", "variant": "side" },
-      { "tag": "SIDE", "title": "Asst. Restaurant Manager", "titleSize": 11, "org": "Country Gourmet", "start": "2021-10-01", "end": "2024-06-30", "left": 308, "width": 88, "padding": "8px", "variant": "side" }
+      { "tag": "SIDE", "title": "Asst. Restaurant Manager", "titleSize": 11, "org": "Country Gourmet", "start": "2021-10-01", "end": "2024-05-31", "left": 308, "width": 88, "padding": "8px", "variant": "side" }
     ]
   },
 
@@ -378,7 +378,8 @@
       "nowLabel": "NOW",
       "trackHeight": 950,
       "futurePadMonths": 9,
-      "minBarHeight": 28
+      "minBarHeight": 28,
+      "columnGap": 6
     },
 
     "contact": {

@@ -214,6 +214,8 @@ export interface ContentShape {
       trackHeight: number;
       futurePadMonths: number;
       minBarHeight: number;
+      /** Horizontal gap when a bar is shifted to avoid a vertical collision. */
+      columnGap: number;
     };
     contact: {
       continueTag: string;

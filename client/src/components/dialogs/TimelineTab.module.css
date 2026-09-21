@@ -215,6 +215,7 @@
   }
 
   .chartRow {
-    min-width: 680px;
+    /* Wide enough for packed columns when concurrent roles sit side by side. */
+    min-width: 820px;
   }
 }
