@@ -56,7 +56,7 @@ export interface InvItem { key: string; icon: string; tag: string; label: string
 export interface Project {
   id: string;
   repoUrl: string;
-  /** Optional live demo link; without it the card's PLAY button is greyed out. */
+  /** Optional live demo link, opened in the same tab; without it the card's PLAY button is greyed out. */
   liveUrl?: string;
   imageId: string;
   imageSrc?: string;

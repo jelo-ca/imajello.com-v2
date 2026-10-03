@@ -28,7 +28,7 @@ export function BattleLogDialog({ onClose }: { onClose: () => void }) {
                 <svg className={styles.repoIcon} viewBox="0 0 16 16" aria-hidden="true"><path d={GITHUB_MARK} /></svg>
               </a>
               {p.liveUrl ? (
-                <a href={p.liveUrl} target="_blank" rel="noreferrer" data-sfx className={styles.linkBtn}>
+                <a href={p.liveUrl} data-sfx className={styles.linkBtn}>
                   {playIcon}{ui.battleLog.liveLink}
                 </a>
               ) : (
