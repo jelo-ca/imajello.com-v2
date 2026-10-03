@@ -17,12 +17,9 @@ export function BattleLogDialog({ onClose }: { onClose: () => void }) {
       <div className={styles.body}>
         {PROJECTS.map(p => (
           <div className={styles.card} key={p.id}>
-            <div className={styles.links}>
-              {p.liveUrl && (
-                <a href={p.liveUrl} target="_blank" rel="noreferrer" data-sfx className={styles.repoLink}>{ui.battleLog.liveLink}</a>
-              )}
-              <a href={p.repoUrl} target="_blank" rel="noreferrer" data-sfx className={styles.repoLink}>{ui.battleLog.repoLink}</a>
-            </div>
+            <a href={p.liveUrl ?? p.repoUrl} target="_blank" rel="noreferrer" data-sfx className={styles.repoLink}>
+              {p.liveUrl ? ui.battleLog.liveLink : ui.battleLog.repoLink}
+            </a>
             <div className={styles.shotWrap}>
               <ImageSlot src={p.imageSrc} placeholder={p.imagePlaceholder} />
               <span className={styles.rankBadge}>{ui.battleLog.rankPrefix} {p.rank}</span>

@@ -86,15 +86,10 @@
   position: relative;
 }
 
-.links {
+.repoLink {
   position: absolute;
   bottom: -3px;
   right: -3px;
-  display: flex;
-  z-index: 2;
-}
-
-.repoLink {
   display: flex;
   align-items: center;
   gap: 6px;
