@@ -41,11 +41,25 @@ function isObj(v: unknown): v is JsonObj {
   return v != null && typeof v === 'object' && !Array.isArray(v);
 }
 
+/** Add keys the seed has but the persistent file lacks (new UI copy from a deploy). Never overwrites. */
+function fillMissingKeys(target: JsonObj, seed: JsonObj): boolean {
+  let changed = false;
+  for (const [key, seedVal] of Object.entries(seed)) {
+    if (!(key in target)) {
+      target[key] = structuredClone(seedVal);
+      changed = true;
+    } else if (isObj(target[key]) && isObj(seedVal)) {
+      if (fillMissingKeys(target[key] as JsonObj, seedVal)) changed = true;
+    }
+  }
+  return changed;
+}
+
 /** Copy asset paths from the deploy seed into the persistent file without wiping text edits. */
 function mergeAssetPaths(persistent: unknown, seed: unknown): { data: unknown; changed: boolean } {
   if (!isObj(persistent) || !isObj(seed)) return { data: persistent, changed: false };
-  let changed = false;
   const out = structuredClone(persistent) as JsonObj;
+  let changed = fillMissingKeys(out, seed);
 
   const seedJourney = Array.isArray(seed.journey) ? seed.journey : [];
   const outJourney = Array.isArray(out.journey) ? out.journey : [];
