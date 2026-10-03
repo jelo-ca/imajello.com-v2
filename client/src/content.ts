@@ -56,6 +56,8 @@ export interface InvItem { key: string; icon: string; tag: string; label: string
 export interface Project {
   id: string;
   repoUrl: string;
+  /** Optional live demo link, opened in a new tab next to the repo link. */
+  liveUrl?: string;
   imageId: string;
   imageSrc?: string;
   imagePlaceholder: string;
@@ -192,7 +194,7 @@ export interface ContentShape {
       nextAriaLabel: string;
       startBtn: string;
     };
-    battleLog: { repoLink: string; rankPrefix: string; lootLabel: string };
+    battleLog: { repoLink: string; liveLink: string; rankPrefix: string; lootLabel: string };
     worldMap: { photoPrefix: string };
     inventory: { hint: string; back: string; itemPrefix: string };
     questLog: {

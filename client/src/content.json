@@ -174,7 +174,11 @@
     { "id": "pfizer", "repoUrl": "https://github.com/jelo-ca/pharma_rag", "imageId": "proj-pfizer", "imagePlaceholder": "screenshot: pipeline / demo", "rank": "S", "title": "Pharma RAG", "status": "complete", "statusLabel": "✓ QUEST COMPLETE", "meta": "VIA EXTERN · PFIZER · JAN–MAR 2026 · REMOTE", "bullets": [
       "Document pipeline extracting structured data from scanned pharma PDFs with Tesseract, PaddleOCR, and frontier LLMs.",
       "Multi-agent RAG system with LlamaIndex for semantic search over unstructured regulatory documents.",
-      "Regression harness — 20+ factual-retrieval and hallucination queries across 500+ documents." ], "loot": ["PYTHON", "LLAMAINDEX", "TESSERACT", "PADDLEOCR"] }
+      "Regression harness — 20+ factual-retrieval and hallucination queries across 500+ documents." ], "loot": ["PYTHON", "LLAMAINDEX", "TESSERACT", "PADDLEOCR"] },
+    { "id": "rift-pulls", "repoUrl": "https://github.com/jelo-ca/rf-reactions", "liveUrl": "/projects/rift-pulls", "imageId": "proj-rift-pulls", "imagePlaceholder": "screenshot: webcam card scan", "rank": "A", "title": "Rift Pulls", "status": "in-progress", "statusLabel": "◆ IN PROGRESS", "meta": "PERSONAL PROJECT · 2026", "bullets": [
+      "Real-time Riftbound card recognition in the browser — hold a card to the webcam and it finds, identifies, and prices the exact printing.",
+      "Fully on-device: keypoint corner detection plus a fine-tuned MobileNetV3 embedding model with nearest-neighbor search (~1.4ms on WebGPU) via ONNX Runtime Web.",
+      "Live session: 72% first-hold acceptance, zero wrong reactions, 398ms p95 card-still-to-result latency." ], "loot": ["REACT", "TYPESCRIPT", "ONNX", "PYTORCH"] }
   ],
 
   "ui": {
@@ -340,6 +344,7 @@
 
     "battleLog": {
       "repoLink": "⌂ REPO",
+      "liveLink": "▶ PLAY",
       "rankPrefix": "RANK",
       "lootLabel": "LOOT:"
     },
