@@ -6,6 +6,7 @@ import { fileURLToPath } from 'node:url';
 import { handleChat } from './chat.js';
 import { handleGetLeaderboard, handlePostScore, logLeaderboardPath, probeLeaderboardStorage } from './leaderboard.js';
 import { ensureContentFile, handleGetContent, logContentPath, readContentJson } from './contentStore.js';
+import { mountRiftPulls } from './riftPulls.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 dotenv.config({ path: path.resolve(__dirname, '../.env') });
@@ -20,6 +21,9 @@ app.post('/api/chat', handleChat);
 app.get('/api/leaderboard', handleGetLeaderboard);
 app.post('/api/leaderboard', handlePostScore);
 app.get('/api/content', handleGetContent);
+
+// Rift Pulls demo at /projects/rift-pulls (static build outside the repo; see DEPLOY.md).
+mountRiftPulls(app);
 
 const clientDist = path.resolve(__dirname, '../../client/dist');
 

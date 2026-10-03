@@ -54,3 +54,21 @@ Treat the file accordingly:
 - Photos: drop files into `client/public/photos/` and set the `src` prop on the relevant `ImageSlot` usage (World Map: `WorldMapDialog.tsx`; Battle Log: `data/projects.ts`'s `imageSrc` field; Inventory: `InventoryDialog.tsx`'s gallery `ImageSlot`s).
 - Resume: replace `client/public/Anjoelo_Calderon_Resume.pdf` with the real file (same filename, no code change needed).
 - Fonts: if self-hosted woff2 files weren't available during development, replace the Google Fonts `<link>` in `client/index.html` with real self-hosted `@font-face` files in `client/src/styles/global.css`.
+
+## Rift Pulls demo (`/projects/rift-pulls`)
+A separate, fully static app ([rf-reactions](https://github.com/jelo-ca/rf-reactions): camera + card
+recognition models running in the browser). Its ~140 MB of models, card images and data live
+**outside this repo**, like `imajello-data`; the server mounts them when `RIFT_PULLS_DIR` is set.
+
+1. In the rf-reactions repo: `cd app && npm run build:site`, then from the repo root
+   `py scripts/package_site.py` → `out/rift-pulls-site.zip`.
+2. File Manager: create `rift-pulls` next to the `nodejs/` folder, upload the zip into it and
+   extract, so `rift-pulls/index.html` exists (not `rift-pulls/rift-pulls/index.html`).
+3. Environment variables (hPanel): `RIFT_PULLS_DIR=../rift-pulls`, then redeploy/restart.
+4. Check the runtime log for `[rift-pulls] /projects/rift-pulls -> ...`, then open
+   `https://<domain>/projects/rift-pulls/` (HTTPS is required for the camera).
+
+Updating the model or data: rebuild the zip and extract it over the folder; no site redeploy needed.
+The server only adds `Cross-Origin-Opener-Policy`/`-Embedder-Policy` (multi-threaded wasm) under
+that path, plus cache headers: hashed `assets/` for a year, models/data/images for a day.
+If `RIFT_PULLS_DIR` is unset or has no `index.html`, the route is simply not mounted (logged).
