@@ -60,6 +60,8 @@ export interface Project {
   liveUrl?: string;
   imageId: string;
   imageSrc?: string;
+  /** Optional CSS color behind the thumbnail, for transparent images. */
+  imageBg?: string;
   imagePlaceholder: string;
   rank: 'S' | 'A';
   title: string;

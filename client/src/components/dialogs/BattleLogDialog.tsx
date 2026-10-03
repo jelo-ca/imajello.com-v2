@@ -37,7 +37,7 @@ export function BattleLogDialog({ onClose }: { onClose: () => void }) {
                 </span>
               )}
             </div>
-            <div className={styles.shotWrap}>
+            <div className={styles.shotWrap} style={p.imageBg ? { background: p.imageBg } : undefined}>
               <ImageSlot src={p.imageSrc} placeholder={p.imagePlaceholder} />
               <span className={styles.rankBadge}>{ui.battleLog.rankPrefix} {p.rank}</span>
             </div>

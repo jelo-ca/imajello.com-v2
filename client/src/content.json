@@ -171,7 +171,7 @@
   },
 
   "projects": [
-    { "id": "pfizer", "repoUrl": "https://github.com/jelo-ca/pharma_rag", "imageId": "proj-pfizer", "imageSrc": "/project_thumbnails/pharma-rag.png", "imagePlaceholder": "screenshot: pipeline / demo", "rank": "S", "title": "Pharma RAG", "status": "complete", "statusLabel": "✓ QUEST COMPLETE", "meta": "VIA EXTERN · PFIZER · JAN–MAR 2026 · REMOTE", "bullets": [
+    { "id": "pfizer", "repoUrl": "https://github.com/jelo-ca/pharma_rag", "imageId": "proj-pfizer", "imageSrc": "/project_thumbnails/pharma-rag.png", "imageBg": "#000","imagePlaceholder": "screenshot: pipeline / demo", "rank": "S", "title": "Pharma RAG", "status": "complete", "statusLabel": "✓ QUEST COMPLETE", "meta": "VIA EXTERN · PFIZER · JAN–MAR 2026 · REMOTE", "bullets": [
       "Document pipeline extracting structured data from scanned pharma PDFs with Tesseract, PaddleOCR, and frontier LLMs.",
       "Multi-agent RAG system with LlamaIndex for semantic search over unstructured regulatory documents.",
       "Regression harness — 20+ factual-retrieval and hallucination queries across 500+ documents." ], "loot": ["PYTHON", "LLAMAINDEX", "TESSERACT", "PADDLEOCR"] },
