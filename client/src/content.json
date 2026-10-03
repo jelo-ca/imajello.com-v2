@@ -343,8 +343,9 @@
     },
 
     "battleLog": {
-      "repoLink": "⌂ REPO",
+      "repoAriaLabel": "View source on GitHub",
       "liveLink": "PLAY",
+      "liveUnavailable": "No playable demo yet",
       "rankPrefix": "RANK",
       "lootLabel": "LOOT:"
     },
