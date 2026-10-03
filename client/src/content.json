@@ -344,7 +344,7 @@
 
     "battleLog": {
       "repoLink": "⌂ REPO",
-      "liveLink": "▶ PLAY",
+      "liveLink": "PLAY",
       "rankPrefix": "RANK",
       "lootLabel": "LOOT:"
     },

@@ -18,7 +18,12 @@ export function BattleLogDialog({ onClose }: { onClose: () => void }) {
         {PROJECTS.map(p => (
           <div className={styles.card} key={p.id}>
             <a href={p.liveUrl ?? p.repoUrl} target="_blank" rel="noreferrer" data-sfx className={styles.repoLink}>
-              {p.liveUrl ? ui.battleLog.liveLink : ui.battleLog.repoLink}
+              {p.liveUrl ? (
+                <>
+                  <svg className={styles.playIcon} viewBox="0 0 8 8" aria-hidden="true"><path d="M1 0h2v1h2v1h2v1h1v2H7v1H5v1H3v1H1z" /></svg>
+                  {ui.battleLog.liveLink}
+                </>
+              ) : ui.battleLog.repoLink}
             </a>
             <div className={styles.shotWrap}>
               <ImageSlot src={p.imageSrc} placeholder={p.imagePlaceholder} />

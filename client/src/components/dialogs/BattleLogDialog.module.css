@@ -101,6 +101,12 @@
   text-decoration: none;
   z-index: 2;
 }
+.playIcon {
+  width: 8px;
+  height: 8px;
+  fill: currentColor;
+  shape-rendering: crispEdges;
+}
 .repoLink:hover {
   background: var(--pink);
   color: var(--ink);
